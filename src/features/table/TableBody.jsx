@@ -10,7 +10,7 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
 
     if (items.length > 0) {
       renderedItems = items.slice(0, 2).map((item, index) => (
-        <span key={index}>{item.name}, </span>
+        <span key={index}>{item.name} / </span>
       ));
       renderedItems.push(<span key="ellipsis">...</span>);
     }
