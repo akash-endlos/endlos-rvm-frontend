@@ -67,6 +67,7 @@ const index = () => {
 
     });
   };
+  
   const handleEditSave=async(data)=>{
     const updatedData={
       id: selectedRow._id,

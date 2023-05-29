@@ -3,23 +3,23 @@ import config from "../config/config";
 
 export const branchesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // updateCustomer: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `${config.api.url.updateCustomer}?id=${payload.id}`,
-    //     method: "PUT",
-    //     body: payload.editedData,
-    //   }),
-    //   invalidatesTags: ['Customers'],
-    // }),
-    // addCustomer: builder.mutation({
-    //   query: (payload) => ({
-    //     url: config.api.url.addCustomer,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    //   invalidatesTags: ['Customers'], // Specify the tag to invalidate
-    // }),
-    getBranchesById: builder.mutation({
+    updateBranchById: builder.mutation({
+      query: (payload) => ({
+        url: `${config.api.url.updateBranch}?id=${payload.id}`,
+        method: "PUT",
+        body: payload.editedData,
+      }),
+      invalidatesTags: ['Branches'],
+    }),
+    addBranch: builder.mutation({
+      query: (payload) => ({
+        url: config.api.url.addBranch,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ['Branches'], // Specify the tag to invalidate
+    }),
+    getBranchesByIdFormat: builder.query({
       query: (id) => ({
         url: `${config.api.url.getBranchesById}?id=${id}`,
         method: "GET",
@@ -36,8 +36,8 @@ export const branchesApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-//   useAddCustomerMutation,
-  useGetBranchesByIdMutation,
+  useAddBranchMutation,
+  useGetBranchesByIdFormatQuery,
 //   useGetCustomerByIdMutation,
-//   useUpdateCustomerMutation,
+  useUpdateBranchByIdMutation,
 } = branchesApiSlice;

@@ -13,37 +13,101 @@ import {
   Flex,
   Box,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import DynamicTable from "@/features/table/DynamicTable";
-import { useGetCustomersQuery } from "@/redux/feature/customerApiSlice";
 import {
+  useAddBranchMutation,
+  useGetBranchesByIdFormatQuery,
   useGetBranchesByIdMutation,
-  useGetBranchesByIdQuery,
-  useGetBranchesQuery,
+  useUpdateBranchByIdMutation,
+  useUpdateBranchMutation,
 } from "@/redux/feature/branchApiSlice";
 import { useRouter } from "next/router";
+import AddEditModalBranch from "@/components/modals/branches-modal/AddEditModalBranch";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const index = ({ isOpen, rowData }) => {
+const index = () => {
   const router=useRouter()
   const id = router?.query?.id
   const btnRef = React.useRef();
-  const headers = ["name"];
+  const headers = ["name","Action"];
   const [branches, setBranches] = useState([]);
-  const [getBranchesById] = useGetBranchesByIdMutation();
-  const fetchBranches = async (newid) => {
-    const { data } = await getBranchesById(newid);
-    const allbranches = data?.data?.Branches;
-    if (allbranches) {
-      setBranches(allbranches);
-    }
-  };
+  const {data:myallbranches} = useGetBranchesByIdFormatQuery(id)
+  const [addBranch] = useAddBranchMutation()
+  const [updateBranchById] = useUpdateBranchByIdMutation()
+  const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
-     if(id)
-     {
-      fetchBranches(id);
-     }
-  }, [id]);
+  if(myallbranches)
+  {
+    setBranches(myallbranches.data.Branches);
+  }
+  }, [myallbranches])
+  
+  const handleAddEdit = (row) => {
+    setSelectedRow(row);
+    setIsAddEditModalOpen(true);
+  };
+  const handleCancelAddEdit = () => {
+    setSelectedRow(null);
+    setIsAddEditModalOpen(false);
+  };
+  const handleSave = async(data) => {
+   if(id)
+   {
+    await addBranch({...data,customerId:id})
+    .unwrap()
+    .then(() => {
+      console.log();
+    })
+    .catch((error) => {
+    console.log(error);
 
+    });
+   }
+  };
+  const handleEditSave=async(data)=>{
+      const updatedData={
+        id:selectedRow._id,
+        editedData:data
+      }
+      await updateBranchById(updatedData)
+      .unwrap()
+      .then(() => {
+        console.log();
+      })
+      .catch((error) => {
+      console.log(error);
+  
+      });
+    }
+  const renderAction = (row) => {
+    return (
+      <Menu>
+        <MenuButton variant="outline">
+          <BiDotsVerticalRounded size={25} />
+        </MenuButton>
+        <MenuList className=" text-white rounded-md p-1">
+          <MenuItem
+            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
+            onClick={() => handleAddEdit(row)}
+          >
+            Edit Branch
+          </MenuItem>
+          <MenuItem
+            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
+            onClick={() => handleDelete(row)}
+          >
+            Delete Branch
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    );
+  };
   return (
     <>
       {true && (
@@ -80,25 +144,20 @@ const index = ({ isOpen, rowData }) => {
               <DynamicTable
                 headerNames={headers}
                 data={branches}
-                // renderAction={renderAction}
+                renderAction={renderAction}
               />
               {/* <DeleteModal
           isOpen={isDeleteModalOpen}
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
-        />
-        <AddEditModal
+        /> */}
+        <AddEditModalBranch
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
         />
-        <ViewDrawerCustomer
-           isOpen={isViewModalOpen}
-           onClose={handleViewDrawerClose}
-           rowData={selectedRow}
-        /> */}
             </DrawerBody>
           </DrawerContent>
         </Drawer>

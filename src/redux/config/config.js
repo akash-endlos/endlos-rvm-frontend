@@ -9,7 +9,9 @@ const config = {
             addCustomer:'customer/add',
             updateCustomer:'customer/update',
             getCustomerById:'customer/get',
-            getBranchesById:'branch/getbycustomer'
+            getBranchesById:'branch/getbycustomer',
+            addBranch:'branch/add',
+            updateBranch:'branch/update'
             // getUser:'Users',
             // categories: 'tutorial-categories',
             // tutorials: 'tutorials'
