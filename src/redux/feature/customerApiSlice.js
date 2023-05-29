@@ -17,14 +17,14 @@ export const customersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ['Customers'], // Specify the tag to invalidate
+      invalidatesTags: ['Customers'], 
     }),
     getCustomers: builder.query({
       query: () => ({
         url: config.api.url.getallCustomers,
         method: "GET",
       }),
-      providesTags: ['Customers'], // Specify the tag to provide
+      providesTags: ['Customers'], 
     }),
     getCustomerById: builder.mutation({
       query: (id) => ({
