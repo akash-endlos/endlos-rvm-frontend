@@ -11,7 +11,8 @@ const config = {
             getCustomerById:'customer/get',
             getBranchesById:'branch/getbycustomer',
             addBranch:'branch/add',
-            updateBranch:'branch/update'
+            updateBranch:'branch/update',
+            deleteBranch:'branch/delete'
             // getUser:'Users',
             // categories: 'tutorial-categories',
             // tutorials: 'tutorials'

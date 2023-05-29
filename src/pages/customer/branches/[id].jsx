@@ -21,6 +21,7 @@ import {
 import DynamicTable from "@/features/table/DynamicTable";
 import {
   useAddBranchMutation,
+  useDeleteBranchMutation,
   useGetBranchesByIdFormatQuery,
   useGetBranchesByIdMutation,
   useUpdateBranchByIdMutation,
@@ -29,25 +30,27 @@ import {
 import { useRouter } from "next/router";
 import AddEditModalBranch from "@/components/modals/branches-modal/AddEditModalBranch";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBranch";
 
 const index = () => {
-  const router=useRouter()
+  const router = useRouter()
   const id = router?.query?.id
   const btnRef = React.useRef();
-  const headers = ["name","Action"];
+  const headers = ["name", "Action"];
   const [branches, setBranches] = useState([]);
-  const {data:myallbranches} = useGetBranchesByIdFormatQuery(id)
+  const { data: myallbranches } = useGetBranchesByIdFormatQuery(id)
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteBranch] = useDeleteBranchMutation()
   useEffect(() => {
-  if(myallbranches)
-  {
-    setBranches(myallbranches.data.Branches);
-  }
+    if (myallbranches) {
+      setBranches(myallbranches.data.Branches);
+    }
   }, [myallbranches])
-  
+
   const handleAddEdit = (row) => {
     setSelectedRow(row);
     setIsAddEditModalOpen(true);
@@ -56,35 +59,56 @@ const index = () => {
     setSelectedRow(null);
     setIsAddEditModalOpen(false);
   };
-  const handleSave = async(data) => {
-   if(id)
-   {
-    await addBranch({...data,customerId:id})
-    .unwrap()
-    .then(() => {
-      console.log();
-    })
-    .catch((error) => {
-    console.log(error);
+  const handleSave = async (data) => {
+    if (id) {
+      await addBranch({ ...data, customerId: id })
+        .unwrap()
+        .then(() => {
+          console.log();
+        })
+        .catch((error) => {
+          console.log(error);
 
-    });
-   }
+        });
+    }
   };
-  const handleEditSave=async(data)=>{
-      const updatedData={
-        id:selectedRow._id,
-        editedData:data
-      }
-      await updateBranchById(updatedData)
+  const handleEditSave = async (data) => {
+    const updatedData = {
+      id: selectedRow._id,
+      editedData: data
+    }
+    await updateBranchById(updatedData)
       .unwrap()
       .then(() => {
         console.log();
       })
       .catch((error) => {
-      console.log(error);
-  
+        console.log(error);
+
       });
-    }
+  }
+  const handleDelete = (row) => {
+    setSelectedRow(row);
+    setIsDeleteModalOpen(true);
+  };
+  const handleCancelDelete = () => {
+    setSelectedRow(null);
+    setIsDeleteModalOpen(false);
+  };
+  const handleConfirmDelete = async() => {
+    console.log(selectedRow._id);
+    await deleteBranch(selectedRow._id)
+        .unwrap()
+        .then(() => {
+          setIsDeleteModalOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+
+        });
+    // console.log("Deleting row:", selectedRow);
+    // setIsDeleteModalOpen(false);
+  };
   const renderAction = (row) => {
     return (
       <Menu>
@@ -120,7 +144,7 @@ const index = () => {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerHeader>
-              <Button variant="outline" mr={3} onClick={()=>router.push('/customer')}>
+              <Button variant="outline" mr={3} onClick={() => router.push('/customer')}>
                 Back
               </Button>
             </DrawerHeader>
@@ -131,6 +155,7 @@ const index = () => {
                 Branch Detail
               </Text>
               <Flex px={5} alignContent="center" justifyContent="space-between">
+                <Box>Search</Box>
                 <Box>
                   <Button
                     colorScheme="teal"
@@ -139,25 +164,24 @@ const index = () => {
                     Add Branches
                   </Button>
                 </Box>
-                <Box>Search</Box>
               </Flex>
               <DynamicTable
                 headerNames={headers}
                 data={branches}
                 renderAction={renderAction}
               />
-              {/* <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onClose={handleCancelDelete}
-          onConfirm={handleConfirmDelete}
-        /> */}
-        <AddEditModalBranch
-          isOpen={isAddEditModalOpen}
-          onClose={handleCancelAddEdit}
-          onSave={handleSave}
-          onEditSave={handleEditSave}
-          rowData={selectedRow}
-        />
+              <DeleteModalBranch
+                isOpen={isDeleteModalOpen}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
+              />
+              <AddEditModalBranch
+                isOpen={isAddEditModalOpen}
+                onClose={handleCancelAddEdit}
+                onSave={handleSave}
+                onEditSave={handleEditSave}
+                rowData={selectedRow}
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

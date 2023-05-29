@@ -17,21 +17,22 @@ export const branchesApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ['Branches'], // Specify the tag to invalidate
+      invalidatesTags: ['Branches'], 
     }),
     getBranchesByIdFormat: builder.query({
       query: (id) => ({
         url: `${config.api.url.getBranchesById}?id=${id}`,
         method: "GET",
       }),
-      providesTags: ['Branches'], // Specify the tag to provide
+      providesTags: ['Branches'], 
     }),
-    // getCustomerById: builder.mutation({
-    //   query: (id) => ({
-    //     url: `${config.api.url.getCustomerById}/${id}`,
-    //     method: "GET",
-    //   }),
-    // }),
+     deleteBranch: builder.mutation({
+      query: (id) => ({
+        url: `${config.api.url.deleteBranch}?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['Branches'],
+    }),
   }),
 });
 
@@ -39,5 +40,6 @@ export const {
   useAddBranchMutation,
   useGetBranchesByIdFormatQuery,
 //   useGetCustomerByIdMutation,
+useDeleteBranchMutation,
   useUpdateBranchByIdMutation,
 } = branchesApiSlice;
