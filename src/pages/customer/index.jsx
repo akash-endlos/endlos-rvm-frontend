@@ -42,17 +42,18 @@ const index = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = async() => {
+  const handleConfirmDelete = async () => {
     await deleteCustomer(selectedRow._id)
-        .unwrap()
-        .then(() => {
-          setIsDeleteModalOpen(false);
-        })
-        .catch((error) => {
-          console.log(error);
-
-        });
+      .unwrap()
+      .then(() => {
+        setSelectedRow(null); // Reset selectedRow state
+        setIsDeleteModalOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+  
   const handleCancelDelete = () => {
     setSelectedRow(null);
     setIsDeleteModalOpen(false);

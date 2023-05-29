@@ -93,6 +93,7 @@ const index = () => {
     await deleteBranch(selectedRow._id)
       .unwrap()
       .then(() => {
+        setSelectedRow(null);
         setIsDeleteModalOpen(false);
       })
       .catch((error) => {
