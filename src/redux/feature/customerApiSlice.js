@@ -32,6 +32,13 @@ export const customersApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    deleteCustomer: builder.mutation({
+      query: (id) => ({
+        url: `${config.api.url.deleteCustomer}?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['Customers'],
+    }),
   }),
 });
 
@@ -40,4 +47,5 @@ export const {
   useGetCustomersQuery,
   useGetCustomerByIdMutation,
   useUpdateCustomerMutation,
+  useDeleteCustomerMutation,
 } = customersApiSlice;

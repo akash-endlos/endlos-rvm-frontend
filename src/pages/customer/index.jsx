@@ -13,7 +13,7 @@ import {
 import DynamicTable from "@/features/table/DynamicTable";
 import Layout from "@/layout/Layout";
 import DeleteModal from "@/components/modals/customer-modal/DeleteModalCustomer";
-import { useAddCustomerMutation, useGetCustomerByIdMutation, useGetCustomersMutation, useGetCustomersQuery, useUpdateCustomerMutation } from "@/redux/feature/customerApiSlice";
+import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMutation, useGetCustomersMutation, useGetCustomersQuery, useUpdateCustomerMutation } from "@/redux/feature/customerApiSlice";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
@@ -29,6 +29,7 @@ const index = () => {
   const [addCustomer] = useAddCustomerMutation();
   const { data: customers, isLoading, isError, error } = useGetCustomersQuery();
   const [updateCustomer] = useUpdateCustomerMutation()
+  const [deleteCustomer] = useDeleteCustomerMutation()
   useEffect(() => {
    if(customers)
    {
@@ -41,11 +42,17 @@ const index = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    console.log("Deleting row:", selectedRow);
-    setIsDeleteModalOpen(false);
-  };
+  const handleConfirmDelete = async() => {
+    await deleteCustomer(selectedRow._id)
+        .unwrap()
+        .then(() => {
+          setIsDeleteModalOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
 
+        });
+  };
   const handleCancelDelete = () => {
     setSelectedRow(null);
     setIsDeleteModalOpen(false);

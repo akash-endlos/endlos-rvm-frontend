@@ -4,15 +4,11 @@ import {
   Drawer,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter,
-  Input,
   Text,
   Flex,
   Box,
-  useDisclosure,
   Menu,
   MenuButton,
   MenuList,
@@ -23,9 +19,7 @@ import {
   useAddBranchMutation,
   useDeleteBranchMutation,
   useGetBranchesByIdFormatQuery,
-  useGetBranchesByIdMutation,
   useUpdateBranchByIdMutation,
-  useUpdateBranchMutation,
 } from "@/redux/feature/branchApiSlice";
 import { useRouter } from "next/router";
 import AddEditModalBranch from "@/components/modals/branches-modal/AddEditModalBranch";
@@ -95,19 +89,16 @@ const index = () => {
     setSelectedRow(null);
     setIsDeleteModalOpen(false);
   };
-  const handleConfirmDelete = async() => {
-    console.log(selectedRow._id);
+  const handleConfirmDelete = async () => {
     await deleteBranch(selectedRow._id)
-        .unwrap()
-        .then(() => {
-          setIsDeleteModalOpen(false);
-        })
-        .catch((error) => {
-          console.log(error);
+      .unwrap()
+      .then(() => {
+        setIsDeleteModalOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
 
-        });
-    // console.log("Deleting row:", selectedRow);
-    // setIsDeleteModalOpen(false);
+      });
   };
   const renderAction = (row) => {
     return (
@@ -149,8 +140,6 @@ const index = () => {
               </Button>
             </DrawerHeader>
             <DrawerBody overflow="scroll">
-              {/* <Input placeholder="Name" value={rowData?._id} isReadOnly /> */}
-
               <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
                 Branch Detail
               </Text>
