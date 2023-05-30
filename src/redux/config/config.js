@@ -13,7 +13,11 @@ const config = {
             addBranch:'branch/add',
             updateBranch:'branch/update',
             deleteBranch:'branch/delete',
-            deleteCustomer:'customer/delete'
+            deleteCustomer:'customer/delete',
+            inventoryType:'inventrytype/getAll',
+            addInventoryType:'inventrytype/add',
+            updateInventoryType:'inventrytype/update',
+            deleteInventoryType:'inventrytype/delete'
             // getUser:'Users',
             // categories: 'tutorial-categories',
             // tutorials: 'tutorials'
