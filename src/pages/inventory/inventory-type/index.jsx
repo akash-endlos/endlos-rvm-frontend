@@ -22,7 +22,6 @@ const index = () => {
   const router = useRouter()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["name", "Action"];
@@ -46,7 +45,7 @@ const index = () => {
     await deleteInventoryType(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); // Reset selectedRow state
+        setSelectedRow(null); 
         setIsDeleteModalOpen(false);
       })
       .catch((error) => {

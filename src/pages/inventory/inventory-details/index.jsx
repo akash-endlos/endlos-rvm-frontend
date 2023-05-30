@@ -46,7 +46,7 @@ const index = () => {
     await deleteCustomer(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); // Reset selectedRow state
+        setSelectedRow(null); 
         setIsDeleteModalOpen(false);
       })
       .catch((error) => {
@@ -123,13 +123,13 @@ const index = () => {
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}
           >
-            Edit Customer
+            Edit Inventory Detail
           </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleDelete(row)}
           >
-            Delete Customer
+            Delete Inventory Detail
           </MenuItem>
         </MenuList>
       </Menu>
@@ -140,13 +140,13 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Customer
+        Inventory Detail
         </Text>
         <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Customer
+              Add Inventory Detail
             </Button>
           </Box>
         </Flex>
