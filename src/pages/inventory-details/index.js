@@ -12,38 +12,37 @@ import {
 
 import DynamicTable from "@/features/table/DynamicTable";
 import Layout from "@/layout/Layout";
-import DeleteModal from "@/components/modals/customer-modal/DeleteModalCustomer";
-import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMutation, useGetCustomersMutation, useGetCustomersQuery, useUpdateCustomerMutation } from "@/redux/feature/customerApiSlice";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
+import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInventoryTypeQuery, useUpdateInventoryTypeByIdMutation } from "@/redux/feature/inventoryTypeApiSlice";
+import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
+import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 
 const index = () => {
   const router = useRouter()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name","branch", "Action"];
-  const [addCustomer] = useAddCustomerMutation();
-  const { data: customers, isLoading, isError, error,refetch } = useGetCustomersQuery();
-  const [updateCustomer] = useUpdateCustomerMutation()
-  const [deleteCustomer] = useDeleteCustomerMutation()
+  const headers = ["name",'invetries', "Action"];
+  const [addInventoryType] = useAddInventoryTypeMutation();
+  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
+  const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
+  const [deleteInventoryType] = useDeleteInventoryTypeMutation()
   useEffect(() => {
-   if(customers)
+   if(inventoryType)
    {
     refetch();
-    setDataTable(customers.data.Customer)
+    setDataTable(inventoryType.data.InventryTypes)
    }
-  }, [customers])
+  }, [inventoryType])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
-    await deleteCustomer(selectedRow._id)
+    await deleteInventoryType(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
@@ -65,10 +64,10 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addCustomer(data)
+    await addInventoryType(data)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      console.log('');
     })
     .catch((error) => {
     console.log(error);
@@ -81,10 +80,10 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateCustomer(updatedData)
+    await updateInventoryTypeById(updatedData)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      console.log('');
     })
     .catch((error) => {
     console.log(error);
@@ -94,17 +93,6 @@ const index = () => {
   const handleCancelAddEdit = () => {
     setSelectedRow(null);
     setIsAddEditModalOpen(false);
-  };
-
-  const handleView = (row) => {
-    setSelectedRow(row);
-    setIsViewModalOpen(true);
-  };
-
-
-  const handleViewDrawerClose = () => {
-    setSelectedRow(null);
-    setIsViewModalOpen(false);
   };
   const renderAction = (row) => {
     return (
@@ -117,19 +105,19 @@ const index = () => {
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => router.push(`customer/branches/${row._id}`)}
           >
-            View Branches
+            View
           </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}
           >
-            Edit Inventory Detail
+            Edit 
           </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleDelete(row)}
           >
-            Delete Inventory Detail
+            Delete 
           </MenuItem>
         </MenuList>
       </Menu>
@@ -140,13 +128,13 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-        Inventory Detail
+          Inventory Type
         </Text>
         <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Inventory Detail
+              Add Inventory Type
             </Button>
           </Box>
         </Flex>
@@ -155,12 +143,12 @@ const index = () => {
           data={dataTable}
           renderAction={renderAction}
         />
-        <DeleteModal
+        <DeleteInventoryTypeModal
           isOpen={isDeleteModalOpen}
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditModal
+        <AddEditInventoryTypeModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

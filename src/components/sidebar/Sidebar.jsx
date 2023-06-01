@@ -102,13 +102,22 @@ const SidebarContent = ({ onClose, ...rest }) => {
       // ],
     },
     {
-      title: "Inventory",
+      title: "Inventory Type",
       icon: MdInventory,
-      link: "",
-      subItems: [
-        { title: "Inventory Type", link: "/inventory/inventory-type" },
-        { title: "inventory Details", link: "/inventory/inventory-details" },
-      ],
+      link: "/inventory",
+      // subItems: [
+      //   { title: "Inventory Type", link: "/inventory/inventory-type" },
+      //   { title: "inventory Details", link: "/inventory/inventory-details" },
+      // ],
+    },
+    {
+      title: "Inventory Details",
+      icon: MdInventory,
+      link: "/inventory-details",
+      // subItems: [
+      //   { title: "Inventory Type", link: "/inventory/inventory-type" },
+      //   { title: "inventory Details", link: "/inventory/inventory-details" },
+      // ],
     },
     {
       title: "Machine Enrolment",

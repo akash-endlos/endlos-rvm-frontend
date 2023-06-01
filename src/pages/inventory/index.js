@@ -36,7 +36,6 @@ const index = () => {
     setDataTable(inventoryType.data.InventryTypes)
    }
   }, [inventoryType])
-  console.log(dataTable);
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -102,23 +101,23 @@ const index = () => {
           <BiDotsVerticalRounded size={25} />
         </MenuButton>
         <MenuList className=" text-white rounded-md p-1">
-          {/* <MenuItem
+          <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => router.push(`customer/branches/${row._id}`)}
           >
-            View Branches
-          </MenuItem> */}
+            View
+          </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}
           >
-            Edit InventoryType
+            Edit 
           </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleDelete(row)}
           >
-            Delete InventoryType
+            Delete 
           </MenuItem>
         </MenuList>
       </Menu>
