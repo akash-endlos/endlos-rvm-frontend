@@ -14,7 +14,7 @@ const config = {
             updateBranch:'branch/update',
             deleteBranch:'branch/delete',
             deleteCustomer:'customer/delete',
-            inventoryType:'inventrytype/getAll',
+            inventoryType:'inventrytype/getAll?type=allInventries',
             addInventoryType:'inventrytype/add',
             updateInventoryType:'inventrytype/update',
             deleteInventoryType:'inventrytype/delete'

@@ -2,15 +2,15 @@ import { Tbody, Td, Tr } from "@chakra-ui/react";
 
 const TableBody = ({ headerNames, paginatedData, renderAction }) => {
 
-  const showBranches = (items) => {
+  const showInterConnectedData = (items, name) => {
     if (items?.length === 0) {
-      return <div>No branches available</div>;
+      return <div>No data available</div>;
     }
     let renderedItems = [];
 
     if (items?.length > 0) {
       renderedItems = items.slice(0, 2).map((item, index) => (
-        <span key={index}>{item.name} / </span>
+        <span key={index}>{item[name]} / </span>
       ));
       renderedItems.push(<span key="ellipsis">...</span>);
     }
@@ -25,7 +25,10 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
               return <Td key={colIndex}>{renderAction(row)}</Td>;
             }
             if (header === 'branch') {
-              return <Td key={colIndex}>{showBranches(row?.branches)}</Td>;
+              return <Td key={colIndex}>{showInterConnectedData(row?.branches, 'name')}</Td>;
+            }
+            if (header === 'invetries') {
+              return <Td key={colIndex}>{showInterConnectedData(row?.invetries, 'brandName')}</Td>;
             }
             return <Td key={colIndex}>{row[header]}</Td>;
           })}

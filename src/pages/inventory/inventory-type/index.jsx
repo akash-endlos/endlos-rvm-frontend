@@ -24,7 +24,7 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name", "Action"];
+  const headers = ["name",'invetries', "Action"];
   const [addInventoryType] = useAddInventoryTypeMutation();
   const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
@@ -36,6 +36,7 @@ const index = () => {
     setDataTable(inventoryType.data.InventryTypes)
    }
   }, [inventoryType])
+  console.log(dataTable);
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
