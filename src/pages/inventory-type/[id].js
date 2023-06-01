@@ -24,26 +24,25 @@ import { useRouter } from "next/router";
 import AddEditModalBranch from "@/components/modals/branches-modal/AddEditModalBranch";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBranch";
-import { useGetInventoryTypeByIdFormatQuery } from "@/redux/feature/inventoryTypeApiSlice";
+import { useGetInventoryFormatQuery, useGetInventoryTypeByIdFormatQuery } from "@/redux/feature/inventoryTypeApiSlice";
 
 const index = () => {
   const router = useRouter()
-  const id = router?.query?.id
-  console.log(id);
+  const id = router.query.id
   const btnRef = React.useRef();
   const headers = ["brandName", "Action"];
   const [inventories, setInventories] = useState([]);
-  const { data: myallInventoryType } = useGetInventoryTypeByIdFormatQuery(id)
+  const { data: myallInventoryType } = useGetInventoryFormatQuery()
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
-  console.log(myallInventoryType?.data?.InventryTypes[0]?.invetries);
+  console.log(myallInventoryType);
   useEffect(() => {
-    if (id && myallInventoryType?.data?.InventryTypes[0]?.invetries) {
-      setInventories(myallInventoryType?.data?.InventryTypes[0]?.invetries);
+    if ( myallInventoryType?.data?.allInventry) {
+      setInventories(myallInventoryType?.data?.allInventry);
     }
   }, [id])
   const handleAddEdit = (row) => {

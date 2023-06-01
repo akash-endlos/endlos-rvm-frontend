@@ -33,12 +33,12 @@ export const inventoriesTypeApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: ['InventoryType'],
       }),
-      getInventoryTypeByIdFormat: builder.query({
-        query: (id) => ({
-          url: `${config.api.url.getInventoryTypeById}?type=allInventries&id=${id}`,
+      getInventoryFormat: builder.query({
+        query: () => ({
+          url: `${config.api.url.getInventoryTypeById}`,
           method: "GET",
         }),
-        invalidatesTags: ['InventoryType'],
+        providesTags: ['InventoryType'],
       }),
   }),
 });
@@ -47,5 +47,5 @@ export const {
   useAddInventoryTypeMutation,
   useUpdateInventoryTypeByIdMutation,
   useDeleteInventoryTypeMutation,
-  useGetInventoryTypeByIdFormatQuery
+  useGetInventoryFormatQuery
 } = inventoriesTypeApiSlice;
