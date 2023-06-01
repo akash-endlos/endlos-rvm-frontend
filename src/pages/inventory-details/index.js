@@ -128,7 +128,7 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Inventory Type
+          Inventory Detail
         </Text>
         <Flex px={5} alignContent="center" flexWrap='wrap' justifyContent="space-between">
           <Box>Search</Box>

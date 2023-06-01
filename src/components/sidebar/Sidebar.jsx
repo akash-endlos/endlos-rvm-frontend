@@ -46,6 +46,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, logout, selectCurrentUser } from "@/redux/feature/authSlice";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function SidebarWithHeader({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,7 +105,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
     {
       title: "Inventory Type",
       icon: MdInventory,
-      link: "/inventory",
+      link: "/inventory-type",
       // subItems: [
       //   { title: "Inventory Type", link: "/inventory/inventory-type" },
       //   { title: "inventory Details", link: "/inventory/inventory-details" },
@@ -172,7 +173,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Endlos RVM
+          <Image width={200} height={40} src='/endlos-rvm.png'/>
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
@@ -283,7 +284,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Endlos RVM
+         <Image width={200} height={40} src='/endlos-rvm.png'/>
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>

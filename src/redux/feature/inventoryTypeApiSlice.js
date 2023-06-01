@@ -19,13 +19,6 @@ export const inventoriesTypeApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: ['InventoryType'],
       }),
-      getBranchesByIdFormat: builder.query({
-        query: (id) => ({
-          url: `${config.api.url.getBranchesById}?id=${id}`,
-          method: "GET",
-        }),
-        providesTags: ['InventoryType'],
-      }),
     getInventoryType: builder.query({
       query: () => ({
         url: config.api.url.inventoryType,
@@ -40,21 +33,19 @@ export const inventoriesTypeApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: ['InventoryType'],
       }),
-    // getCategoryById: builder.mutation({
-    //   query: (id) => ({
-    //     url: `${config.api.url.inventory}/${id}`,
-    //     method: "GET",
-    //   }),
-    // }),
+      getInventoryTypeByIdFormat: builder.query({
+        query: (id) => ({
+          url: `${config.api.url.getInventoryTypeById}?type=allInventries&id=${id}`,
+          method: "GET",
+        }),
+        invalidatesTags: ['InventoryType'],
+      }),
   }),
 });
 export const {
-//   useAddTutorialCategoryMutation,
-//   useDeleteCategoryMutation,
   useGetInventoryTypeQuery,
   useAddInventoryTypeMutation,
   useUpdateInventoryTypeByIdMutation,
   useDeleteInventoryTypeMutation,
-//   useGetCategoryByIdMutation,
-//   useEditCategoryMutation,
+  useGetInventoryTypeByIdFormatQuery
 } = inventoriesTypeApiSlice;
