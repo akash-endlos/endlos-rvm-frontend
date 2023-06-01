@@ -1,8 +1,10 @@
+import Layout from '@/layout/Layout'
 import React from 'react'
 
 const index = () => {
   return (
-    <div>index</div>
+    <Layout>Machine Enrollment
+      </Layout>
   )
 }
 
