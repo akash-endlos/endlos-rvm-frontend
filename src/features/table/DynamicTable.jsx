@@ -105,7 +105,7 @@ const DynamicTable = ({ headerNames, data, renderAction }) => {
         isPreviousDisabled={isPreviousDisabled}
         isNextDisabled={isNextDisabled}
       />
-      <div className="flex justify-between px-5 items-center">
+      <div className="flex justify-between flex-wrap gap-5 px-5 items-center">
       <GoToPage
         goToPage={goToPage}
         handleGoToPage={handleGoToPage}

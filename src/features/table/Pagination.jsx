@@ -12,7 +12,7 @@ const Pagination = ({
     isNextDisabled,
   }) => {
     return (
-      <div className="pagination px-5 py-5 flex gap-2">
+      <div className="pagination px-5 py-5 flex flex-wrap items-center gap-2">
         <Button
           onClick={handleFirstPage}
           disabled={isPreviousDisabled}

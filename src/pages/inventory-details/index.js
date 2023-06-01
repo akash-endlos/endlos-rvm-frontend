@@ -130,7 +130,7 @@ const index = () => {
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
           Inventory Type
         </Text>
-        <Flex px={5} alignContent="center" justifyContent="space-between">
+        <Flex px={5} alignContent="center" flexWrap='wrap' justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
