@@ -34,8 +34,9 @@ const index = () => {
   const headers = ["brandName",'inventryType','serialNumber', "Action"];
   const [inventories, setInventories] = useState([]);
   const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
-  console.log(inventoryType.data.InventryTypes);
-  const { data: myallInventoryType } = useGetInventoryFormatQuery(id)
+  const [updatedId, setupdatedId] = useState('')
+  const { data: myallInventoryType } = useGetInventoryFormatQuery(updatedId)
+  console.log(myallInventoryType);
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
@@ -43,13 +44,20 @@ const index = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
   useEffect(() => {
-    if (id) {
+if(id)
+{
+  setupdatedId(id)
+}
+  }, [id])
+  
+  useEffect(() => {
+    if (updatedId) {
         if(myallInventoryType?.data?.filterdInventory)
         {
           setInventories(myallInventoryType?.data?.filterdInventory);
         }
     }
-  }, [id])
+  }, [updatedId])
   const handleAddEdit = (row) => {
     setSelectedRow(row);
     setIsAddEditModalOpen(true);
