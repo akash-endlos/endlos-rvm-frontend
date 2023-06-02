@@ -24,25 +24,30 @@ import { useRouter } from "next/router";
 import AddEditModalBranch from "@/components/modals/branches-modal/AddEditModalBranch";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBranch";
-import { useGetInventoryFormatQuery, useGetInventoryTypeByIdFormatQuery } from "@/redux/feature/inventoryTypeApiSlice";
+import { useGetInventoryFormatQuery, useGetInventoryTypeByIdFormatQuery, useGetInventoryTypeQuery } from "@/redux/feature/inventoryTypeApiSlice";
+import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
 
 const index = () => {
   const router = useRouter()
   const id = router.query.id
   const btnRef = React.useRef();
-  const headers = ["brandName", "Action"];
+  const headers = ["brandName",'inventryType','serialNumber', "Action"];
   const [inventories, setInventories] = useState([]);
-  const { data: myallInventoryType } = useGetInventoryFormatQuery()
+  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
+  console.log(inventoryType.data.InventryTypes);
+  const { data: myallInventoryType } = useGetInventoryFormatQuery(id)
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
-  console.log(myallInventoryType);
   useEffect(() => {
-    if ( myallInventoryType?.data?.allInventry) {
-      setInventories(myallInventoryType?.data?.allInventry);
+    if (id) {
+        if(myallInventoryType?.data?.filterdInventory)
+        {
+          setInventories(myallInventoryType?.data?.filterdInventory);
+        }
     }
   }, [id])
   const handleAddEdit = (row) => {
@@ -112,13 +117,13 @@ const index = () => {
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}
           >
-            Edit Inventory
+            Edit
           </MenuItem>
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleDelete(row)}
           >
-            Delete Inventory
+            Delete
           </MenuItem>
         </MenuList>
       </Menu>
@@ -160,18 +165,19 @@ const index = () => {
                 data={inventories}
                 renderAction={renderAction}
               />
-              {/* <DeleteModalBranch
+              <DeleteModalBranch
                 isOpen={isDeleteModalOpen}
                 onClose={handleCancelDelete}
                 onConfirm={handleConfirmDelete}
               />
-              <AddEditModalBranch
+              <AddEditInventoryModal
+                options={inventoryType?.data?.InventryTypes}
                 isOpen={isAddEditModalOpen}
                 onClose={handleCancelAddEdit}
                 onSave={handleSave}
                 onEditSave={handleEditSave}
                 rowData={selectedRow}
-              /> */}
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

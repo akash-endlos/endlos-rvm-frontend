@@ -18,7 +18,7 @@ const config = {
             addInventoryType:'inventrytype/add',
             updateInventoryType:'inventrytype/update',
             deleteInventoryType:'inventrytype/delete',
-            getInventoryTypeById:'inventry/get?type=all',
+            getInventoryTypeById:'inventry/get',
             // getUser:'Users',
             // categories: 'tutorial-categories',
             // tutorials: 'tutorials'

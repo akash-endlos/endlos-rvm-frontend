@@ -34,8 +34,8 @@ export const inventoriesTypeApiSlice = apiSlice.injectEndpoints({
         invalidatesTags: ['InventoryType'],
       }),
       getInventoryFormat: builder.query({
-        query: () => ({
-          url: `${config.api.url.getInventoryTypeById}`,
+        query: (id) => ({
+          url: `${config.api.url.getInventoryTypeById}?inventryTypeId=${id}`,
           method: "GET",
         }),
         providesTags: ['InventoryType'],
