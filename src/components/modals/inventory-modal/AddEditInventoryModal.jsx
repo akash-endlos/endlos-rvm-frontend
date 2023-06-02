@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditModalBranch = ({
+const AddEditInventoryModal = ({
   isOpen,
   onClose,
   onSave,
@@ -35,6 +35,7 @@ const AddEditModalBranch = ({
     serialNumber: Yup.string()
       .matches(/^\d{3}-[A-Z]{4}-\d{4}$/, "Invalid serial number format")
       .required("Serial number is required"),
+    purchaseDate: Yup.date().required("Purchase Date is required"),
   });
 
   const {
@@ -61,9 +62,9 @@ const AddEditModalBranch = ({
       reset();
       if (isEditMode) {
         setValue("brandName", rowData.brandName);
-        setValue("inventryType", rowData.inventryType);
+        setValue("inventryType", '647988a021ccfe045979d0f2');
         setValue("serialNumber", rowData.serialNumber);
-        setValue("purchasedate", rowData.purchasedate);
+        setValue("purchaseDate", rowData.purchaseDate);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
@@ -124,13 +125,16 @@ const AddEditModalBranch = ({
                 {errors.serialNumber && errors.serialNumber.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors.purchaseDate}>
               <FormLabel>Purchase Date</FormLabel>
               <Input
                 type="date"
-                name="purchasedate"
-                {...register("purchasedate")}
+                name="purchaseDate"
+                {...register("purchaseDate")}
               />
+              <FormErrorMessage>
+                {errors.purchaseDate && errors.purchaseDate.message}
+              </FormErrorMessage>
             </FormControl>
           </ModalBody>
           <ModalFooter>
@@ -147,4 +151,4 @@ const AddEditModalBranch = ({
   );
 };
 
-export default AddEditModalBranch;
+export default AddEditInventoryModal;

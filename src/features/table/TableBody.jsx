@@ -4,7 +4,7 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
 
   const showInterConnectedData = (items, name) => {
     if (items?.length === 0) {
-      return <div>No data available</div>;
+      return <div>-</div>;
     }
     let renderedItems = [];
 

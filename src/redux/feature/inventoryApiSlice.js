@@ -11,21 +11,21 @@ export const inventoriesApiSlice = apiSlice.injectEndpoints({
     //     }),
     //     invalidatesTags: ['Inventory'],
     //   }),
-      addInventory: builder.mutation({
-        query: (payload) => ({
-          url: config.api.url.addInventory,
-          method: "POST",
-          body: payload,
-        }),
-        invalidatesTags: ['Inventory'],
-      }),
-    // getInventory: builder.query({
-    //   query: () => ({
-    //     url: config.api.url.inventory,
-    //     method: "GET",
+    //   addInventory: builder.mutation({
+    //     query: (payload) => ({
+    //       url: config.api.url.addInventory,
+    //       method: "POST",
+    //       body: payload,
+    //     }),
+    //     invalidatesTags: ['Inventory'],
     //   }),
-    //   providesTags: ['Inventory'],
-    // }),
+    getInventory: builder.query({
+      query: () => ({
+        url: config.api.url.inventory,
+        method: "GET",
+      }),
+      providesTags: ['Inventory'],
+    }),
     // deleteInventory: builder.mutation({
     //     query: (id) => ({
     //       url: `${config.api.url.deleteInventory}?id=${id}`,
@@ -43,9 +43,9 @@ export const inventoriesApiSlice = apiSlice.injectEndpoints({
   }),
 });
 export const {
-  // useGetInventoryQuery,
+  useGetInventoryQuery,
   useAddInventoryMutation,
-  // useUpdateInventoryByIdMutation,
-  // useDeleteInventoryMutation,
-  // useGetInventoryFormatQuery
+  useUpdateInventoryByIdMutation,
+  useDeleteInventoryMutation,
+  useGetInventoryFormatQuery
 } = inventoriesApiSlice;

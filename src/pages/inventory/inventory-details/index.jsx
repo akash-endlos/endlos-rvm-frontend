@@ -17,6 +17,8 @@ import { useRouter } from "next/router";
 import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInventoryTypeQuery, useUpdateInventoryTypeByIdMutation } from "@/redux/feature/inventoryTypeApiSlice";
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
+import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
+import { useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -24,18 +26,26 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name",'invetries', "Action"];
+  const [InventoryType, setInventoryType] = useState([])
+  const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
   const [addInventoryType] = useAddInventoryTypeMutation();
-  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
+  const { data: inventory } = useGetInventoryQuery();
+  const { data: inventoryType } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [deleteInventoryType] = useDeleteInventoryTypeMutation()
+console.log(inventory)
   useEffect(() => {
-   if(inventoryType)
+   if(inventory)
    {
-    refetch();
-    setDataTable(inventoryType.data.InventryTypes)
+     setDataTable(inventory.data.allInventry)
    }
-  }, [inventoryType])
+  }, [inventory])
+  useEffect(() => {
+    if(inventoryType)
+    {
+      setInventoryType(inventoryType.data.InventryTypes)
+    }
+   }, [inventoryType])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -103,12 +113,6 @@ const index = () => {
         <MenuList className=" text-white rounded-md p-1">
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => router.push(`customer/branches/${row._id}`)}
-          >
-            View
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}
           >
             Edit 
@@ -128,13 +132,13 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Inventory Detail
+          Inventory Details
         </Text>
-        <Flex px={5} alignContent="center" flexWrap='wrap' justifyContent="space-between">
+        <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Inventory Type
+              Add Inventory Details
             </Button>
           </Box>
         </Flex>
@@ -148,12 +152,13 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditInventoryTypeModal
+        <AddEditInventoryModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
+          options={InventoryType}
         />
       </Layout>
     </>
