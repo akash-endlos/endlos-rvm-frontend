@@ -42,11 +42,9 @@ const index = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
   const { data: myallInventoryType } = useGetInventoryFormatQuery(id)
-  console.log(id);
-  console.log(myallInventoryType?.data?.InventryTypes[0].invetries);
   useEffect(() => {
     if (id) {
-        if(myallInventoryType?.data?.InventryTypes[0].invetries)
+        if(id && myallInventoryType?.data?.InventryTypes[0].invetries)
         {
           setInventories(myallInventoryType?.data?.InventryTypes[0].invetries);
         }
@@ -166,6 +164,19 @@ const index = () => {
                 headerNames={headers}
                 data={inventories}
                 renderAction={renderAction}
+              />
+              {/* <DeleteModalBranch
+                isOpen={isDeleteModalOpen}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
+              /> */}
+              <AddEditInventoryModal
+                options={inventoryType?.data?.InventryTypes}
+                isOpen={isAddEditModalOpen}
+                onClose={handleCancelAddEdit}
+                onSave={handleSave}
+                onEditSave={handleEditSave}
+                rowData={selectedRow}
               />
             </DrawerBody>
           </DrawerContent>
