@@ -33,31 +33,25 @@ const index = () => {
   const btnRef = React.useRef();
   const headers = ["brandName",'inventryType','serialNumber', "Action"];
   const [inventories, setInventories] = useState([]);
-  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
-  const [updatedId, setupdatedId] = useState('')
-  const { data: myallInventoryType } = useGetInventoryFormatQuery(updatedId)
-  console.log(myallInventoryType);
+  const { data: inventoryType } = useGetInventoryTypeQuery();
+  const [updatedId, setupdatedId] = useState()
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
+  const { data: myallInventoryType } = useGetInventoryFormatQuery(id)
+  console.log(id);
+  console.log(myallInventoryType?.data?.InventryTypes[0].invetries);
   useEffect(() => {
-if(id)
-{
-  setupdatedId(id)
-}
-  }, [id])
-  
-  useEffect(() => {
-    if (updatedId) {
-        if(myallInventoryType?.data?.filterdInventory)
+    if (id) {
+        if(myallInventoryType?.data?.InventryTypes[0].invetries)
         {
-          setInventories(myallInventoryType?.data?.filterdInventory);
+          setInventories(myallInventoryType?.data?.InventryTypes[0].invetries);
         }
     }
-  }, [updatedId])
+  }, [id])
   const handleAddEdit = (row) => {
     setSelectedRow(row);
     setIsAddEditModalOpen(true);
@@ -172,19 +166,6 @@ if(id)
                 headerNames={headers}
                 data={inventories}
                 renderAction={renderAction}
-              />
-              <DeleteModalBranch
-                isOpen={isDeleteModalOpen}
-                onClose={handleCancelDelete}
-                onConfirm={handleConfirmDelete}
-              />
-              <AddEditInventoryModal
-                options={inventoryType?.data?.InventryTypes}
-                isOpen={isAddEditModalOpen}
-                onClose={handleCancelAddEdit}
-                onSave={handleSave}
-                onEditSave={handleEditSave}
-                rowData={selectedRow}
               />
             </DrawerBody>
           </DrawerContent>

@@ -63,6 +63,7 @@ const AddEditModalBranch = ({
         setValue("name", rowData.name);
         setValue("inventorytype", rowData.inventorytype);
         setValue("serialNumber", rowData.serialNumber);
+        setValue("purchasedate", rowData.purchasedate);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
@@ -122,6 +123,14 @@ const AddEditModalBranch = ({
               <FormErrorMessage>
                 {errors.serialNumber && errors.serialNumber.message}
               </FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Purchase Date</FormLabel>
+              <Input
+                type="date"
+                name="purchasedate"
+                {...register("purchasedate")}
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter>
