@@ -35,7 +35,6 @@ const AddEditInventoryModal = ({
     serialNumber: Yup.string()
       .matches(/^\d{3}-[A-Z]{4}-\d{4}$/, "Invalid serial number format")
       .required("Serial number is required"),
-    purchaseDate: Yup.date().required("Purchase Date is required"),
   });
 
   const {
@@ -132,9 +131,6 @@ const AddEditInventoryModal = ({
                 name="purchaseDate"
                 {...register("purchaseDate")}
               />
-              <FormErrorMessage>
-                {errors.purchaseDate && errors.purchaseDate.message}
-              </FormErrorMessage>
             </FormControl>
           </ModalBody>
           <ModalFooter>
