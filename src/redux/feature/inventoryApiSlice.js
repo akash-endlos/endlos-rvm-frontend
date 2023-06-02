@@ -26,13 +26,13 @@ export const inventoriesApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Inventory'],
     }),
-    // deleteInventory: builder.mutation({
-    //     query: (id) => ({
-    //       url: `${config.api.url.deleteInventory}?id=${id}`,
-    //       method: "DELETE",
-    //     }),
-    //     invalidatesTags: ['Inventory'],
-    //   }),
+    deleteInventory: builder.mutation({
+        query: (id) => ({
+          url: `${config.api.url.deleteInventory}?id=${id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ['Inventory'],
+      }),
     //   getInventoryFormat: builder.query({
     //     query: (id) => ({
     //       url: `${config.api.url.getInventoryById}?id=${id}&=allInventries`,

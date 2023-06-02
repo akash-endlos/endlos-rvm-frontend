@@ -18,7 +18,7 @@ import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInve
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
-import { useAddInventoryMutation, useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
+import { useAddInventoryMutation, useDeleteInventoryMutation, useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -32,7 +32,7 @@ const index = () => {
   const { data: inventory,refetch } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
-  const [deleteInventoryType] = useDeleteInventoryTypeMutation()
+  const [deleteInventory] = useDeleteInventoryMutation()
   useEffect(() => {
    if(inventory)
    {
@@ -52,7 +52,7 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteInventoryType(selectedRow._id)
+    await deleteInventory(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
