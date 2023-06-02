@@ -26,30 +26,30 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBranch";
 import { useGetInventoryFormatQuery, useGetInventoryTypeByIdFormatQuery, useGetInventoryTypeQuery } from "@/redux/feature/inventoryTypeApiSlice";
 import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
+import { useAddInventoryMutation } from "@/redux/feature/inventoryApiSlice";
 
 const index = () => {
   const router = useRouter()
   const id = router.query.id
   const btnRef = React.useRef();
-  const headers = ["brandName",'inventryType','serialNumber', "Action"];
+  const headers = ["brandName",'serialNumber', "Action"];
   const [inventories, setInventories] = useState([]);
   const { data: inventoryType } = useGetInventoryTypeQuery();
-  const [updatedId, setupdatedId] = useState()
-  const [addBranch] = useAddBranchMutation()
+  const [addInventory] = useAddInventoryMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteBranch] = useDeleteBranchMutation()
-  const { data: myallInventoryType } = useGetInventoryFormatQuery(id)
+  const { data: myallInventoryType,refetch } = useGetInventoryFormatQuery(id);
+
   useEffect(() => {
-    if (id) {
-        if(id && myallInventoryType?.data?.InventryTypes[0].invetries)
-        {
-          setInventories(myallInventoryType?.data?.InventryTypes[0].invetries);
-        }
+    if (id && myallInventoryType?.data?.InventryTypes[0]?.invetries) {
+      setInventories(myallInventoryType.data.InventryTypes[0].invetries);
     }
-  }, [id])
+    refetch()
+  }, [id, myallInventoryType?.data?.InventryTypes[0]?.invetries]);
+  
   const handleAddEdit = (row) => {
     setSelectedRow(row);
     setIsAddEditModalOpen(true);
@@ -59,8 +59,9 @@ const index = () => {
     setIsAddEditModalOpen(false);
   };
   const handleSave = async (data) => {
+    console.log(data);
     if (id) {
-      await addBranch({ ...data, customerId: id })
+      await addInventory({ ...data })
         .unwrap()
         .then(() => {
           console.log();

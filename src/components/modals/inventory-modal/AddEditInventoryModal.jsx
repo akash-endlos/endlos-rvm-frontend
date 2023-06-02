@@ -30,8 +30,8 @@ const AddEditModalBranch = ({
   const [formData, setFormData] = useState({});
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    inventorytype: Yup.string().required("Inventory type is required"),
+    brandName: Yup.string().required("Brand Name is required"),
+    inventryType: Yup.string().required("Inventory type is required"),
     serialNumber: Yup.string()
       .matches(/^\d{3}-[A-Z]{4}-\d{4}$/, "Invalid serial number format")
       .required("Serial number is required"),
@@ -60,8 +60,8 @@ const AddEditModalBranch = ({
     if (isOpen) {
       reset();
       if (isEditMode) {
-        setValue("name", rowData.name);
-        setValue("inventorytype", rowData.inventorytype);
+        setValue("brandName", rowData.brandName);
+        setValue("inventryType", rowData.inventryType);
         setValue("serialNumber", rowData.serialNumber);
         setValue("purchasedate", rowData.purchasedate);
       }
@@ -88,18 +88,18 @@ const AddEditModalBranch = ({
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl isInvalid={errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" {...register("name")} />
+            <FormControl isInvalid={errors.brandName}>
+              <FormLabel>Brand Name</FormLabel>
+              <Input type="text" name="brandName" {...register("brandName")} />
               <FormErrorMessage>
-                {errors.name && errors.name.message}
+                {errors.brandName && errors.brandName.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.inventorytype}>
+            <FormControl isInvalid={errors.inventryType}>
               <FormLabel>Inventory Type</FormLabel>
               <Select
-                name="inventorytype"
-                {...register("inventorytype")}
+                name="inventryType"
+                {...register("inventryType")}
                 placeholder="Select option"
               >
                 {options.map((item, index) => (
@@ -109,7 +109,7 @@ const AddEditModalBranch = ({
                 ))}
               </Select>
               <FormErrorMessage>
-                {errors.inventorytype && errors.inventorytype.message}
+                {errors.inventryType && errors.inventryType.message}
               </FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={errors.serialNumber}>

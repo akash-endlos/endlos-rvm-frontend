@@ -3,44 +3,49 @@ import config from "../config/config";
 
 export const inventoriesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // deleteCategory: builder.mutation({
-    //   query: (id) => ({
-    //     url: `${config.api.url.inventory}/${id}`,
-    //     method: "DELETE",
+    // updateInventoryById: builder.mutation({
+    //     query: (payload) => ({
+    //       url: `${config.api.url.updateInventory}?id=${payload.id}`,
+    //       method: "PUT",
+    //       body: payload.editedData,
+    //     }),
+    //     invalidatesTags: ['Inventory'],
     //   }),
-    // }),
-    // editCategory: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `${config.api.url.inventory}/${payload.id}`,
-    //     method: "PATCH",
-    //     body: payload.editedData,
-    //   }),
-    // }),
-    // addTutorialCategory: builder.mutation({
-    //   query: (payload) => ({
-    //     url: config.api.url.inventory,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    // }),
-    getInventory: builder.mutation({
-      query: () => ({
-        url: config.api.url.inventory,
-        method: "GET",
+      addInventory: builder.mutation({
+        query: (payload) => ({
+          url: config.api.url.addInventory,
+          method: "POST",
+          body: payload,
+        }),
+        invalidatesTags: ['Inventory'],
       }),
-    }),
-    // getCategoryById: builder.mutation({
-    //   query: (id) => ({
-    //     url: `${config.api.url.inventory}/${id}`,
+    // getInventory: builder.query({
+    //   query: () => ({
+    //     url: config.api.url.inventory,
     //     method: "GET",
     //   }),
+    //   providesTags: ['Inventory'],
     // }),
+    // deleteInventory: builder.mutation({
+    //     query: (id) => ({
+    //       url: `${config.api.url.deleteInventory}?id=${id}`,
+    //       method: "DELETE",
+    //     }),
+    //     invalidatesTags: ['Inventory'],
+    //   }),
+    //   getInventoryFormat: builder.query({
+    //     query: (id) => ({
+    //       url: `${config.api.url.getInventoryById}?id=${id}&=allInventries`,
+    //       method: "GET",
+    //     }),
+    //     providesTags: ['Inventory'],
+    //   }),
   }),
 });
 export const {
-//   useAddTutorialCategoryMutation,
-//   useDeleteCategoryMutation,
-  useGetInventoryMutation,
-//   useGetCategoryByIdMutation,
-//   useEditCategoryMutation,
+  // useGetInventoryQuery,
+  useAddInventoryMutation,
+  // useUpdateInventoryByIdMutation,
+  // useDeleteInventoryMutation,
+  // useGetInventoryFormatQuery
 } = inventoriesApiSlice;

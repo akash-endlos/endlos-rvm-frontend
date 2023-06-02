@@ -32,8 +32,8 @@ const index = () => {
   useEffect(() => {
    if(inventoryType)
    {
-    refetch();
-    setDataTable(inventoryType.data.InventryTypes)
+     setDataTable(inventoryType.data.InventryTypes)
+     refetch();
    }
   }, [inventoryType])
   const handleDelete = (row) => {
