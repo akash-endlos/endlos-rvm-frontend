@@ -11,14 +11,14 @@ export const inventoriesApiSlice = apiSlice.injectEndpoints({
     //     }),
     //     invalidatesTags: ['Inventory'],
     //   }),
-    //   addInventory: builder.mutation({
-    //     query: (payload) => ({
-    //       url: config.api.url.addInventory,
-    //       method: "POST",
-    //       body: payload,
-    //     }),
-    //     invalidatesTags: ['Inventory'],
-    //   }),
+      addInventory: builder.mutation({
+        query: (payload) => ({
+          url: config.api.url.addInventory,
+          method: "POST",
+          body: payload,
+        }),
+        invalidatesTags: ['Inventory'],
+      }),
     getInventory: builder.query({
       query: () => ({
         url: config.api.url.inventory,

@@ -18,7 +18,7 @@ import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInve
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
-import { useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
+import { useAddInventoryMutation, useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -28,16 +28,16 @@ const index = () => {
   const [dataTable, setDataTable] = useState([]);
   const [InventoryType, setInventoryType] = useState([])
   const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
-  const [addInventoryType] = useAddInventoryTypeMutation();
-  const { data: inventory } = useGetInventoryQuery();
+  const [addInventory] = useAddInventoryMutation();
+  const { data: inventory,refetch } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [deleteInventoryType] = useDeleteInventoryTypeMutation()
-console.log(inventory)
   useEffect(() => {
    if(inventory)
    {
      setDataTable(inventory.data.allInventry)
+     refetch()
    }
   }, [inventory])
   useEffect(() => {
@@ -74,7 +74,10 @@ console.log(inventory)
   };
 
   const handleSave = async(data) => {
-    await addInventoryType(data)
+    console.log('====================================');
+    console.log(data);
+    console.log('====================================');
+    await addInventory(data)
     .unwrap()
     .then(() => {
       console.log('');
