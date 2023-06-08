@@ -7,6 +7,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 
@@ -123,7 +124,14 @@ const index = () => {
     );
   };
 
-
+  if(isLoading)
+  {
+   return(
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+    <Spinner size="xl" color="teal" />
+  </Box>
+   ) 
+  }
   return (
     <>
       <Layout>

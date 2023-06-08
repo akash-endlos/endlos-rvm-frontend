@@ -7,6 +7,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 
@@ -31,7 +32,7 @@ const index = () => {
   const [InventoryType, setInventoryType] = useState([])
   const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
   const [addInventory] = useAddInventoryMutation();
-  const { data: inventory,refetch } = useGetInventoryQuery();
+  const { data: inventory,refetch,isLoading } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [deleteInventory] = useDeleteInventoryMutation()
@@ -117,7 +118,14 @@ const index = () => {
     </Flex>
     );
   };
-
+  if(isLoading)
+  {
+   return(
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+    <Spinner size="xl" color="teal" />
+  </Box>
+   ) 
+  }
   return (
     <>
       <Layout>
