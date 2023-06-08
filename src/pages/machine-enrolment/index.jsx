@@ -36,8 +36,8 @@ const index = () => {
   useEffect(() => {
    if(machines)
    {
-     setDataTable(machines?.data?.Machines)
      refetch();
+     setDataTable(machines?.data?.Machines)
    }
   }, [machines])
   const handleDelete = (row) => {
