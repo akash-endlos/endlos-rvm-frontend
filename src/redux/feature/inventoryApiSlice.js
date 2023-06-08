@@ -3,14 +3,14 @@ import config from "../config/config";
 
 export const inventoriesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // updateInventoryById: builder.mutation({
-    //     query: (payload) => ({
-    //       url: `${config.api.url.updateInventory}?id=${payload.id}`,
-    //       method: "PUT",
-    //       body: payload.editedData,
-    //     }),
-    //     invalidatesTags: ['Inventory'],
-    //   }),
+    updateInventoryById: builder.mutation({
+        query: (payload) => ({
+          url: `${config.api.url.updateInventory}?id=${payload.id}`,
+          method: "PUT",
+          body: payload.editedData,
+        }),
+        invalidatesTags: ['Inventory'],
+      }),
       addInventory: builder.mutation({
         query: (payload) => ({
           url: config.api.url.addInventory,
@@ -47,5 +47,5 @@ export const {
   useAddInventoryMutation,
   useUpdateInventoryByIdMutation,
   useDeleteInventoryMutation,
-  useGetInventoryFormatQuery
+  // useGetInventoryFormatQuery
 } = inventoriesApiSlice;

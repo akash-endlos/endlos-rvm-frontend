@@ -19,7 +19,7 @@ import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInve
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
-import { useAddInventoryMutation, useDeleteInventoryMutation, useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
+import { useAddInventoryMutation, useDeleteInventoryMutation, useGetInventoryQuery, useUpdateInventoryByIdMutation } from "@/redux/feature/inventoryApiSlice";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
@@ -33,13 +33,15 @@ const index = () => {
   const [InventoryType, setInventoryType] = useState([])
   const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
   const [addInventory] = useAddInventoryMutation();
-  const { data: inventory,refetch,isLoading } = useGetInventoryQuery();
+  const { data: inventory,refetch,isLoading,currentData } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();
-  const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
+  // const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
+  const [updateInventoryById] = useUpdateInventoryByIdMutation()
   const [deleteInventory] = useDeleteInventoryMutation()
   useEffect(() => {
    if(inventory)
    {
+    
      setDataTable(inventory.data.allInventry)
      refetch()
    }
@@ -49,7 +51,7 @@ const index = () => {
     {
       setInventoryType(inventoryType.data.InventryTypes)
     }
-   }, [inventoryType])
+   }, [])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -79,9 +81,6 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
     await addInventory(data)
     .unwrap()
     .then(() => {
@@ -98,7 +97,7 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateInventoryTypeById(updatedData)
+    await updateInventoryById(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Updated SuccessFully')

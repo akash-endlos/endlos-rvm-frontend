@@ -21,6 +21,7 @@ const config = {
             getInventoryTypeById:'inventrytype/get',
             addInventory:'inventry/add',
             getInventory:'inventry/get?type=all',
+            updateInventory:'inventry/update',
             deleteInventory:'inventry/delete',
             getAllMachines:'machine/get?type=all',
             deleteMachine:'machine/delete'
