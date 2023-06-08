@@ -20,6 +20,7 @@ import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/A
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "react-hot-toast";
 
 const index = () => {
   const router = useRouter()

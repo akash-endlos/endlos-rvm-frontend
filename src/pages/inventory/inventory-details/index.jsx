@@ -22,6 +22,7 @@ import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditIn
 import { useAddInventoryMutation, useDeleteInventoryMutation, useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "react-hot-toast";
 
 const index = () => {
   const router = useRouter()
