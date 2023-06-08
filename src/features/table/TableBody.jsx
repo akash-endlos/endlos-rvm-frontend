@@ -1,4 +1,6 @@
 import { Tbody, Td, Tr } from "@chakra-ui/react";
+import moment from "moment/moment";
+
 
 const TableBody = ({ headerNames, paginatedData, renderAction }) => {
 
@@ -32,6 +34,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             }
             if (header === 'inventry') {
               return <Td key={colIndex}>{showInterConnectedData(row?.inventry, '_inventry')}</Td>;
+            }
+            if(header === 'purchaseDate'){
+              return <Td key={colIndex}>{moment(row[header]).format('DD-MM-YYYY')}</Td>;
             }
             return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
           })}
