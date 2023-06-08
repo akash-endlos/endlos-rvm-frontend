@@ -21,7 +21,9 @@ const config = {
             getInventoryTypeById:'inventrytype/get',
             addInventory:'inventry/add',
             getInventory:'inventry/get?type=all',
-            deleteInventory:'inventry/delete'
+            deleteInventory:'inventry/delete',
+            getAllMachines:'machine/get?type=all',
+            deleteMachine:'machine/delete'
             // getUser:'Users',
             // categories: 'tutorial-categories',
             // tutorials: 'tutorials'

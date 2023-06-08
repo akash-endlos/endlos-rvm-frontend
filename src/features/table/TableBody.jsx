@@ -30,6 +30,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             if (header === 'invetries') {
               return <Td key={colIndex}>{showInterConnectedData(row?.invetries, 'brandName')}</Td>;
             }
+            if (header === 'inventry') {
+              return <Td key={colIndex}>{showInterConnectedData(row?.inventry, '_inventry')}</Td>;
+            }
             return <Td key={colIndex}>{row[header]}</Td>;
           })}
         </Tr>
