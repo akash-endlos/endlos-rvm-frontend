@@ -64,7 +64,9 @@ const AddEditInventoryModal = ({
         setValue("brandName", rowData.brandName);
         setValue("inventryType", rowData.inventryId);
         setValue("serialNumber", rowData.serialNumber);
-        setValue("purchaseDate", moment(rowData?.purchaseDate).format('DD-MM-YYYY'));
+        setValue("purchaseDate",rowData?.purchaseDate);
+
+        // setValue("purchaseDate", moment(rowData?.purchaseDate).format('DD-MM-YYYY'));
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
