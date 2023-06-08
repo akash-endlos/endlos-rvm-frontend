@@ -81,7 +81,13 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addInventory(data)
+    const newAddData={
+      brandName:data.brandName,
+      inventryType:data.inventryType,
+      serialNumber:data.serialNumber
+    }
+    const manipulatedData= data.purchaseDate? data :newAddData
+    await addInventory(manipulatedData)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')

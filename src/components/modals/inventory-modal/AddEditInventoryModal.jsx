@@ -17,6 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment/moment";
 
 const AddEditInventoryModal = ({
   isOpen,
@@ -57,13 +58,13 @@ const AddEditInventoryModal = ({
   }, [rowData]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen) { 
       reset();
       if (isEditMode) {
         setValue("brandName", rowData.brandName);
-        setValue("inventryType", '647988a021ccfe045979d0f2');
+        setValue("inventryType", rowData.inventryId);
         setValue("serialNumber", rowData.serialNumber);
-        setValue("purchaseDate", rowData.purchaseDate);
+        setValue("purchaseDate", moment(rowData?.purchaseDate).format('DD-MM-YYYY'));
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
