@@ -13,6 +13,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Spinner,
 } from "@chakra-ui/react";
 import DynamicTable from "@/features/table/DynamicTable";
 import {
@@ -34,7 +35,7 @@ const index = () => {
   const btnRef = React.useRef();
   const headers = ["name", "Action"];
   const [branches, setBranches] = useState([]);
-  const { data: myallbranches } = useGetBranchesByIdFormatQuery(id)
+  const { data: myallbranches,isLoading } = useGetBranchesByIdFormatQuery(id)
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
@@ -111,6 +112,14 @@ const index = () => {
     </Flex>
     );
   };
+  if(isLoading)
+  {
+   return(
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+    <Spinner size="xl" color="teal" />
+  </Box>
+   ) 
+  }
   return (
     <>
       {true && (

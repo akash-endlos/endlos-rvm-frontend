@@ -31,6 +31,7 @@ export default function Home() {
       dispatch(setCredentials(userData))
       router.push('dashboard')
       setloginForm({ email: '', password: '' })
+      toast.success('LoggeIn SuccessFully')
     } catch (error) {
       toast.error(error.data.error)
     }
