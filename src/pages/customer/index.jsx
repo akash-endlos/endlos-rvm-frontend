@@ -17,6 +17,9 @@ import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMu
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
+import {AiFillEdit,AiFillEye,AiFillDelete} from 'react-icons/ai'
+import {RiDeleteBin6Line} from 'react-icons/ri'
+import {FiEdit} from 'react-icons/fi'
 
 const index = () => {
   const router = useRouter()
@@ -108,31 +111,11 @@ const index = () => {
   };
   const renderAction = (row) => {
     return (
-      <Menu>
-        <MenuButton variant="outline">
-          <BiDotsVerticalRounded size={25} />
-        </MenuButton>
-        <MenuList className=" text-white rounded-md p-1">
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => router.push(`customer/branches/${row._id}`)}
-          >
-            View Branches
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleAddEdit(row)}
-          >
-            Edit Customer
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleDelete(row)}
-          >
-            Delete Customer
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      <Flex gap={3} alignContent='center'>
+        <AiFillEye className="cursor-pointer"  onClick={() => router.push(`customer/branches/${row._id}`)} color="purple" size={25}/>
+        <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
+        <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
+      </Flex>
     );
   };
 
@@ -173,3 +156,30 @@ const index = () => {
 };
 
 export default index;
+
+
+{/* <Menu>
+        <MenuButton variant="outline">
+          <BiDotsVerticalRounded size={25} />
+        </MenuButton>
+        <MenuList className=" text-white rounded-md p-1">
+          <MenuItem
+            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
+            onClick={() => router.push(`customer/branches/${row._id}`)}
+          >
+            View Branches
+          </MenuItem>
+          <MenuItem
+            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
+            onClick={() => handleAddEdit(row)}
+          >
+            Edit Customer
+          </MenuItem>
+          <MenuItem
+            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
+            onClick={() => handleDelete(row)}
+          >
+            Delete Customer
+          </MenuItem>
+        </MenuList>
+      </Menu> */}

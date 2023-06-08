@@ -17,6 +17,8 @@ import { useRouter } from "next/router";
 import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInventoryTypeQuery, useUpdateInventoryTypeByIdMutation } from "@/redux/feature/inventoryTypeApiSlice";
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
+import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const index = () => {
   const router = useRouter()
@@ -96,25 +98,10 @@ const index = () => {
   };
   const renderAction = (row) => {
     return (
-      <Menu>
-        <MenuButton variant="outline">
-          <BiDotsVerticalRounded size={25} />
-        </MenuButton>
-        <MenuList className=" text-white rounded-md p-1">
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleAddEdit(row)}
-          >
-            Edit 
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleDelete(row)}
-          >
-            Delete 
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      <Flex gap={3} alignContent='center'>
+      <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
+      <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
+    </Flex>
     );
   };
 
