@@ -13,15 +13,52 @@ import {
   Input,
   FormErrorMessage,
   Select,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) => {
+const sampleCategories = [
+  { id: 1, name: "Display" },
+  { id: 2, name: "Motor" },
+  { id: 3, name: "Jarvis" },
+];
+
+const sampleSubcategories = {
+  1: [
+    { id: 1, name: "DS-1" },
+    { id: 2, name: "DS-2" },
+    { id: 3, name: "DS-3" },
+  ],
+  2: [
+    { id: 4, name: "MT-1" },
+    { id: 5, name: "MT-2" },
+    { id: 6, name: "MT-3" },
+  ],
+  3: [
+    { id: 7, name: "JS-1" },
+    { id: 8, name: "JS-2" },
+    { id: 9, name: "JS-3" },
+  ],
+};
+
+const AddEditMachineModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  rowData,
+  onEditSave,
+}) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
-  const [dropdowns, setDropdowns] = useState([{ category: "", subcategory: "" }]);
+  const [categories, setCategories] = useState(sampleCategories);
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -41,8 +78,14 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =
   useEffect(() => {
     if (isEditMode) {
       setFormData(rowData);
+      setSelectedCategory(rowData.category);
+      setSelectedSubcategory(rowData.subcategory);
+      setSelectedTags([rowData.category, rowData.subcategory]);
     } else {
       setFormData({});
+      setSelectedCategory("");
+      setSelectedSubcategory("");
+      setSelectedTags([]);
     }
   }, [rowData]);
 
@@ -55,27 +98,29 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
-  const categoryOptions = ["Category 1", "Category 2", "Category 3"];
-  const subcategoryOptions = {
-    "Category 1": ["Subcategory 1.1", "Subcategory 1.2"],
-    "Category 2": ["Subcategory 2.1", "Subcategory 2.2"],
-    "Category 3": ["Subcategory 3.1", "Subcategory 3.2"],
+  useEffect(() => {
+    setSubcategories(sampleSubcategories[selectedCategory] || []);
+  }, [selectedCategory]);
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    setSelectedSubcategory(""); // Reset the selected subcategory when category changes
   };
 
-  const handleDropdownChange = (index, field, value) => {
-    const updatedDropdowns = [...dropdowns];
-    updatedDropdowns[index][field] = value;
-    setDropdowns(updatedDropdowns);
+  const handleAddTag = () => {
+    if (selectedCategory && selectedSubcategory) {
+      const subcategory = sampleSubcategories[selectedCategory].find(
+        (subcategory) => subcategory.id === parseInt(selectedSubcategory)
+      );
+      if (subcategory) {
+        setSelectedTags([...selectedTags, subcategory.name]);
+      }
+    }
   };
+  
 
-  const addDropdown = () => {
-    setDropdowns([...dropdowns, { category: "", subcategory: "" }]);
-  };
-
-  const removeDropdown = (index) => {
-    const updatedDropdowns = [...dropdowns];
-    updatedDropdowns.splice(index, 1);
-    setDropdowns(updatedDropdowns);
+  const handleRemoveTag = (tag) => {
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
   };
 
   const onSubmit = (data) => {
@@ -89,7 +134,6 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =
       reset();
     }
   };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -106,55 +150,67 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =
               </FormErrorMessage>
             </FormControl>
 
-            {dropdowns.map((dropdown, index) => (
-              <div key={index}>
-                <FormControl mt={4}>
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    value={dropdown.category}
-                    onChange={(e) =>
-                      handleDropdownChange(index, "category", e.target.value)
-                    }
-                  >
-                    <option value="">Select Category</option>
-                    {categoryOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
+            <FormControl>
+              <FormLabel>Category</FormLabel>
+              <Select
+                name="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Subcategory</FormLabel>
-                  <Select
-                    value={dropdown.subcategory}
-                    onChange={(e) =>
-                      handleDropdownChange(index, "subcategory", e.target.value)
-                    }
-                  >
-                    <option value="">Select Subcategory</option>
-                    {subcategoryOptions[dropdown.category]?.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
+            <FormControl>
+              <FormLabel>Subcategory</FormLabel>
+              <Select
+                name="subcategory"
+                value={selectedSubcategory}
+                onChange={(e) => setSelectedSubcategory(e.target.value)}
+              >
+                <option value="">Select a subcategory</option>
+                {subcategories.map((subcategory) => (
+                  <option key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
-                <Button
-                  variant="link"
-                  colorScheme="red"
-                  onClick={() => removeDropdown(index)}
-                >
-                  Remove
-                </Button>
-              </div>
-            ))}
-
-            <Button variant="link" colorScheme="green" mt={4} onClick={addDropdown}>
-              Add Dropdown
+            <Button
+              mt={4}
+              colorScheme="blue"
+              onClick={handleAddTag}
+              disabled={!selectedCategory || !selectedSubcategory}
+            >
+              Add Selected
             </Button>
+
+            {selectedTags.length > 0 && (
+              <FormControl mt={4}>
+                <FormLabel>Selected Tags</FormLabel>
+                <div>
+                  {selectedTags.map((tag) => (
+                    <Tag
+                      key={tag}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                      mr={2}
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton onClick={() => handleRemoveTag(tag)} />
+                    </Tag>
+                  ))}
+                </div>
+              </FormControl>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={onClose}>
