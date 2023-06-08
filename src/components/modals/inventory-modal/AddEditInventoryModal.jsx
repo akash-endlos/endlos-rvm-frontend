@@ -84,7 +84,7 @@ const AddEditInventoryModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{isEditMode ? "Edit" : "Add"} Branches</ModalHeader>
+        <ModalHeader>{isEditMode ? "Edit" : "Add"} Inventory Detail</ModalHeader>
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
