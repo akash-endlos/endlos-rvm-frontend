@@ -117,12 +117,12 @@ const index = () => {
           <BiDotsVerticalRounded size={25} />
         </MenuButton>
         <MenuList className=" text-white rounded-md p-1">
-          <MenuItem
+          {/* <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => router.push(`customer/branches/${row._id}`)}
           >
             View 
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
             onClick={() => handleAddEdit(row)}

@@ -11,18 +11,26 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Select,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) => {
+const AddEditMachineModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  rowData,
+  onEditSave,
+}) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
+    inventory: Yup.string().required("Inventory is required"),
   });
 
   const {
@@ -49,23 +57,21 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) =>
       reset();
       if (isEditMode) {
         setValue("name", rowData.name);
+        setValue("inventory", rowData.inventory);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
   const onSubmit = (data) => {
-    if(isEditMode)
-    {
-      onEditSave(data)
+    if (isEditMode) {
+      onEditSave(data);
+      onClose();
+      reset();
+    } else {
+      onSave(data);
       onClose();
       reset();
     }
-    else{
-      onSave(data);
-      onClose();
-      reset(); 
-    }
-   // Reset the form values
   };
 
   return (
@@ -81,6 +87,18 @@ const AddEditMachineModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) =>
               <Input type="text" name="name" {...register("name")} />
               <FormErrorMessage>
                 {errors.name && errors.name.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.inventory}>
+              <FormLabel>Inventory</FormLabel>
+              <Select name="inventory" {...register("inventory")}>
+                <option value="">Select an option</option>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                {/* Add more options as needed */}
+              </Select>
+              <FormErrorMessage>
+                {errors.inventory && errors.inventory.message}
               </FormErrorMessage>
             </FormControl>
           </ModalBody>
