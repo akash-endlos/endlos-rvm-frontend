@@ -23,6 +23,7 @@ import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachine
 import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachineModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {MdDomainAdd} from 'react-icons/md'
 
 const index = () => {
   const router = useRouter()
@@ -130,6 +131,7 @@ const index = () => {
         {/* <AiFillEye className="cursor-pointer"  onClick={() => router.push(`customer/branches/${row._id}`)} color="purple" size={25}/> */}
         <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
+        <MdDomainAdd className="cursor-pointer" onClick={() => handleAssign(row)} color="teal" size={20}/>
       </Flex>
     );
   };
