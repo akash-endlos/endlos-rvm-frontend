@@ -1,6 +1,6 @@
 const config = {
     api: {
-        base: 'http://localhost:5000/api/v1/',
+        base: 'https://api-rvm.endlos.live/api/v1/',
         url: {
             login: 'user/login',
             refresh: 'auth/refreshtoken',

@@ -147,11 +147,11 @@ const index = () => {
         </Text>
         <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
-          {/* <Box>
+          <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
               Add Machine
             </Button>
-          </Box> */}
+          </Box>
         </Flex>
         <DynamicTable
           headerNames={headers}
@@ -163,13 +163,13 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        {/* <AddEditModal
+        <AddEditModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
-        /> */}
+        />
       </Layout>
     </>
   );
