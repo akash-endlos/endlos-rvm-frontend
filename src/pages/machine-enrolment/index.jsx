@@ -19,6 +19,7 @@ import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustome
 import { useRouter } from "next/router";
 import { useDeleteMachineMutation, useGetMachinesQuery } from "@/redux/feature/machineApiSlice";
 import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachineModal";
+import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachineModal";
 
 const index = () => {
   const router = useRouter()
@@ -163,7 +164,7 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditModal
+        <AddEditMachineModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
