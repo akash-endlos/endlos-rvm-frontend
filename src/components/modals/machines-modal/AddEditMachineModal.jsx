@@ -114,9 +114,12 @@ const AddEditMachineModal = ({
       );
       if (subcategory) {
         setSelectedTags([...selectedTags, subcategory.name]);
+        setSelectedCategory("");
+        setSelectedSubcategory("");
       }
     }
   };
+  
   
 
   const handleRemoveTag = (tag) => {
