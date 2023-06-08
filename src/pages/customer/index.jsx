@@ -112,8 +112,8 @@ const index = () => {
   const renderAction = (row) => {
     return (
       <Flex gap={3} alignContent='center'>
-        <AiFillEye className="cursor-pointer"  onClick={() => router.push(`customer/branches/${row._id}`)} color="purple" size={25}/>
-        <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
+        <AiFillEye className="cursor-pointer"  onClick={() => router.push(`customer/branches/${row._id}`)} color="#174050" size={25}/>
+        <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="#494949" size={20}/>
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
       </Flex>
     );
