@@ -21,13 +21,13 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const sampleCategories = [
+const Categories = [
   { id: 1, name: "Display" },
   { id: 2, name: "Motor" },
   { id: 3, name: "Jarvis" },
 ];
 
-const sampleSubcategories = {
+const subCategories = {
   1: [
     { id: 1, name: "DS-1" },
     { id: 2, name: "DS-2" },
@@ -53,15 +53,19 @@ const AddEditMachineModal = ({
   onEditSave,
 }) => {
   const isEditMode = !!rowData;
-  const [formData, setFormData] = useState({});
-  const [categories, setCategories] = useState(sampleCategories);
+  const [formData, setFormData] = useState({
+    warrantyStartDate: "",
+    tags: [],
+  });
+  const [categories, setCategories] = useState(Categories);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    machineId: Yup.string().required("Machine ID is required"),
+    warrantyStartDate: Yup.string().required("Warranty start date is required"),
   });
 
   const {
@@ -77,12 +81,12 @@ const AddEditMachineModal = ({
 
   useEffect(() => {
     if (isEditMode) {
-      setFormData(rowData);
+      setFormData({ ...rowData, tags: rowData.tags || [] });
       setSelectedCategory(rowData.category);
       setSelectedSubcategory(rowData.subcategory);
-      setSelectedTags([rowData.category, rowData.subcategory]);
+      setSelectedTags([...rowData.tags]);
     } else {
-      setFormData({});
+      setFormData({ warrantyStartDate: "", tags: [] });
       setSelectedCategory("");
       setSelectedSubcategory("");
       setSelectedTags([]);
@@ -93,23 +97,24 @@ const AddEditMachineModal = ({
     if (isOpen) {
       reset();
       if (isEditMode) {
-        setValue("name", rowData.name);
+        setValue("machineId", rowData.machineId);
+        setValue("warrantyStartDate", rowData.warrantyStartDate);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
   useEffect(() => {
-    setSubcategories(sampleSubcategories[selectedCategory] || []);
+    setSubcategories(subCategories[selectedCategory] || []);
   }, [selectedCategory]);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
-    setSelectedSubcategory(""); // Reset the selected subcategory when category changes
+    setSelectedSubcategory("");
   };
 
   const handleAddTag = () => {
     if (selectedCategory && selectedSubcategory) {
-      const subcategory = sampleSubcategories[selectedCategory].find(
+      const subcategory = subCategories[selectedCategory].find(
         (subcategory) => subcategory.id === parseInt(selectedSubcategory)
       );
       if (subcategory) {
@@ -119,8 +124,6 @@ const AddEditMachineModal = ({
       }
     }
   };
-  
-  
 
   const handleRemoveTag = (tag) => {
     setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -128,15 +131,16 @@ const AddEditMachineModal = ({
 
   const onSubmit = (data) => {
     if (isEditMode) {
-      onEditSave(data);
+      onEditSave({ ...data, tags: selectedTags });
       onClose();
       reset();
     } else {
-      onSave(data);
+      onSave({ ...data, tags: selectedTags });
       onClose();
       reset();
     }
   };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -145,11 +149,23 @@ const AddEditMachineModal = ({
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl isInvalid={errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" {...register("name")} />
+            <FormControl isInvalid={errors.machineId}>
+              <FormLabel>Machine ID</FormLabel>
+              <Input type="text" name="machineId" {...register("machineId")} />
               <FormErrorMessage>
-                {errors.name && errors.name.message}
+                {errors.machineId && errors.machineId.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors.warrantyStartDate}>
+              <FormLabel>Warranty Start Date</FormLabel>
+              <Input
+                type="date"
+                name="warrantyStartDate"
+                {...register("warrantyStartDate")}
+              />
+              <FormErrorMessage>
+                {errors.warrantyStartDate && errors.warrantyStartDate.message}
               </FormErrorMessage>
             </FormControl>
 

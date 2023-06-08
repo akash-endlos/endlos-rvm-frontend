@@ -11,14 +11,14 @@ export const machineApiSlice = apiSlice.injectEndpoints({
     //   }),
     //   invalidatesTags: ['Customers'],
     // }),
-    // addCustomer: builder.mutation({
-    //   query: (payload) => ({
-    //     url: config.api.url.addCustomer,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    //   invalidatesTags: ['Customers'], 
-    // }),
+    addMachine: builder.mutation({
+      query: (payload) => ({
+        url: config.api.url.addMachine,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ['Machines'], 
+    }),
     getMachines: builder.query({
       query: () => ({
         url: config.api.url.getAllMachines,
@@ -43,7 +43,7 @@ export const machineApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-//   useAddCustomerMutation,
+  useAddMachineMutation,
   useGetMachinesQuery,
 //   useGetCustomerByIdMutation,
 //   useUpdateCustomerMutation,

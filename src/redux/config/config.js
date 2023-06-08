@@ -24,10 +24,8 @@ const config = {
             updateInventory:'inventry/update',
             deleteInventory:'inventry/delete',
             getAllMachines:'machine/get?type=all',
-            deleteMachine:'machine/delete'
-            // getUser:'Users',
-            // categories: 'tutorial-categories',
-            // tutorials: 'tutorials'
+            deleteMachine:'machine/delete',
+            addMachine:'machine/add'
         }
     }
 }

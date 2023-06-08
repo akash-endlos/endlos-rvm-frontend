@@ -18,7 +18,7 @@ import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMu
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
-import { useDeleteMachineMutation, useGetMachinesQuery } from "@/redux/feature/machineApiSlice";
+import { useAddMachineMutation, useDeleteMachineMutation, useGetMachinesQuery } from "@/redux/feature/machineApiSlice";
 import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachineModal";
 import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachineModal";
 import { FiEdit } from "react-icons/fi";
@@ -32,7 +32,7 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["machineId","customerName", "warrentyStartDate","Action"];
-  const [addCustomer] = useAddCustomerMutation();
+  const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error,refetch } = useGetMachinesQuery();
   const [updateCustomer] = useUpdateCustomerMutation()
   const [deleteCustomer] = useDeleteCustomerMutation()
@@ -40,8 +40,8 @@ const index = () => {
   useEffect(() => {
    if(machines)
    {
-     setDataTable(machines?.data?.Machines);
      refetch();
+     setDataTable(machines?.data?.Machines);
    }
   }, [machines])
   const handleDelete = (row) => {
@@ -72,7 +72,18 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addCustomer(data)
+    console.log('====================================');
+    console.log(data);
+    console.log('====================================');
+    console.log('====================================');
+    console.log({...data.tags});
+    console.log('====================================');
+    const addNewData={
+      machineId:data.machineId,
+      inventry:[{"_inventry":"6481b96f6fa0eed6f6992ae7"}],
+      warrentyStartDate:data.warrantyStartDate
+    }
+    await addMachine(addNewData)
     .unwrap()
     .then(() => {
       setaddTutorialData({ name: ""});
