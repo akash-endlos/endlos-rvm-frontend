@@ -51,7 +51,7 @@ const index = () => {
     {
       setInventoryType(inventoryType.data.InventryTypes)
     }
-   }, [])
+   }, [inventoryType])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
