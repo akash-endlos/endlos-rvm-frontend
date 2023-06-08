@@ -40,7 +40,6 @@ const index = () => {
   useEffect(() => {
    if(machines)
    {
-     refetch();
      setDataTable(machines?.data?.Machines);
      refetch();
    }
