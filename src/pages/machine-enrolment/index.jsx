@@ -28,7 +28,7 @@ const index = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["machineId","customerName",'inventry', "Action"];
+  const headers = ["machineId","customerName", "warrentyStartDate","Action"];
   const [addCustomer] = useAddCustomerMutation();
   const { data: machines, isLoading, isError, error,refetch } = useGetMachinesQuery();
   const [updateCustomer] = useUpdateCustomerMutation()

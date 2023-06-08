@@ -33,7 +33,7 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             if (header === 'inventry') {
               return <Td key={colIndex}>{showInterConnectedData(row?.inventry, '_inventry')}</Td>;
             }
-            return <Td key={colIndex}>{row[header]}</Td>;
+            return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
           })}
         </Tr>
       ))}
