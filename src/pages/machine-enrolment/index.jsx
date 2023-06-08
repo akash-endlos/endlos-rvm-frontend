@@ -38,9 +38,10 @@ const index = () => {
    if(machines)
    {
      refetch();
-     setDataTable(machines?.data?.Machines)
+     setDataTable(machines?.data?.Machines);
+     refetch();
    }
-  }, [])
+  }, [machines])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
