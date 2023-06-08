@@ -50,9 +50,10 @@ const index = () => {
       .then(() => {
         setSelectedRow(null); 
         setIsDeleteModalOpen(false);
+        toast.success('Deleted SuccessFully')
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.data.error)
       });
   };
   
@@ -70,10 +71,10 @@ const index = () => {
     await addInventoryType(data)
     .unwrap()
     .then(() => {
-      console.log('');
+      toast.success('Added SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   };
@@ -86,10 +87,10 @@ const index = () => {
     await updateInventoryTypeById(updatedData)
     .unwrap()
     .then(() => {
-      console.log('');
+      toast.success('Updated SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   }

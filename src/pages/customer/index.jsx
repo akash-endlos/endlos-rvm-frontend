@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import {AiFillEdit,AiFillEye,AiFillDelete} from 'react-icons/ai'
 import {RiDeleteBin6Line} from 'react-icons/ri'
 import {FiEdit} from 'react-icons/fi'
+import { toast } from "react-hot-toast";
 
 const index = () => {
   const router = useRouter()
@@ -50,11 +51,12 @@ const index = () => {
     await deleteCustomer(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); // Reset selectedRow state
+        setSelectedRow(null);
         setIsDeleteModalOpen(false);
+        toast.success('Delete SuccessFully')
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.data.error)
       });
   };
   
@@ -72,10 +74,10 @@ const index = () => {
     await addCustomer(data)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      toast.success('Added SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   };
@@ -88,10 +90,10 @@ const index = () => {
     await updateCustomer(updatedData)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      toast.success('Updated SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   }
