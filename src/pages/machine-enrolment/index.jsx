@@ -78,7 +78,7 @@ const index = () => {
     const addNewData={
       machineId:data.machineId,
       inventry:data.tags,
-      warrentyStartDate:data.warrantyStartDate
+      warrentyStartDate:data.warrentyStartDate
     }
     await addMachine(addNewData)
     .unwrap()
@@ -92,10 +92,13 @@ const index = () => {
   };
   
   const handleEditSave=async(data)=>{
+    console.log('====================================');
+    console.log(data);
+    console.log('====================================');
     const editNewData={
       machineId:data.machineId,
       inventry:data.tags,
-      warrentyStartDate:data.warrantyStartDate
+      warrentyStartDate:data.warrentyStartDate
     }
     const updatedData={
       id: selectedRow._id,
