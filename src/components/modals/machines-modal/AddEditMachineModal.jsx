@@ -174,6 +174,27 @@ const AddEditMachineModal = ({
               </FormErrorMessage>
             </FormControl>
 
+            {selectedTags.length > 0 && (
+              <FormControl mt={4}>
+                <FormLabel>Selected Tags</FormLabel>
+                <div>
+                  {selectedTags.map((tag) => (
+                    <Tag
+                      key={tag.id}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="teal"
+                      mr={2}
+                      mb={2}
+                    >
+                      <TagLabel>{tag.brandName}</TagLabel>
+                      <TagCloseButton onClick={() => handleRemoveTag(tag)} />
+                    </Tag>
+                  ))}
+                </div>
+              </FormControl>
+            )}
             <FormControl>
               <FormLabel>Category</FormLabel>
               <Select
@@ -208,33 +229,12 @@ const AddEditMachineModal = ({
 
             <Button
               mt={4}
-              colorScheme="blue"
+              colorScheme="teal"
               onClick={handleAddTag}
               disabled={!selectedCategory || !selectedSubcategory}
             >
               Add Selected
             </Button>
-
-            {selectedTags.length > 0 && (
-              <FormControl mt={4}>
-                <FormLabel>Selected Tags</FormLabel>
-                <div>
-                  {selectedTags.map((tag) => (
-                    <Tag
-                      key={tag.id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                      mr={2}
-                    >
-                      <TagLabel>{tag.brandName}</TagLabel>
-                      <TagCloseButton onClick={() => handleRemoveTag(tag)} />
-                    </Tag>
-                  ))}
-                </div>
-              </FormControl>
-            )}
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={handleClose}>

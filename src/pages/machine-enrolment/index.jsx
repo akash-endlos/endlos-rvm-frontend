@@ -13,40 +13,43 @@ import {
 
 import DynamicTable from "@/features/table/DynamicTable";
 import Layout from "@/layout/Layout";
-import DeleteModal from "@/components/modals/customer-modal/DeleteModalCustomer";
-import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMutation, useGetCustomersMutation, useGetCustomersQuery, useUpdateCustomerMutation } from "@/redux/feature/customerApiSlice";
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
-import { useAddMachineMutation, useDeleteMachineMutation, useGetMachinesQuery, useUpdateMachineMutation } from "@/redux/feature/machineApiSlice";
+import {
+  useAddMachineMutation,
+  useDeleteMachineMutation,
+  useGetMachinesQuery,
+  useUpdateMachineMutation,
+} from "@/redux/feature/machineApiSlice";
 import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachineModal";
 import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachineModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import {MdDomainAdd} from 'react-icons/md'
+import { CgAssign } from "react-icons/cg";
+import { RiFileEditLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
+import AddEditAssignModal from "@/components/modals/machines-modal/AddEditAssignModal";
 
 const index = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isAddEditAssignModal, setIsAddEditAssignModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["machineId","customerName", "warrentyStartDate","Action"];
+  const headers = ["machineId", "customerName", "warrentyStartDate", "Action"];
   const [addMachine] = useAddMachineMutation();
-  const { data: machines, isLoading, isError, error,refetch } = useGetMachinesQuery();
-  const [updateCustomer] = useUpdateCustomerMutation()
-  const [updateMachine] = useUpdateMachineMutation()
-  const [deleteCustomer] = useDeleteCustomerMutation()
-  const [deleteMachine] = useDeleteMachineMutation()
+  const { data: machines, isLoading, isError, error, refetch } =
+    useGetMachinesQuery();
+  const [updateMachine] = useUpdateMachineMutation();
+  const [deleteMachine] = useDeleteMachineMutation();
   useEffect(() => {
-   if(machines)
-   {
-     refetch();
-     setDataTable(machines?.data?.Machines);
-   }
-  }, [machines])
+    if (machines) {
+      refetch();
+      setDataTable(machines?.data?.Machines);
+    }
+  }, [machines]);
+
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -56,14 +59,14 @@ const index = () => {
     await deleteMachine(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); 
+        setSelectedRow(null);
         setIsDeleteModalOpen(false);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
   const handleCancelDelete = () => {
     setSelectedRow(null);
     setIsDeleteModalOpen(false);
@@ -74,77 +77,112 @@ const index = () => {
     setIsAddEditModalOpen(true);
   };
 
-  const handleSave = async(data) => {
-    const addNewData={
-      machineId:data.machineId,
-      inventry:data.tags,
-      warrentyStartDate:data.warrentyStartDate
-    }
+  const handleSave = async (data) => {
+    const addNewData = {
+      machineId: data.machineId,
+      inventry: data.tags,
+      warrentyStartDate: data.warrentyStartDate,
+    };
     await addMachine(addNewData)
-    .unwrap()
-    .then(() => {
-      toast.success('Added SuccessFully')
-    })
-    .catch((error) => {
-      toast.error(error.data.error)
-
-    });
+      .unwrap()
+      .then(() => {
+        toast.success("Added Successfully");
+      })
+      .catch((error) => {
+        toast.error(error.data.error);
+      });
   };
-  
-  const handleEditSave=async(data)=>{
-    const editNewData={
-      machineId:data.machineId,
-      inventry:data.tags,
-      warrentyStartDate:data.warrentyStartDate
-    }
-    const updatedData={
-      id: selectedRow._id,
-      editedData:editNewData
-    }
-    await updateMachine(updatedData)
-    .unwrap()
-    .then(() => {
-      toast.success('Updated SuccessFully')
-    })
-    .catch((error) => {
-      toast.error(error.data.error)
 
-    });
-  }
+  const handleEditSave = async (data) => {
+    const editNewData = {
+      machineId: data.machineId,
+      inventry: data.tags,
+      warrentyStartDate: data.warrentyStartDate,
+    };
+    const updatedData = {
+      id: selectedRow._id,
+      editedData: editNewData,
+    };
+    await updateMachine(updatedData)
+      .unwrap()
+      .then(() => {
+        toast.success("Updated Successfully");
+      })
+      .catch((error) => {
+        if (error.data.message) {
+          toast.error(error.data.message);
+        }
+        if (error.data.error) {
+          console.log(error.data.error);
+        }
+      });
+  };
+
   const handleCancelAddEdit = () => {
     setSelectedRow(null);
     setIsAddEditModalOpen(false);
   };
-
-  const handleView = (row) => {
+  const handleAddEditAssign = (row) => {
     setSelectedRow(row);
-    setIsViewModalOpen(true);
+    setIsAddEditAssignModal(true);
   };
 
-
-  const handleViewDrawerClose = () => {
+  const handleAssignEditCancel = () => {
     setSelectedRow(null);
-    setIsViewModalOpen(false);
+    setIsAddEditAssignModal(false);
+  };
+
+  const handleAssignSave = (data) => {
+    // Handle the assign save action here
+    console.log(data);
+    setIsAddEditAssignModal(false);
+  };
+
+  const handleEditAssignSave = async (data) => {
+  console.log(data);
   };
   const renderAction = (row) => {
     return (
-      <Flex gap={3} alignContent='center'>
-        {/* <AiFillEye className="cursor-pointer"  onClick={() => router.push(`customer/branches/${row._id}`)} color="purple" size={25}/> */}
-        <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
-        <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
-        <MdDomainAdd className="cursor-pointer" onClick={() => handleAssign(row)} color="teal" size={20}/>
+      <Flex gap={3} alignContent="center">
+        <FiEdit
+          className="cursor-pointer"
+          onClick={() => handleAddEdit(row)}
+          color="teal"
+          size={20}
+        />
+        <RiDeleteBin6Line
+          className="cursor-pointer"
+          onClick={() => handleDelete(row)}
+          color="red"
+          size={20}
+        />
+        {true ? (
+          <CgAssign
+            className="cursor-pointer"
+            onClick={() => setIsAddEditAssignModal(true)}
+            color="teal"
+            size={20}
+          />
+        ) : (
+          <RiFileEditLine
+            className="cursor-pointer"
+            onClick={() => handleAddEditAssign(row)}
+            color="teal"
+            size={20}
+          />
+        )}
       </Flex>
     );
   };
 
-  if(isLoading)
-  {
-   return(
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-    <Spinner size="xl" color="teal" />
-  </Box>
-   ) 
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" color="teal" />
+      </Box>
+    );
   }
+
   return (
     <>
       <Layout>
@@ -159,11 +197,7 @@ const index = () => {
             </Button>
           </Box>
         </Flex>
-        <DynamicTable
-          headerNames={headers}
-          data={dataTable}
-          renderAction={renderAction}
-        />
+        <DynamicTable headerNames={headers} data={dataTable} renderAction={renderAction} />
         <DeleteMachineModal
           isOpen={isDeleteModalOpen}
           onClose={handleCancelDelete}
@@ -174,6 +208,14 @@ const index = () => {
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
+          rowData={selectedRow}
+        />
+         <AddEditAssignModal
+         machineDataTable={dataTable}
+          isOpen={isAddEditAssignModal}
+          onClose={handleAssignEditCancel}
+          onSave={handleAssignSave}
+          onEditSave={handleEditAssignSave}
           rowData={selectedRow}
         />
       </Layout>
