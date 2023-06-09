@@ -20,30 +20,12 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-const Categories = [
-  { id: 1, name: "Display" },
-  { id: 2, name: "Motor" },
-  { id: 3, name: "Jarvis" },
-];
-
-const subCategories = {
-  1: [
-    { id: 1, name: "DS-1" },
-    { id: 2, name: "DS-2" },
-    { id: 3, name: "DS-3" },
-  ],
-  2: [
-    { id: 4, name: "MT-1" },
-    { id: 5, name: "MT-2" },
-    { id: 6, name: "MT-3" },
-  ],
-  3: [
-    { id: 7, name: "JS-1" },
-    { id: 8, name: "JS-2" },
-    { id: 9, name: "JS-3" },
-  ],
-};
+import {
+  useGetInventoryFormatQuery,
+  useGetInventoryTypeQuery,
+} from "@/redux/feature/inventoryTypeApiSlice";
+import { useGetInventoryQuery } from "@/redux/feature/inventoryApiSlice";
+import moment from "moment/moment";
 
 const AddEditMachineModal = ({
   isOpen,
@@ -54,15 +36,17 @@ const AddEditMachineModal = ({
 }) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({
-    warrantyStartDate: "",
     tags: [],
   });
-  const [categories, setCategories] = useState(Categories);
+  const { data: inventoryType } = useGetInventoryTypeQuery();
+
+  const [categories, setCategories] = useState(inventoryType?.data?.InventryTypes);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-
+  const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
+  
   const validationSchema = Yup.object().shape({
     machineId: Yup.string().required("Machine ID is required"),
     warrantyStartDate: Yup.string().required("Warranty start date is required"),
@@ -76,20 +60,24 @@ const AddEditMachineModal = ({
     setValue,
   } = useForm({
     resolver: yupResolver(validationSchema),
-    defaultValues: formData,
+    defaultValues: { machineId: "", tags: [] },
   });
+
+  const [warrantyStartDate, setWarrantyStartDate] = useState("");
 
   useEffect(() => {
     if (isEditMode) {
-      setFormData({ ...rowData, tags: rowData.tags || [] });
+      setFormData({ ...rowData, tags: rowData.inventry || [] });
       setSelectedCategory(rowData.category);
       setSelectedSubcategory(rowData.subcategory);
-      setSelectedTags([...rowData.tags]);
+      setSelectedTags([...rowData?.inventry]);
+      setWarrantyStartDate(moment(rowData.warrentyStartDate).format('YYYY-MM-DD'));
     } else {
-      setFormData({ warrantyStartDate: "", tags: [] });
+      setFormData({ machineId: "", tags: [] });
       setSelectedCategory("");
       setSelectedSubcategory("");
       setSelectedTags([]);
+      setWarrantyStartDate("");
     }
   }, [rowData]);
 
@@ -98,13 +86,15 @@ const AddEditMachineModal = ({
       reset();
       if (isEditMode) {
         setValue("machineId", rowData.machineId);
-        setValue("warrantyStartDate", rowData.warrantyStartDate);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
   useEffect(() => {
-    setSubcategories(subCategories[selectedCategory] || []);
+    if(selectedCategory)
+    {
+      setSubcategories(inventory?.data?.InventryTypes[0]?.invetries || []);
+    }
   }, [selectedCategory]);
 
   const handleCategoryChange = (e) => {
@@ -114,11 +104,11 @@ const AddEditMachineModal = ({
 
   const handleAddTag = () => {
     if (selectedCategory && selectedSubcategory) {
-      const subcategory = subCategories[selectedCategory].find(
-        (subcategory) => subcategory.id === parseInt(selectedSubcategory)
+      const subcategory = subcategories.find(
+        (subcategory) => subcategory._id === selectedSubcategory
       );
       if (subcategory) {
-        setSelectedTags([...selectedTags, subcategory.name]);
+        setSelectedTags([...selectedTags, subcategory]);
         setSelectedCategory("");
         setSelectedSubcategory("");
       }
@@ -126,17 +116,26 @@ const AddEditMachineModal = ({
   };
 
   const handleRemoveTag = (tag) => {
-    setSelectedTags(selectedTags.filter((t) => t !== tag));
+    setSelectedTags(selectedTags.filter((t) => t._id !== tag._id));
   };
-
+  const handleClose=()=>{
+    onClose();
+    setSelectedCategory("");
+    setSelectedSubcategory("");
+  }
   const onSubmit = (data) => {
+    const inventry = selectedTags.map((item) => ({ _inventry: item._id }));
     if (isEditMode) {
-      onEditSave({ ...data, tags: selectedTags });
+      onEditSave({ ...data, warrantyStartDate, tags: inventry });
       onClose();
+      setSelectedTags([]);
+      setWarrantyStartDate("");
       reset();
     } else {
-      onSave({ ...data, tags: selectedTags });
+      onSave({ ...data, warrantyStartDate, tags: inventry });
       onClose();
+      setSelectedTags([]);
+      setWarrantyStartDate("");
       reset();
     }
   };
@@ -151,7 +150,11 @@ const AddEditMachineModal = ({
           <ModalBody>
             <FormControl isInvalid={errors.machineId}>
               <FormLabel>Machine ID</FormLabel>
-              <Input type="text" name="machineId" {...register("machineId")} />
+              <Input
+                type="text"
+                name="machineId"
+                {...register("machineId")}
+              />
               <FormErrorMessage>
                 {errors.machineId && errors.machineId.message}
               </FormErrorMessage>
@@ -163,6 +166,8 @@ const AddEditMachineModal = ({
                 type="date"
                 name="warrantyStartDate"
                 {...register("warrantyStartDate")}
+                value={warrantyStartDate}
+                onChange={(e) => setWarrantyStartDate(e.target.value)}
               />
               <FormErrorMessage>
                 {errors.warrantyStartDate && errors.warrantyStartDate.message}
@@ -177,8 +182,8 @@ const AddEditMachineModal = ({
                 onChange={handleCategoryChange}
               >
                 <option value="">Select a category</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
+                {categories?.map((category) => (
+                  <option key={category.id} value={category._id}>
                     {category.name}
                   </option>
                 ))}
@@ -194,8 +199,8 @@ const AddEditMachineModal = ({
               >
                 <option value="">Select a subcategory</option>
                 {subcategories.map((subcategory) => (
-                  <option key={subcategory.id} value={subcategory.id}>
-                    {subcategory.name}
+                  <option key={subcategory._id} value={subcategory._id}>
+                    {subcategory.brandName}
                   </option>
                 ))}
               </Select>
@@ -216,14 +221,14 @@ const AddEditMachineModal = ({
                 <div>
                   {selectedTags.map((tag) => (
                     <Tag
-                      key={tag}
+                      key={tag.id}
                       size="md"
                       borderRadius="full"
                       variant="solid"
                       colorScheme="blue"
                       mr={2}
                     >
-                      <TagLabel>{tag}</TagLabel>
+                      <TagLabel>{tag.brandName}</TagLabel>
                       <TagCloseButton onClick={() => handleRemoveTag(tag)} />
                     </Tag>
                   ))}
@@ -232,7 +237,7 @@ const AddEditMachineModal = ({
             )}
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit" colorScheme="blue" ml={3}>

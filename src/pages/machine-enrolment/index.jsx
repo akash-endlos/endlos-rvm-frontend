@@ -24,6 +24,7 @@ import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachi
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import {MdDomainAdd} from 'react-icons/md'
+import { toast } from "react-hot-toast";
 
 const index = () => {
   const router = useRouter()
@@ -73,24 +74,18 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-    console.log('====================================');
-    console.log({...data.tags});
-    console.log('====================================');
     const addNewData={
       machineId:data.machineId,
-      inventry:[{"_inventry":"6481b96f6fa0eed6f6992ae7"}],
+      inventry:data.tags,
       warrentyStartDate:data.warrantyStartDate
     }
     await addMachine(addNewData)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      toast.success('Added SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   };
