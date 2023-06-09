@@ -18,7 +18,7 @@ import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMu
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import { useRouter } from "next/router";
-import { useAddMachineMutation, useDeleteMachineMutation, useGetMachinesQuery } from "@/redux/feature/machineApiSlice";
+import { useAddMachineMutation, useDeleteMachineMutation, useGetMachinesQuery, useUpdateMachineMutation } from "@/redux/feature/machineApiSlice";
 import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachineModal";
 import AddEditMachineModal from "@/components/modals/machines-modal/AddEditMachineModal";
 import { FiEdit } from "react-icons/fi";
@@ -37,6 +37,7 @@ const index = () => {
   const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error,refetch } = useGetMachinesQuery();
   const [updateCustomer] = useUpdateCustomerMutation()
+  const [updateMachine] = useUpdateMachineMutation()
   const [deleteCustomer] = useDeleteCustomerMutation()
   const [deleteMachine] = useDeleteMachineMutation()
   useEffect(() => {
@@ -55,7 +56,7 @@ const index = () => {
     await deleteMachine(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); // Reset selectedRow state
+        setSelectedRow(null); 
         setIsDeleteModalOpen(false);
       })
       .catch((error) => {
@@ -91,17 +92,22 @@ const index = () => {
   };
   
   const handleEditSave=async(data)=>{
+    const editNewData={
+      machineId:data.machineId,
+      inventry:data.tags,
+      warrentyStartDate:data.warrantyStartDate
+    }
     const updatedData={
       id: selectedRow._id,
-      editedData:data
+      editedData:editNewData
     }
-    await updateCustomer(updatedData)
+    await updateMachine(updatedData)
     .unwrap()
     .then(() => {
-      setaddTutorialData({ name: ""});
+      toast.success('Updated SuccessFully')
     })
     .catch((error) => {
-    console.log(error);
+      toast.error(error.data.error)
 
     });
   }

@@ -49,7 +49,7 @@ const AddEditMachineModal = ({
   
   const validationSchema = Yup.object().shape({
     machineId: Yup.string().required("Machine ID is required"),
-    warrantyStartDate: Yup.string().required("Warranty start date is required"),
+    // warrentyStartDate: Yup.string().required("Warranty start date is required"),
   });
 
   const {
@@ -63,7 +63,7 @@ const AddEditMachineModal = ({
     defaultValues: { machineId: "", tags: [] },
   });
 
-  const [warrantyStartDate, setWarrantyStartDate] = useState("");
+  const [warrentyStartDate, setWarrantyStartDate] = useState("");
 
   useEffect(() => {
     if (isEditMode) {
@@ -71,7 +71,7 @@ const AddEditMachineModal = ({
       setSelectedCategory(rowData.category);
       setSelectedSubcategory(rowData.subcategory);
       setSelectedTags([...rowData?.inventry]);
-      setWarrantyStartDate(moment(rowData.warrentyStartDate).format('YYYY-MM-DD'));
+      setWarrantyStartDate(rowData.warrentyStartDate ? moment(rowData.warrentyStartDate).format('YYYY-MM-DD') : "");
     } else {
       setFormData({ machineId: "", tags: [] });
       setSelectedCategory("");
@@ -126,13 +126,13 @@ const AddEditMachineModal = ({
   const onSubmit = (data) => {
     const inventry = selectedTags.map((item) => ({ _inventry: item._id }));
     if (isEditMode) {
-      onEditSave({ ...data, warrantyStartDate, tags: inventry });
+      onEditSave({ ...data, warrentyStartDate, tags: inventry });
       onClose();
       setSelectedTags([]);
       setWarrantyStartDate("");
       reset();
     } else {
-      onSave({ ...data, warrantyStartDate, tags: inventry });
+      onSave({ ...data, warrentyStartDate, tags: inventry });
       onClose();
       setSelectedTags([]);
       setWarrantyStartDate("");
@@ -160,17 +160,17 @@ const AddEditMachineModal = ({
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={errors.warrantyStartDate}>
+            <FormControl isInvalid={errors.warrentyStartDate}>
               <FormLabel>Warranty Start Date</FormLabel>
               <Input
                 type="date"
-                name="warrantyStartDate"
-                {...register("warrantyStartDate")}
-                value={warrantyStartDate}
+                name="warrentyStartDate"
+                {...register("warrentyStartDate")}
+                value={warrentyStartDate}
                 onChange={(e) => setWarrantyStartDate(e.target.value)}
               />
               <FormErrorMessage>
-                {errors.warrantyStartDate && errors.warrantyStartDate.message}
+                {errors.warrentyStartDate && errors.warrentyStartDate.message}
               </FormErrorMessage>
             </FormControl>
 

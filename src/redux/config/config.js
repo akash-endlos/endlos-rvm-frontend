@@ -25,7 +25,8 @@ const config = {
             deleteInventory:'inventry/delete',
             getAllMachines:'machine/get?type=all',
             deleteMachine:'machine/delete',
-            addMachine:'machine/add'
+            addMachine:'machine/add',
+            updateMachine:'machine/update'
         }
     }
 }

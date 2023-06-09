@@ -3,14 +3,14 @@ import config from "../config/config";
 
 export const machineApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // updateCustomer: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `${config.api.url.updateCustomer}?id=${payload.id}`,
-    //     method: "PUT",
-    //     body: payload.editedData,
-    //   }),
-    //   invalidatesTags: ['Customers'],
-    // }),
+    updateMachine: builder.mutation({
+      query: (payload) => ({
+        url: `${config.api.url.updateMachine}?id=${payload.id}`,
+        method: "PUT",
+        body: payload.editedData,
+      }),
+      invalidatesTags: ['Machines'],
+    }),
     addMachine: builder.mutation({
       query: (payload) => ({
         url: config.api.url.addMachine,
@@ -46,6 +46,6 @@ export const {
   useAddMachineMutation,
   useGetMachinesQuery,
 //   useGetCustomerByIdMutation,
-//   useUpdateCustomerMutation,
+  useUpdateMachineMutation,
   useDeleteMachineMutation,
 } = machineApiSlice;
