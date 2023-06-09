@@ -92,9 +92,6 @@ const index = () => {
   };
   
   const handleEditSave=async(data)=>{
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
     const editNewData={
       machineId:data.machineId,
       inventry:data.tags,
