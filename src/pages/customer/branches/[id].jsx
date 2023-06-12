@@ -28,6 +28,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBranch";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "react-hot-toast";
 
 const index = () => {
   const router = useRouter()
