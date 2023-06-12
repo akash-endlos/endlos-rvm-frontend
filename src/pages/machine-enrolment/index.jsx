@@ -28,6 +28,7 @@ import { CgAssign } from "react-icons/cg";
 import { RiFileEditLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import AddEditAssignModal from "@/components/modals/machines-modal/AddEditAssignModal";
+import { useGetInventoryFormatQuery, useGetInventoryTypeQuery } from "@/redux/feature/inventoryTypeApiSlice";
 
 const index = () => {
   const router = useRouter();
@@ -36,11 +37,14 @@ const index = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isAddEditAssignModal, setIsAddEditAssignModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [dataTable, setDataTable] = useState([]);
   const headers = ["machineId", "customerName", "warrentyStartDate", "Action"];
   const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error, refetch } =
     useGetMachinesQuery();
+    const { data: inventoryType } = useGetInventoryTypeQuery();
+    const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
   const [updateMachine] = useUpdateMachineMutation();
   const [deleteMachine] = useDeleteMachineMutation();
   useEffect(() => {
@@ -139,7 +143,7 @@ const index = () => {
   };
 
   const handleEditAssignSave = async (data) => {
-  console.log(data);
+    console.log(data);
   };
   const renderAction = (row) => {
     return (
@@ -209,9 +213,13 @@ const index = () => {
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
+          inventoryType={inventoryType}
+          setSelectedCategory={setSelectedCategory}
+          selectedCategory={selectedCategory}
+          inventory={inventory}
         />
-         <AddEditAssignModal
-         machineDataTable={dataTable}
+        <AddEditAssignModal
+          machineDataTable={dataTable}
           isOpen={isAddEditAssignModal}
           onClose={handleAssignEditCancel}
           onSave={handleAssignSave}

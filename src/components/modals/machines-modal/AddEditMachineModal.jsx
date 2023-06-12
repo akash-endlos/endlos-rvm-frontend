@@ -33,19 +33,23 @@ const AddEditMachineModal = ({
   onSave,
   rowData,
   onEditSave,
+  inventoryType,
+  selectedCategory,
+  setSelectedCategory,
+  inventory
 }) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({
     tags: [],
   });
-  const { data: inventoryType } = useGetInventoryTypeQuery();
+  // const { data: inventoryType } = useGetInventoryTypeQuery();
 
   const [categories, setCategories] = useState(inventoryType?.data?.InventryTypes);
   const [subcategories, setSubcategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  // const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
+  // const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
   
   const validationSchema = Yup.object().shape({
     machineId: Yup.string().required("Machine ID is required"),
@@ -95,7 +99,7 @@ const AddEditMachineModal = ({
     {
       setSubcategories(inventory?.data?.InventryTypes[0]?.invetries || []);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory,inventory?.data?.InventryTypes[0]?.invetries]);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
