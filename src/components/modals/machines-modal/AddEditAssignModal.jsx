@@ -20,8 +20,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, machineDataTable }) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
+  const [customerOptions, setCustomerOptions] = useState([]);
+  const [branchOptions, setBranchOptions] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState("");
 
   const validationSchema = Yup.object().shape({
+    customerId: Yup.string().required("Customer ID is required"),
     machineId: Yup.string().required("Machine ID is required"),
     branchId: Yup.string().required("Branch ID is required"),
   });
@@ -49,11 +53,55 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
     if (isOpen) {
       reset();
       if (isEditMode) {
+        setValue("customerId", rowData.customerId);
         setValue("machineId", rowData.machineId);
         setValue("branchId", rowData.branchId);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
+
+  // Fetch customer options (dummy data)
+  useEffect(() => {
+    const dummyCustomerOptions = [
+      { id: "1", name: "Customer 1" },
+      { id: "2", name: "Customer 2" },
+      { id: "3", name: "Customer 3" },
+    ];
+    setCustomerOptions(dummyCustomerOptions);
+  }, []);
+
+  // Fetch branch options based on selected customer (dummy data)
+  useEffect(() => {
+    if (selectedCustomerId) {
+      let dummyBranchOptions = [];
+      if (selectedCustomerId === "1") {
+        dummyBranchOptions = [
+          { id: "1.1", name: "Branch 1.1" },
+          { id: "1.2", name: "Branch 1.2" },
+          { id: "1.3", name: "Branch 1.3" },
+        ];
+      } else if (selectedCustomerId === "2") {
+        dummyBranchOptions = [
+          { id: "2.1", name: "Branch 2.1" },
+          { id: "2.2", name: "Branch 2.2" },
+          { id: "2.3", name: "Branch 2.3" },
+        ];
+      } else if (selectedCustomerId === "3") {
+        dummyBranchOptions = [
+          { id: "3.1", name: "Branch 3.1" },
+          { id: "3.2", name: "Branch 3.2" },
+          { id: "3.3", name: "Branch 3.3" },
+        ];
+      }
+      setBranchOptions(dummyBranchOptions);
+    } else {
+      setBranchOptions([]);
+    }
+  }, [selectedCustomerId]);
+
+  const handleCustomerChange = (customerId) => {
+    setSelectedCustomerId(customerId);
+  };
 
   const onSubmit = (data) => {
     if (isEditMode) {
@@ -75,24 +123,48 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl isInvalid={errors.machineId}>
+          <FormControl isInvalid={errors.machineId}>
               <FormLabel>Machine ID</FormLabel>
               <Select name="machineId" {...register("machineId")}>
-                <option value="">Select an option</option>
+                <option value="">Select a machine</option>
                 {machineDataTable.map((item, index) => (
-                  <option key={item._id} value={item._id}>{item.machineId}</option>
+                  <option key={item._id} value={item._id}>
+                    {item.machineId}
+                  </option>
                 ))}
               </Select>
               <FormErrorMessage>
                 {errors.machineId && errors.machineId.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl mt={4} isInvalid={errors.branchId}>
+            
+            <FormControl isInvalid={errors.customerId}>
+              <FormLabel>Customer ID</FormLabel>
+              <Select
+                name="customerId"
+                {...register("customerId")}
+                onChange={(e) => handleCustomerChange(e.target.value)}
+              >
+                <option value="">Select a customer</option>
+                {customerOptions.map((customer) => (
+                  <option key={customer.id} value={customer.id}>
+                    {customer.name}
+                  </option>
+                ))}
+              </Select>
+              <FormErrorMessage>
+                {errors.customerId && errors.customerId.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors.branchId}>
               <FormLabel>Branch ID</FormLabel>
               <Select name="branchId" {...register("branchId")}>
-                <option value="">Select an option</option>
-                {machineDataTable.map((item,index)=>(
-                  <option key={item._id} value={item._id}>{item.machineId}</option>
+                <option value="">Select a branch</option>
+                {branchOptions.map((branch) => (
+                  <option key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </option>
                 ))}
               </Select>
               <FormErrorMessage>
