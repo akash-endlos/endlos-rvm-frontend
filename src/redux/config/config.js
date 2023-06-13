@@ -26,7 +26,8 @@ const config = {
             getAllMachines:'machine/get?type=all',
             deleteMachine:'machine/delete',
             addMachine:'machine/add',
-            updateMachine:'machine/update'
+            updateMachine:'machine/update',
+            assignMachine:'machine/assign'
         }
     }
 }

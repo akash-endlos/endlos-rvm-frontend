@@ -16,6 +16,7 @@ import Layout from "@/layout/Layout";
 import { useRouter } from "next/router";
 import {
   useAddMachineMutation,
+  useAssignMachineMutation,
   useDeleteMachineMutation,
   useGetMachinesQuery,
   useUpdateMachineMutation,
@@ -47,6 +48,7 @@ const index = () => {
     const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
   const [updateMachine] = useUpdateMachineMutation();
   const [deleteMachine] = useDeleteMachineMutation();
+  const [assignMachine] = useAssignMachineMutation()
   useEffect(() => {
     if (machines) {
       refetch();
@@ -136,9 +138,27 @@ const index = () => {
     setIsAddEditAssignModal(false);
   };
 
-  const handleAssignSave = (data) => {
+  const handleAssignSave = async(data) => {
     // Handle the assign save action here
-    console.log(data);
+    const {machineId,branchId} = data;
+    const addNewData={
+      machineId:machineId,
+      branchId:branchId
+    }
+    // assignMachine(addNewData);
+    await assignMachine(addNewData)
+    .unwrap()
+    .then(() => {
+      toast.success("Added Successfully");
+    })
+    .catch((error) => {
+      if (error.data.message) {
+        toast.error(error.data.message);
+      }
+      if (error.data.error) {
+        console.log(error.data.error);
+      }
+    });
     setIsAddEditAssignModal(false);
   };
 

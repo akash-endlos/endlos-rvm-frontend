@@ -64,7 +64,9 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
   useEffect(() => {
-    setCustomerOptions(customers.data.Customer);
+   if(customers?.data?.Customer){
+    setCustomerOptions(customers?.data?.Customer);
+   }
   }, []);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
       setBranchOptions(myallbranches?.data.Branches);
       }
     } 
-  }, [selectedCustomerId]);
+  }, [selectedCustomerId,myallbranches?.data.Branches]);
   const handleCustomerChange = (customerId) => {
     setSelectedCustomerId(customerId);
   };
