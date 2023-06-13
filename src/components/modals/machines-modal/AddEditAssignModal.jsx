@@ -16,6 +16,8 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useGetCustomersQuery } from "@/redux/feature/customerApiSlice";
+import { useGetBranchesByIdFormatQuery } from "@/redux/feature/branchApiSlice";
 
 const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, machineDataTable }) => {
   const isEditMode = !!rowData;
@@ -23,7 +25,8 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
   const [customerOptions, setCustomerOptions] = useState([]);
   const [branchOptions, setBranchOptions] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState("");
-
+  const { data: myallbranches } = useGetBranchesByIdFormatQuery(selectedCustomerId)
+  const { data: customers, isLoading, isError, error,refetch } = useGetCustomersQuery();
   const validationSchema = Yup.object().shape({
     customerId: Yup.string().required("Customer ID is required"),
     machineId: Yup.string().required("Machine ID is required"),
@@ -60,45 +63,17 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
-  // Fetch customer options (dummy data)
   useEffect(() => {
-    const dummyCustomerOptions = [
-      { id: "1", name: "Customer 1" },
-      { id: "2", name: "Customer 2" },
-      { id: "3", name: "Customer 3" },
-    ];
-    setCustomerOptions(dummyCustomerOptions);
+    setCustomerOptions(customers.data.Customer);
   }, []);
 
-  // Fetch branch options based on selected customer (dummy data)
   useEffect(() => {
     if (selectedCustomerId) {
-      let dummyBranchOptions = [];
-      if (selectedCustomerId === "1") {
-        dummyBranchOptions = [
-          { id: "1.1", name: "Branch 1.1" },
-          { id: "1.2", name: "Branch 1.2" },
-          { id: "1.3", name: "Branch 1.3" },
-        ];
-      } else if (selectedCustomerId === "2") {
-        dummyBranchOptions = [
-          { id: "2.1", name: "Branch 2.1" },
-          { id: "2.2", name: "Branch 2.2" },
-          { id: "2.3", name: "Branch 2.3" },
-        ];
-      } else if (selectedCustomerId === "3") {
-        dummyBranchOptions = [
-          { id: "3.1", name: "Branch 3.1" },
-          { id: "3.2", name: "Branch 3.2" },
-          { id: "3.3", name: "Branch 3.3" },
-        ];
+      if (selectedCustomerId && myallbranches?.data.Branches) {
+      setBranchOptions(myallbranches?.data.Branches);
       }
-      setBranchOptions(dummyBranchOptions);
-    } else {
-      setBranchOptions([]);
-    }
+    } 
   }, [selectedCustomerId]);
-
   const handleCustomerChange = (customerId) => {
     setSelectedCustomerId(customerId);
   };
@@ -137,7 +112,7 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
                 {errors.machineId && errors.machineId.message}
               </FormErrorMessage>
             </FormControl>
-            
+
             <FormControl isInvalid={errors.customerId}>
               <FormLabel>Customer ID</FormLabel>
               <Select
@@ -147,7 +122,7 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
               >
                 <option value="">Select a customer</option>
                 {customerOptions.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
+                  <option key={customer._id} value={customer._id}>
                     {customer.name}
                   </option>
                 ))}
@@ -162,7 +137,7 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
               <Select name="branchId" {...register("branchId")}>
                 <option value="">Select a branch</option>
                 {branchOptions.map((branch) => (
-                  <option key={branch.id} value={branch.id}>
+                  <option key={branch._id} value={branch._id}>
                     {branch.name}
                   </option>
                 ))}
