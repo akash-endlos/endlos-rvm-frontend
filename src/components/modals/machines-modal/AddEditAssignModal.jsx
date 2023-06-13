@@ -74,6 +74,9 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
       if (selectedCustomerId && myallbranches?.data.Branches) {
       setBranchOptions(myallbranches?.data.Branches);
       }
+      else{
+        setBranchOptions([])
+      }
     } 
   }, [selectedCustomerId,myallbranches?.data.Branches]);
   const handleCustomerChange = (customerId) => {
@@ -87,6 +90,7 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
       reset();
     } else {
       onSave(data);
+      setBranchOptions([])
       onClose();
       reset();
     }

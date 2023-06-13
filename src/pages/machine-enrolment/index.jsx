@@ -139,13 +139,11 @@ const index = () => {
   };
 
   const handleAssignSave = async(data) => {
-    // Handle the assign save action here
     const {machineId,branchId} = data;
     const addNewData={
       "machineId":machineId,
       "branchId":branchId
     }
-    // assignMachine(addNewData);
     await assignMachine(addNewData)
     .unwrap()
     .then(() => {
