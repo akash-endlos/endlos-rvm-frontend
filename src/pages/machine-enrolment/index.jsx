@@ -142,8 +142,8 @@ const index = () => {
     // Handle the assign save action here
     const {machineId,branchId} = data;
     const addNewData={
-      machineId:machineId,
-      branchId:branchId
+      "machineId":machineId,
+      "branchId":branchId
     }
     // assignMachine(addNewData);
     await assignMachine(addNewData)
