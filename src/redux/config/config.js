@@ -31,7 +31,9 @@ const config = {
             updateassignMachine:'machine/assign',
             addRole:"userrole",
             getRole:"userrole",
-            deleteRole:"userrole"
+            deleteRole:"userrole",
+            addRole:"userrole",
+            updateRole:"userrole"
         }
     }
 }

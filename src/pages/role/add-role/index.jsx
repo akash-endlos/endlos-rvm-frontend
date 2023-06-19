@@ -22,7 +22,7 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import AddEditUserRoleModal from "@/components/modals/userRole-modal/AddEditUserRoleModal";
-import { useGetRoleQuery } from "@/redux/feature/roleApiSlice";
+import { useAddRoleMutation, useDeleteRoleMutation, useGetRoleQuery, useUpdateRoleByIdMutation } from "@/redux/feature/roleApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -31,11 +31,10 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["roleName",'description', "Action"];
-  const [addInventoryType] = useAddInventoryTypeMutation();
-  const { data: inventoryType,  } = useGetInventoryTypeQuery();
+  const [addRole] = useAddRoleMutation();
   const { data: userRole, isLoading, isError, error,refetch } = useGetRoleQuery();
-  const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
-  const [deleteInventoryType] = useDeleteInventoryTypeMutation()
+  const [updateRoleById] = useUpdateRoleByIdMutation()
+  const [deleteRole] = useDeleteRoleMutation()
   useEffect(() => {
    if(userRole)
    {
@@ -49,7 +48,7 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteInventoryType(selectedRow._id)
+    await deleteRole(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
@@ -72,7 +71,7 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addInventoryType(data)
+    await addRole(data)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')
@@ -88,14 +87,13 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateInventoryTypeById(updatedData)
+    await updateRoleById(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Updated SuccessFully')
     })
     .catch((error) => {
       toast.error(error.data.error)
-
     });
   }
   const handleCancelAddEdit = () => {
