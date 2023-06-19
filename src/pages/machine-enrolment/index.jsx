@@ -162,6 +162,28 @@ const index = () => {
 
   const handleEditAssignSave = async (data) => {
     console.log(data);
+    // const editNewData = {
+    //   machineId: data.machineId,
+    //   inventry: data.tags,
+    //   warrentyStartDate: data.warrentyStartDate,
+    // };
+    // const updatedData = {
+    //   id: selectedRow._id,
+    //   editedData: editNewData,
+    // };
+    await updateMachine(data)
+      .unwrap()
+      .then(() => {
+        toast.success("Updated Assigned Successfully");
+      })
+      .catch((error) => {
+        if (error.data.message) {
+          toast.error(error.data.message);
+        }
+        if (error.data.error) {
+          console.log(error.data.error);
+        }
+      });
   };
   const renderAction = (row) => {
     return (
