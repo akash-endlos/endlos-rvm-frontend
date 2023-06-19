@@ -52,7 +52,7 @@ const index = () => {
   useEffect(() => {
     if (machines) {
       refetch();
-      setDataTable(machines?.data?.Machines);
+      setDataTable(machines?.data?.AllMachines);
     }
   }, [machines]);
 
