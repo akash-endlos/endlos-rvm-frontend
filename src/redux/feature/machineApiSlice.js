@@ -47,6 +47,14 @@ export const machineApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Machines'], 
     }),
+    updateAssignMachine: builder.mutation({
+      query: (payload) => ({
+        url: `${config.api.url.updateassignMachine}?machineId=${id}`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ['Machines'], 
+    }),
   }),
 });
 
@@ -56,5 +64,6 @@ export const {
 //   useGetCustomerByIdMutation,
   useUpdateMachineMutation,
   useDeleteMachineMutation,
-  useAssignMachineMutation
+  useAssignMachineMutation,
+  useUpdateAssignMachineMutation
 } = machineApiSlice;

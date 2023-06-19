@@ -27,7 +27,8 @@ const config = {
             deleteMachine:'machine/delete',
             addMachine:'machine/add',
             updateMachine:'machine/update',
-            assignMachine:'machine/assign'
+            assignMachine:'machine/assign',
+            updateassignMachine:'machine/assign'
         }
     }
 }

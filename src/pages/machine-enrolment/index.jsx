@@ -19,6 +19,7 @@ import {
   useAssignMachineMutation,
   useDeleteMachineMutation,
   useGetMachinesQuery,
+  useUpdateAssignMachineMutation,
   useUpdateMachineMutation,
 } from "@/redux/feature/machineApiSlice";
 import DeleteMachineModal from "@/components/modals/machines-modal/DeleteMachineModal";
@@ -50,6 +51,7 @@ const index = () => {
   const [updateMachine] = useUpdateMachineMutation();
   const [deleteMachine] = useDeleteMachineMutation();
   const [assignMachine] = useAssignMachineMutation()
+  const [updateAssignMachine] = useUpdateAssignMachineMutation()
   useEffect(() => {
     if (machines) {
       refetch();
@@ -140,8 +142,6 @@ const index = () => {
   };
 
   const handleAssignSave = async(data) => {
-    console.log(data
-      );
     const {machineId,branchId} = data;
     const addNewData={
       "machineId":machineId,
@@ -164,32 +164,10 @@ const index = () => {
   };
 
   const handleEditAssignSave = async (data) => {
-    console.log(data);
-    // const editNewData = {
-    //   machineId: data.machineId,
-    //   inventry: data.tags,
-    //   warrentyStartDate: data.warrentyStartDate,
-    // };
-    // const updatedData = {
-    //   id: selectedRow._id,
-    //   editedData: editNewData,
-    // };
-    await updateMachine(data)
-      .unwrap()
-      .then(() => {
-        toast.success("Updated Assigned Successfully");
-      })
-      .catch((error) => {
-        if (error.data.message) {
-          toast.error(error.data.message);
-        }
-        if (error.data.error) {
-          console.log(error.data.error);
-        }
-      });
+ console.log(data);
+ updateAssignMachine(data.machineId)
   };
   const renderAction = (row) => {
-    console.log(row.customer.name);
     return (
       <Flex gap={3} alignContent="center">
         <FiEdit
@@ -204,7 +182,7 @@ const index = () => {
           color="red"
           size={20}
         />
-        {row && row?.customer?.name ? (
+        {row && !row?.customer?.name ? (
           <CgAssign
             className="cursor-pointer"
             onClick={() => setIsAddEditAssignModal(true)}
