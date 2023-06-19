@@ -40,7 +40,7 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["machineId", "customerName", "warrentyStartDate", "Action"];
+  const headers = ["machineId", "customer","branchName", "warrentyStartDate", "Action"];
   const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error, refetch } =
     useGetMachinesQuery();
@@ -147,7 +147,7 @@ const index = () => {
     await assignMachine(addNewData)
     .unwrap()
     .then(() => {
-      toast.success("Added Successfully");
+      toast.success("Assigned Successfully");
     })
     .catch((error) => {
       if (error.data.message) {
@@ -178,7 +178,7 @@ const index = () => {
           color="red"
           size={20}
         />
-        {true ? (
+        {row && !row?.customer ? (
           <CgAssign
             className="cursor-pointer"
             onClick={() => setIsAddEditAssignModal(true)}
