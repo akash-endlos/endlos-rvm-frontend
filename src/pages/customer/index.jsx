@@ -30,7 +30,7 @@ const index = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["ID","name","branch", "Action"];
+  const headers = ["name","branch", "Action"];
   const [addCustomer] = useAddCustomerMutation();
   const { data: customers, isLoading, isError, error,refetch } = useGetCustomersQuery();
   const [updateCustomer] = useUpdateCustomerMutation()

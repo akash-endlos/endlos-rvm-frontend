@@ -34,7 +34,7 @@ const index = () => {
   const router = useRouter()
   const id = router?.query?.id
   const btnRef = React.useRef();
-  const headers = ["ID","name", "Action"];
+  const headers = ["name", "Action"];
   const [branches, setBranches] = useState([]);
   const { data: myallbranches,isLoading } = useGetBranchesByIdFormatQuery(id)
   const [addBranch] = useAddBranchMutation()

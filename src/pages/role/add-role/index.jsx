@@ -18,8 +18,6 @@ import { useRouter } from "next/router";
 import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInventoryTypeQuery, useUpdateInventoryTypeByIdMutation } from "@/redux/feature/inventoryTypeApiSlice";
 import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
-import AddEditInventoryModal from "@/components/modals/inventory-modal/AddEditInventoryModal";
-import { useAddInventoryMutation, useDeleteInventoryMutation, useGetInventoryQuery, useUpdateInventoryByIdMutation } from "@/redux/feature/inventoryApiSlice";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
@@ -30,35 +28,25 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const [InventoryType, setInventoryType] = useState([])
-  const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
-  const [addInventory] = useAddInventoryMutation();
-  const { data: inventory,refetch,isLoading,currentData } = useGetInventoryQuery();
-  const { data: inventoryType } = useGetInventoryTypeQuery();
-  // const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
-  const [updateInventoryById] = useUpdateInventoryByIdMutation()
-  const [deleteInventory] = useDeleteInventoryMutation()
+  const headers = ["name",'invetries', "Action"];
+  const [addInventoryType] = useAddInventoryTypeMutation();
+  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
+  const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
+  const [deleteInventoryType] = useDeleteInventoryTypeMutation()
   useEffect(() => {
-   if(inventory)
+   if(inventoryType)
    {
-    
-     setDataTable(inventory.data.allInventry)
-     refetch()
+     setDataTable(inventoryType.data.InventryTypes)
+     refetch();
    }
-  }, [inventory])
-  useEffect(() => {
-    if(inventoryType)
-    {
-      setInventoryType(inventoryType.data.InventryTypes)
-    }
-   }, [inventoryType])
+  }, [inventoryType])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
-    await deleteInventory(selectedRow._id)
+    await deleteInventoryType(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
@@ -81,13 +69,7 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    const newAddData={
-      brandName:data.brandName,
-      inventryType:data.inventryType,
-      serialNumber:data.serialNumber
-    }
-    const manipulatedData= data.purchaseDate? data :newAddData
-    await addInventory(manipulatedData)
+    await addInventoryType(data)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')
@@ -103,7 +85,7 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateInventoryById(updatedData)
+    await updateInventoryTypeById(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Updated SuccessFully')
@@ -137,13 +119,13 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Inventory Details
+          Roles
         </Text>
         <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Inventory Details
+              Add Role
             </Button>
           </Box>
         </Flex>
@@ -157,13 +139,12 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditInventoryModal
+        <AddEditInventoryTypeModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
-          options={InventoryType}
         />
       </Layout>
     </>

@@ -23,9 +23,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
       {paginatedData.map((row, rowIndex) => (
         <Tr key={rowIndex}>
           {headerNames.map((header, colIndex) => {
-              if (header === 'ID') {
-                return <Td key={colIndex}>{rowIndex+1}</Td>;
-              }
+              // if (header === 'ID') {
+              //   return <Td key={colIndex}>{rowIndex+1}</Td>;
+              // }
             if (header === 'Action') {
               return <Td key={colIndex}>{renderAction(row)}</Td>;
             }
