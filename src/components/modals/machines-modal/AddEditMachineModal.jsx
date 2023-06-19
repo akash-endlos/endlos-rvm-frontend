@@ -74,7 +74,7 @@ const AddEditMachineModal = ({
       setFormData({ ...rowData, tags: rowData.inventry || [] });
       setSelectedCategory(rowData.category);
       setSelectedSubcategory(rowData.subcategory);
-      setSelectedTags([...rowData?.inventry]);
+      setSelectedTags([...rowData.inventoryDetails]);
       setWarrantyStartDate(rowData.warrentyStartDate ? moment(rowData.warrentyStartDate).format('YYYY-MM-DD') : "");
     } else {
       setFormData({ machineId: "", tags: [] });
