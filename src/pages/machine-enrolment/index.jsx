@@ -189,6 +189,7 @@ const index = () => {
       });
   };
   const renderAction = (row) => {
+    console.log(row.customer.name);
     return (
       <Flex gap={3} alignContent="center">
         <FiEdit
@@ -203,7 +204,7 @@ const index = () => {
           color="red"
           size={20}
         />
-        {row && row?.customer ? (
+        {row && row?.customer?.name ? (
           <CgAssign
             className="cursor-pointer"
             onClick={() => setIsAddEditAssignModal(true)}
