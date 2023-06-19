@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import {
   useAddMachineMutation,
   useAssignMachineMutation,
+  useAssignedUpdateMachineMutation,
   useDeleteMachineMutation,
   useGetMachinesQuery,
   useUpdateAssignMachineMutation,
@@ -41,17 +42,17 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["ID","machineId", "warrentyStartDate", "Action"];
+  const headers = ["ID", "machineId", "warrentyStartDate", "Action"];
   // const headers = ["ID","machineId", "customer","branchName", "warrentyStartDate", "Action"];
   const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error, refetch } =
     useGetMachinesQuery();
-    const { data: inventoryType } = useGetInventoryTypeQuery();
-    const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
+  const { data: inventoryType } = useGetInventoryTypeQuery();
+  const { data: inventory } = useGetInventoryFormatQuery(selectedCategory);
   const [updateMachine] = useUpdateMachineMutation();
   const [deleteMachine] = useDeleteMachineMutation();
   const [assignMachine] = useAssignMachineMutation()
-  const [updateAssignMachine] = useUpdateAssignMachineMutation()
+  const [assignedUpdateMachine] = useAssignedUpdateMachineMutation()
   useEffect(() => {
     if (machines) {
       refetch();
@@ -141,31 +142,52 @@ const index = () => {
     setIsAddEditAssignModal(false);
   };
 
-  const handleAssignSave = async(data) => {
-    const {machineId,branchId} = data;
-    const addNewData={
-      "machineId":machineId,
-      "branchId":branchId
+  const handleAssignSave = async (data) => {
+    const { machineId, branchId } = data;
+    const addNewData = {
+      "machineId": machineId,
+      "branchId": branchId
     }
     await assignMachine(addNewData)
-    .unwrap()
-    .then(() => {
-      toast.success("Assigned Successfully");
-    })
-    .catch((error) => {
-      if (error.data.message) {
-        toast.error(error.data.message);
-      }
-      if (error.data.error) {
-        console.log(error.data.error);
-      }
-    });
+      .unwrap()
+      .then(() => {
+        toast.success("Assigned Successfully");
+      })
+      .catch((error) => {
+        if (error.data.message) {
+          toast.error(error.data.message);
+        }
+        if (error.data.error) {
+          console.log(error.data.error);
+        }
+      });
     setIsAddEditAssignModal(false);
   };
 
   const handleEditAssignSave = async (data) => {
- console.log(data);
- updateAssignMachine(data.machineId)
+    const { machineId, branchId } = data;
+    const addNewData = {
+      "machineId": machineId,
+      "branchId": branchId
+    }
+    const updateAssignNewData = {
+      "id": machineId,
+      "assigneupdateData":addNewData
+    }
+    await assignedUpdateMachine(updateAssignNewData)
+      .unwrap()
+      .then(() => {
+        toast.success("Assigned Successfully");
+      })
+      .catch((error) => {
+        if (error.data.message) {
+          toast.error(error.data.message);
+        }
+        if (error.data.error) {
+          console.log(error.data.error);
+        }
+      });
+    setIsAddEditAssignModal(false);
   };
   const renderAction = (row) => {
     return (
