@@ -140,6 +140,8 @@ const index = () => {
   };
 
   const handleAssignSave = async(data) => {
+    console.log(data
+      );
     const {machineId,branchId} = data;
     const addNewData={
       "machineId":machineId,
@@ -201,7 +203,7 @@ const index = () => {
           color="red"
           size={20}
         />
-        {row && !row?.customer ? (
+        {row && row?.customer ? (
           <CgAssign
             className="cursor-pointer"
             onClick={() => setIsAddEditAssignModal(true)}
