@@ -28,7 +28,7 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name",'invetries', "Action"];
+  const headers = ["ID","name",'invetries', "Action"];
   const [addInventoryType] = useAddInventoryTypeMutation();
   const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()

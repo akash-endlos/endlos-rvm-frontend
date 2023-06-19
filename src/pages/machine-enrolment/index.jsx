@@ -40,7 +40,7 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["machineId", "customer","branchName", "warrentyStartDate", "Action"];
+  const headers = ["ID","machineId", "customer","branchName", "warrentyStartDate", "Action"];
   const [addMachine] = useAddMachineMutation();
   const { data: machines, isLoading, isError, error, refetch } =
     useGetMachinesQuery();

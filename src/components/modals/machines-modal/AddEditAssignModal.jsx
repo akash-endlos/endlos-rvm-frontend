@@ -56,8 +56,8 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
     if (isOpen) {
       reset();
       if (isEditMode) {
-        setValue("customerId", rowData.customerId);
-        setValue("machineId", rowData.machineId);
+        setValue("customerId", '648e9cb8829e1029275c3e92');
+        setValue("machineId", rowData._id);
         setValue("branchId", rowData.branchId);
       }
     }
