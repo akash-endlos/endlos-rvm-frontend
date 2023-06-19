@@ -21,7 +21,7 @@ export const roleApiSlice = apiSlice.injectEndpoints({
       }),
     getRole: builder.query({
       query: () => ({
-        url: config.api.url.inventoryType,
+        url: config.api.url.getRole,
         method: "GET",
       }),
       providesTags: ['Roles'],
@@ -43,7 +43,7 @@ export const roleApiSlice = apiSlice.injectEndpoints({
   }),
 });
 export const {
-//   useGetRoleQuery,
+  useGetRoleQuery,
 //   useAddRoleMutation,
 //   useUpdateRoleByIdMutation,
 //   useDeleteRoleMutation,

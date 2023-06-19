@@ -21,6 +21,8 @@ import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/De
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
+import AddEditUserRoleModal from "@/components/modals/userRole-modal/AddEditUserRoleModal";
+import { useGetRoleQuery } from "@/redux/feature/roleApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -28,18 +30,19 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name",'invetries', "Action"];
+  const headers = ["roleName",'description', "Action"];
   const [addInventoryType] = useAddInventoryTypeMutation();
-  const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
+  const { data: inventoryType,  } = useGetInventoryTypeQuery();
+  const { data: userRole, isLoading, isError, error,refetch } = useGetRoleQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [deleteInventoryType] = useDeleteInventoryTypeMutation()
   useEffect(() => {
-   if(inventoryType)
+   if(userRole)
    {
-     setDataTable(inventoryType.data.InventryTypes)
+     setDataTable(userRole?.data?.userRole)
      refetch();
    }
-  }, [inventoryType])
+  }, [userRole])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -139,7 +142,7 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditInventoryTypeModal
+        <AddEditUserRoleModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
