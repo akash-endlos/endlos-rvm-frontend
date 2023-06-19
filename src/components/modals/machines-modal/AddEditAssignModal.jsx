@@ -53,12 +53,13 @@ const AddEditAssignModal = ({ isOpen, onClose, onSave, rowData, onEditSave, mach
   }, [rowData]);
 
   useEffect(() => {
+    console.log(rowData);
     if (isOpen) {
       reset();
       if (isEditMode) {
-        setValue("customerId", '648e9cb8829e1029275c3e92');
+        setValue("customerId", rowData.customer._id);
         setValue("machineId", rowData._id);
-        setValue("branchId", rowData.branchId);
+        setValue("branchId", rowData.branch._id);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
