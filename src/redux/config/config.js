@@ -28,7 +28,8 @@ const config = {
             addMachine:'machine/add',
             updateMachine:'machine/update',
             assignMachine:'machine/assign',
-            updateassignMachine:'machine/assign'
+            updateassignMachine:'machine/assign',
+            addRole:"userrole"
         }
     }
 }
