@@ -125,7 +125,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       icon: AiOutlineUser,
       subItems: [
         { title: "Add Role", link: "/role/add-role" },
-        { title: "Add User", link: "" },
+        { title: "Add User", link: "/role/add-user" },
       ],
     },
     {
