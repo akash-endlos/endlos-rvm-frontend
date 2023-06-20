@@ -5,7 +5,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     updateUserById: builder.mutation({
         query: (payload) => ({
-          url: `${config.api.url.updateRole}/${payload.id}`,
+          url: `${config.api.url.updateUser}/${payload.id}`,
           method: "PUT",
           body: payload.editedData,
         }),
@@ -13,7 +13,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       addUser: builder.mutation({
         query: (payload) => ({
-          url: config.api.url.addRole,
+          url: config.api.url.register,
           method: "POST",
           body: payload,
         }),
@@ -28,7 +28,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     deleteUser: builder.mutation({
         query: (id) => ({
-          url: `${config.api.url.deleteRole}/${id}`,
+          url: `${config.api.url.deleteUser}/${id}`,
           method: "DELETE",
         }),
         invalidatesTags: ['Users'],
@@ -44,8 +44,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
 });
 export const {
   useGetUsersQuery,
-//   useAddUserMutation,
-//   useUpdateUserByIdMutation,
-//   useDeleteUserMutation,
+  useAddUserMutation,
+  useUpdateUserByIdMutation,
+  useDeleteUserMutation,
 //   useGetRoleFormatQuery
 } = userApiSlice;

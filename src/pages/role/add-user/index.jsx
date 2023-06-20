@@ -21,9 +21,9 @@ import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/De
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
-import AddEditUserRoleModal from "@/components/modals/userRole-modal/AddEditUserRoleModal";
 import { useAddRoleMutation, useDeleteRoleMutation, useGetRoleQuery, useUpdateRoleByIdMutation } from "@/redux/feature/roleApiSlice";
-import { useGetUserQuery, useGetUsersQuery } from "@/redux/feature/userApiSlice";
+import { useAddUserMutation, useDeleteUserMutation, useGetUserQuery, useGetUsersQuery, useUpdateUserByIdMutation } from "@/redux/feature/userApiSlice";
+import AddEditUserModal from "@/components/modals/user-modal/UserModal";
 
 
 const index = () => {
@@ -33,12 +33,12 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ['name',"mobile","email", "Action"];
-  const [addRole] = useAddRoleMutation();
+  const [addUser] = useAddUserMutation();
   const { data: userRole } = useGetRoleQuery();
+  // console.log(userRole?.data?.userRole);
   const { data: users, isLoading, isError, error,refetch } = useGetUsersQuery();
-  console.log(users.data.allUsers);
-  const [updateRoleById] = useUpdateRoleByIdMutation()
-  const [deleteRole] = useDeleteRoleMutation()
+  const [updateUserById] = useUpdateUserByIdMutation()
+  const [deleteUser] = useDeleteUserMutation()
   useEffect(() => {
    if(users)
    {
@@ -52,7 +52,7 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteRole(selectedRow._id)
+    await deleteUser(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
@@ -75,7 +75,7 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addRole(data)
+    await addUser(data)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')
@@ -91,7 +91,7 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateRoleById(updatedData)
+    await updateUserById(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Updated SuccessFully')
@@ -144,7 +144,8 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditUserRoleModal
+        <AddEditUserModal
+          userRole={userRole?.data?.userRole}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

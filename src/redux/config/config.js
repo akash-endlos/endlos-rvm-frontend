@@ -34,7 +34,10 @@ const config = {
             deleteRole:"userrole",
             addRole:"userrole",
             updateRole:"userrole",
-            getUser:"/user/getAll"
+            getUser:"/user/getAll",
+            register:"/user/register",
+            updateUser:"/user",
+            deleteUser:"/user"
         }
     }
 }
