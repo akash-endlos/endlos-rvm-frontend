@@ -59,5 +59,5 @@ const baseQueryWithTokenRefresh = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   baseQuery: baseQueryWithTokenRefresh,
   endpoints: (builder) => ({}),
-  tagTypes: ['Customers','Branches','InventoryType','Inventory','Machines','Roles'],
+  tagTypes: ['Customers','Branches','InventoryType','Inventory','Machines','Roles','Users'],
 });

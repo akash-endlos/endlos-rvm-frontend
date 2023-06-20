@@ -33,7 +33,8 @@ const config = {
             getRole:"userrole",
             deleteRole:"userrole",
             addRole:"userrole",
-            updateRole:"userrole"
+            updateRole:"userrole",
+            getUser:"/user/getAll"
         }
     }
 }

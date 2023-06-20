@@ -23,6 +23,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import AddEditUserRoleModal from "@/components/modals/userRole-modal/AddEditUserRoleModal";
 import { useAddRoleMutation, useDeleteRoleMutation, useGetRoleQuery, useUpdateRoleByIdMutation } from "@/redux/feature/roleApiSlice";
+import { useGetUserQuery, useGetUsersQuery } from "@/redux/feature/userApiSlice";
+
 
 const index = () => {
   const router = useRouter()
@@ -30,18 +32,20 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["roleName",'description', "Action"];
+  const headers = ['name',"mobile","email", "Action"];
   const [addRole] = useAddRoleMutation();
-  const { data: userRole, isLoading, isError, error,refetch } = useGetRoleQuery();
+  const { data: userRole } = useGetRoleQuery();
+  const { data: users, isLoading, isError, error,refetch } = useGetUsersQuery();
+  console.log(users.data.allUsers);
   const [updateRoleById] = useUpdateRoleByIdMutation()
   const [deleteRole] = useDeleteRoleMutation()
   useEffect(() => {
-   if(userRole)
+   if(users)
    {
-     setDataTable(userRole?.data?.userRole)
+     setDataTable(users.data.allUsers)
      refetch();
    }
-  }, [userRole])
+  }, [users])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
