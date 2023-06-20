@@ -1,4 +1,4 @@
-import { Tbody, Td, Tr } from "@chakra-ui/react";
+import { Tag, Tbody, Td, Tr } from "@chakra-ui/react";
 import moment from "moment/moment";
 
 
@@ -40,6 +40,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             }
             if(header === 'purchaseDate'){
               return <Td key={colIndex}>{moment(row[header]).format('DD-MM-YYYY')}</Td>;
+            }
+            if(header === 'isActive'){
+              return <Td key={colIndex}><Tag variant='solid' colorScheme='teal'>{row[header] ===true ? 'active':"disabled"}</Tag></Td>;
             }
             return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
           })}
