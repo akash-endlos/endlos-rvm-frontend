@@ -13,10 +13,7 @@ import {
 
 import DynamicTable from "@/features/table/DynamicTable";
 import Layout from "@/layout/Layout";
-import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useRouter } from "next/router";
-import { useAddInventoryTypeMutation, useDeleteInventoryTypeMutation, useGetInventoryTypeQuery, useUpdateInventoryTypeByIdMutation } from "@/redux/feature/inventoryTypeApiSlice";
-import AddEditInventoryTypeModal from "@/components/modals/inventoryType-modal/AddEditInventoryTypeModal";
 import DeleteInventoryTypeModal from "@/components/modals/inventoryType-modal/DeleteInventoryTypeModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
