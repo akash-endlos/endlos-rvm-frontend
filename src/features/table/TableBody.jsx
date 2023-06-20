@@ -44,6 +44,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             if(header === 'isActive'){
               return <Td key={colIndex}><Tag variant='solid' colorScheme='teal'>{row[header] ===true ? 'active':"disabled"}</Tag></Td>;
             }
+            if(header === 'Role'){
+              return <Td key={colIndex}>{row[header].role}</Td>;
+            }
             return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
           })}
         </Tr>

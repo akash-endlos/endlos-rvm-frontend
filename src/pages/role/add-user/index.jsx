@@ -29,7 +29,7 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ['name',"mobile","isActive","email", "Action"];
+  const headers = ['name',"mobile","isActive","Role","email", "Action"];
   const [addUser] = useAddUserMutation();
   const { data: userRole } = useGetRoleQuery();
   // console.log(userRole?.data?.userRole);
