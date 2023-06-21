@@ -52,7 +52,7 @@ const AddEditProblemsModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) 
             reset();
             if (isEditMode) {
                 setValue("name", rowData.name);
-                setValue("problemType", rowData.problemType);
+                setValue("problemType", rowData.problemType.name);
                 setValue("description", rowData.description);
             }
         }
