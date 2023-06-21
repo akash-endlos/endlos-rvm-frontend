@@ -38,7 +38,10 @@ const config = {
             register:"/user/register",
             updateUser:"/user",
             deleteUser:"/user",
-            getProblems:"problem/getAll"
+            getProblems:"problem/getAll",
+            addProblem:"problem",
+            deletProblem:"problem",
+            updateProblem:"problem"
         }
     }
 }

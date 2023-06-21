@@ -3,17 +3,17 @@ import config from "../config/config";
 
 export const problemsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    updateproblemsById: builder.mutation({
+    updateProblemById: builder.mutation({
         query: (payload) => ({
-          url: `${config.api.url.updateInventoryType}?id=${payload.id}`,
+          url: `${config.api.url.updateProblem}/${payload.id}`,
           method: "PUT",
           body: payload.editedData,
         }),
         invalidatesTags: ['Problems'],
       }),
-      addproblems: builder.mutation({
+      addProblem: builder.mutation({
         query: (payload) => ({
-          url: config.api.url.addInventoryType,
+          url: config.api.url.addProblem,
           method: "POST",
           body: payload,
         }),
@@ -26,9 +26,9 @@ export const problemsApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Problems'],
     }),
-    deleteproblems: builder.mutation({
+    deleteProblem: builder.mutation({
         query: (id) => ({
-          url: `${config.api.url.deleteInventoryType}?id=${id}`,
+          url: `${config.api.url.deletProblem}/${id}`,
           method: "DELETE",
         }),
         invalidatesTags: ['Problems'],
@@ -44,8 +44,8 @@ export const problemsApiSlice = apiSlice.injectEndpoints({
 });
 export const {
   useGetProblemsQuery,
-  useAddProblemsMutation,
-  useUpdateProblemsByIdMutation,
-  useDeleteProblemsMutation,
+  useAddProblemMutation,
+  useUpdateProblemByIdMutation,
+  useDeleteProblemMutation,
 //   useGetInventoryFormatQuery
 } = problemsApiSlice;

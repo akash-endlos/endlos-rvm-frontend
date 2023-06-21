@@ -22,7 +22,7 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import AddEditProblemsModal from "@/components/modals/problems-modal/AddEditProblemsModal";
-import { useGetProblemsQuery } from "@/redux/feature/problemsApiSlice";
+import { useAddProblemMutation, useDeleteProblemMutation, useGetProblemsQuery, useUpdateProblemByIdMutation } from "@/redux/feature/problemsApiSlice";
 
 
 const index = () => {
@@ -35,9 +35,11 @@ const index = () => {
   const [addInventoryType] = useAddInventoryTypeMutation();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const { data: problems, isLoading, isError, error,refetch } = useGetProblemsQuery();
-  console.log(problems?.data?.problems);
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
+  const [updateProblemById] = useUpdateProblemByIdMutation()
   const [deleteInventoryType] = useDeleteInventoryTypeMutation()
+  const [addProblem] = useAddProblemMutation()
+  const [deleteProblem] = useDeleteProblemMutation()
   useEffect(() => {
    if(problems)
    {
@@ -51,7 +53,7 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteInventoryType(selectedRow._id)
+    await deleteProblem(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null); 
@@ -74,7 +76,7 @@ const index = () => {
   };
 
   const handleSave = async(data) => {
-    await addInventoryType(data)
+    await addProblem(data)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')
@@ -90,7 +92,7 @@ const index = () => {
       id: selectedRow._id,
       editedData:data
     }
-    await updateInventoryTypeById(updatedData)
+    await updateProblemById(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Updated SuccessFully')
@@ -145,6 +147,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditProblemsModal
+          inventoryType={inventoryType?.data?.InventryTypes}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

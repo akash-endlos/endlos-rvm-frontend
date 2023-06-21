@@ -13,12 +13,13 @@ import {
     Input,
     FormErrorMessage,
     Textarea,
+    Select, // Import Select component from Chakra UI
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditProblemsModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) => {
+const AddEditProblemsModal = ({ isOpen, onClose, onSave, rowData, onEditSave,inventoryType }) => {
     const isEditMode = !!rowData;
     const [formData, setFormData] = useState({});
 
@@ -52,7 +53,7 @@ const AddEditProblemsModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) 
             reset();
             if (isEditMode) {
                 setValue("name", rowData.name);
-                setValue("problemType", rowData.problemType.name);
+                setValue("problemType", rowData.problemType._id);
                 setValue("description", rowData.description);
             }
         }
@@ -88,7 +89,13 @@ const AddEditProblemsModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) 
 
                         <FormControl isInvalid={errors.problemType}>
                             <FormLabel>Problem Type</FormLabel>
-                            <Input type="text" name="problemType" {...register("problemType")} />
+                            <Select name="problemType" {...register("problemType")}>
+                                <option value="">Select a problem type</option>
+                               {inventoryType?.map((item,index)=>(
+                                 <option key={index} value={item._id}>{item.name}</option>
+                               ))}
+                                {/* Add more options as needed */}
+                            </Select>
                             <FormErrorMessage>
                                 {errors.problemType && errors.problemType.message}
                             </FormErrorMessage>
