@@ -74,6 +74,7 @@ const AddEditUserModal = ({
         setValue("password", rowData.password);
         setValue("mobile", rowData.mobile);
         setValue("email", rowData.email);
+        setValue("isActive", rowData.isActive);
       }
     }
   }, [isOpen, isEditMode, reset, register]);
@@ -134,6 +135,13 @@ const AddEditUserModal = ({
               <Input type="text" name="mobile" {...register("mobile")} />
               <FormErrorMessage>
                 {errors.mobile && errors.mobile.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.isActive} mt={4}>
+              <FormLabel>active</FormLabel>
+              <Input type="text" name="isActive" {...register("isActive")} />
+              <FormErrorMessage>
+                {errors.isActive && errors.isActive.message}
               </FormErrorMessage>
             </FormControl>
           </ModalBody>
