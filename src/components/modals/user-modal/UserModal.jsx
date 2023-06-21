@@ -137,9 +137,9 @@ const AddEditUserModal = ({
                 {errors.mobile && errors.mobile.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.mobile} mt={4}>
+            <FormControl isInvalid={errors.isActive} mt={4}>
               <FormLabel>Active</FormLabel>
-              <Input type="text" name="isActive" {...register("isActive")} />
+              <Input type="text" name="isActive" {...register("isActive")}  defaultValue="true"/>
               <FormErrorMessage>
                 {errors.isActive && errors.isActive.message}
               </FormErrorMessage>

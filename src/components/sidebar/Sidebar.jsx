@@ -42,6 +42,7 @@ import {
   AiOutlinePullRequest,
 } from "react-icons/ai";
 import { GrVmMaintenance } from "react-icons/gr";
+import {MdReportProblem} from 'react-icons/md'
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, logout, selectCurrentUser } from "@/redux/feature/authSlice";
@@ -129,14 +130,23 @@ const SidebarContent = ({ onClose, ...rest }) => {
       ],
     },
     {
+      title: "Problems",
+      icon: MdReportProblem,
+      link: "/problems",
+    },
+    {
+      title: "Solutions",
+      icon: AiOutlineUser,
+    },
+    {
       title: "Maintenance",
       icon: GrVmMaintenance,
       link: "",
-      subItems: [
-        { title: "Add Parts", link: "" },
-        { title: "Add Problems", link: "" },
-        { title: "Add Solutions", link: "" },
-      ],
+      // subItems: [
+      //   { title: "Add Parts", link: "" },
+      //   { title: "Add Problems", link: "" },
+      //   { title: "Add Solutions", link: "" },
+      // ],
     },
     {
       title: "Complaints",

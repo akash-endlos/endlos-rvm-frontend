@@ -37,7 +37,8 @@ const config = {
             getUser:"/user/getAll",
             register:"/user/register",
             updateUser:"/user",
-            deleteUser:"/user"
+            deleteUser:"/user",
+            getProblems:"problem/getAll"
         }
     }
 }
