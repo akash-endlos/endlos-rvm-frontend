@@ -40,6 +40,7 @@ import {
   AiFillCustomerService,
   AiOutlineUser,
   AiOutlinePullRequest,
+  AiOutlineSolution
 } from "react-icons/ai";
 import { GrVmMaintenance } from "react-icons/gr";
 import {MdReportProblem} from 'react-icons/md'
@@ -136,7 +137,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
     },
     {
       title: "Solutions",
-      icon: AiOutlineUser,
+      icon: AiOutlineSolution,
     },
     {
       title: "Maintenance",
