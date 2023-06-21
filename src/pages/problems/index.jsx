@@ -32,12 +32,9 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["name","problemType","description", "Action"];
-  const [addInventoryType] = useAddInventoryTypeMutation();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const { data: problems, isLoading, isError, error,refetch } = useGetProblemsQuery();
-  const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [updateProblemById] = useUpdateProblemByIdMutation()
-  const [deleteInventoryType] = useDeleteInventoryTypeMutation()
   const [addProblem] = useAddProblemMutation()
   const [deleteProblem] = useDeleteProblemMutation()
   useEffect(() => {
