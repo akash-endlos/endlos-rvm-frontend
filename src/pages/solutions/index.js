@@ -23,6 +23,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import AddEditProblemsModal from "@/components/modals/problems-modal/AddEditProblemsModal";
 import { useAddProblemMutation, useDeleteProblemMutation, useGetProblemsQuery, useUpdateProblemByIdMutation } from "@/redux/feature/problemsApiSlice";
+import { useGetSolutionsQuery } from "@/redux/feature/solutionApiSlice";
+import AddEditSolutionModal from "@/components/modals/solutions-modal/AddEditSolutionModal";
 
 
 const index = () => {
@@ -31,19 +33,21 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name","problemType","description", "Action"];
+  const headers = ["problem","description", "Action"];
   const { data: inventoryType } = useGetInventoryTypeQuery();
-  const { data: problems, isLoading, isError, error,refetch } = useGetProblemsQuery();
+  const { data: problems } = useGetProblemsQuery();
+  console.log(problems?.data?.problems);
+  const { data: solutions, isLoading, isError, error,refetch } = useGetSolutionsQuery()
   const [updateProblemById] = useUpdateProblemByIdMutation()
   const [addProblem] = useAddProblemMutation()
   const [deleteProblem] = useDeleteProblemMutation()
   useEffect(() => {
-   if(problems)
+   if(solutions)
    {
-     setDataTable(problems?.data?.problems)
+     setDataTable(solutions.data.solutions)
      refetch();
    }
-  }, [problems])
+  }, [solutions])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -143,8 +147,8 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditProblemsModal
-          inventoryType={inventoryType?.data?.InventryTypes}
+        <AddEditSolutionModal
+          inventoryType={problems?.data?.problems}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

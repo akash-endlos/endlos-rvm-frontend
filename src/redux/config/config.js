@@ -41,7 +41,8 @@ const config = {
             getProblems:"problem/getAll",
             addProblem:"problem",
             deletProblem:"problem",
-            updateProblem:"problem"
+            updateProblem:"problem",
+            getSolutions:"solution"
         }
     }
 }

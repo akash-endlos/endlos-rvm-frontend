@@ -50,6 +50,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             if(header === 'problemType'){
               return <Td key={colIndex}>{row[header].name}</Td>;
             }
+            if(header === 'problem'){
+              return <Td key={colIndex}>{row[header].name}</Td>;
+            }
             return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
           })}
         </Tr>
