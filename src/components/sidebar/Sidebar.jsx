@@ -138,6 +138,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
     {
       title: "Solutions",
       icon: AiOutlineSolution,
+      link: "/solutions",
     },
     {
       title: "Maintenance",
