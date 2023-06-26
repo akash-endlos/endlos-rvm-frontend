@@ -36,7 +36,6 @@ const index = () => {
   const headers = ["problem","description", "Action"];
   const { data: inventoryType } = useGetInventoryTypeQuery();
   const { data: problems } = useGetProblemsQuery();
-  console.log(problems?.data?.problems);
   const { data: solutions, isLoading, isError, error,refetch } = useGetSolutionsQuery()
   const [updateProblemById] = useUpdateProblemByIdMutation()
   const [addProblem] = useAddProblemMutation()
