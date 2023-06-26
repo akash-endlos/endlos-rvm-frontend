@@ -143,14 +143,14 @@ const index = () => {
               </Text>
               <Flex px={5} alignContent="center" justifyContent="space-between">
                 <Box>Search</Box>
-                <Box>
+                {/* <Box>
                   <Button
                     colorScheme="teal"
                     onClick={() => setIsAddEditModalOpen(true)}
                   >
                     Add Branches
                   </Button>
-                </Box>
+                </Box> */}
               </Flex>
               <DynamicTable
                 headerNames={headers}
