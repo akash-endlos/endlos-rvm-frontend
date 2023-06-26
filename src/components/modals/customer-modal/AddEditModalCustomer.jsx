@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, Vendors }) => {
-  // console.log(Vendors);
+  console.log(Vendors);
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
 
@@ -102,9 +102,9 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, Vendors })
               <FormLabel>Vendor</FormLabel>
               <Select name="vendorId" {...register("vendorId")}>
                 <option value="">Select Vendor</option>
-                {/* {Vendors.map((item, index) => (
+                {Vendors.map((item, index) => (
                   <option key={index} value={item._id}>{item.name}</option>
-                ))} */}
+                ))}
                 {/* Add options for vendors here */}
               </Select>
               <FormErrorMessage>

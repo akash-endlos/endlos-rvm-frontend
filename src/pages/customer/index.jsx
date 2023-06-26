@@ -41,7 +41,7 @@ const index = () => {
   const [updateCustomer] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const [addBranch] = useAddBranchMutation()
-  console.log(vendors);
+  console.log(vendors?.payload?.vendors);
   useEffect(() => {
     if (customers) {
       refetch();
@@ -174,7 +174,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditModal
-        // Vendors ={vendors?.payload?.vendors}
+        Vendors ={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
