@@ -37,13 +37,13 @@ const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
     onClose();
   };
 
-  React.useEffect(() => {
-    if (rowData) {
-      Object.entries(rowData).forEach(([name, value]) => {
-        setValue(name, value);
-      });
-    }
-  }, [rowData, setValue]);
+  // React.useEffect(() => {
+  //   if (rowData) {
+  //     Object.entries(rowData).forEach(([name, value]) => {
+  //       setValue(name, value);
+  //     });
+  //   }
+  // }, [rowData, setValue]);
 
   if (!isOpen) {
     return null;
