@@ -127,13 +127,13 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Problems
+          Solutions
         </Text>
         <Flex px={5} alignContent="center" justifyContent="space-between">
           <Box>Search</Box>
           <Box>
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Problems
+              Add Solutions
             </Button>
           </Box>
         </Flex>
