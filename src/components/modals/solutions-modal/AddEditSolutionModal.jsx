@@ -19,6 +19,7 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { RxCross2 } from 'react-icons/rx'
 
 const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, inventoryType }) => {
   const isEditMode = !!rowData;
@@ -69,6 +70,7 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
     const fileObjects = selectedFiles.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => [...prevImages, ...fileObjects]);
     setValue("files", [...selectedFiles, ...formData.files]);
+    event.target.value = null;
   };
 
 
@@ -132,24 +134,43 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
                 onChange={handleFileChange}
                 accept="image/*"
               />
-              {images.map((fileObject, index) => (
-                <Box key={index} mt={2}>
-                  <Image
-                    src={fileObject}
-                    alt={`File ${index + 1}`}
-                    maxH={200}
-                    objectFit="contain"
-                  />
-                  <Button
-                    colorScheme="red"
-                    size="sm"
-                    mt={2}
-                    onClick={() => removeImage(index)}
-                  >
-                    Remove
-                  </Button>
-                </Box>
-              ))}
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {images.map((fileObject, index) => (
+                  <Box key={index} mt={2} mr={2} display="flex" alignItems="center">
+                    <div style={{ position: "relative" }}>
+                      <Image
+                        src={fileObject}
+                        alt={`File ${index + 1}`}
+                        maxH={50}
+                        objectFit="contain"
+                        mr={2}
+                      />
+                      <RxCross2
+                        className="cursor-pointer"
+                        onClick={() => removeImage(index)}
+                        size={20}
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          right: "0",
+                          backgroundColor: "white",
+                          borderRadius: "50%",
+                          padding: "4px",
+                        }}
+                      />
+                      {/* <Button
+                        colorScheme="red"
+                        size="sm"
+                        onClick={() => removeImage(index)}
+                        style={{ position: "absolute", top: "0", right: "0" }}
+                      >
+                        Remove
+                      </Button> */}
+                    </div>
+                  </Box>
+                ))}
+              </div>
+
               <FormErrorMessage>
                 {errors.files && errors.files.message}
               </FormErrorMessage>
