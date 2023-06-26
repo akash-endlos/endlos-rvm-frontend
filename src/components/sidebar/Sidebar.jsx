@@ -96,6 +96,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
       icon: FiHome,
     },
     {
+      title: "Vendor",
+      icon: MdReportProblem,
+      link: "/vendor",
+    },
+    {
       title: "Customer",
       icon: AiFillCustomerService,
       link: "/customer",

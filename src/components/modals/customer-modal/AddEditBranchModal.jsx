@@ -55,7 +55,7 @@ const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
       top={0}
       right={0}
       bottom={0}
-      width="300px"
+      width="500px"
       backgroundColor="white"
       padding={4}
       boxShadow="0px 0px 10px rgba(0, 0, 0, 0.2)"
