@@ -13,6 +13,8 @@ import {
   Select,
   Textarea,
   FormErrorMessage,
+  Box,
+  Image,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -21,10 +23,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, inventoryType }) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
-
+  const [images, setImages] = useState([]);
   const validationSchema = Yup.object().shape({
     problemId: Yup.string().required("Problem is required"),
     description: Yup.string().required("Description is required"),
+    files: Yup.array().min(1, "At least one file is required"),
   });
 
   const {
@@ -41,8 +44,10 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
   useEffect(() => {
     if (isEditMode) {
       setFormData(rowData);
+      setImages(rowData.files || []);
     } else {
       setFormData({});
+      setImages([]);
     }
   }, [rowData]);
 
@@ -52,9 +57,25 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
       if (isEditMode) {
         setValue("problemId", rowData.problemId);
         setValue("description", rowData.description);
+        setValue("files", rowData.files);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
+
+
+  const handleFileChange =(evnt)=>{
+    const selectedFiles = Array.from(evnt.target.files);
+    const fileObjects = selectedFiles.map((file) => URL.createObjectURL(file));
+    setImages(fileObjects);
+    setValue("files", selectedFiles);
+  };
+
+  const removeImage = (index) => {
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setImages(updatedImages);
+    setValue("files", updatedImages);
+  };
 
   const onSubmit = (data) => {
     if (isEditMode) {
@@ -76,7 +97,7 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl isInvalid={errors.problemId} mt={4}>
+            <FormControl isInvalid={errors.problemId} mb={4}>
               <FormLabel>Problem</FormLabel>
               <Select name="problemId" {...register("problemId")}>
                 <option value="">Select Problem</option>
@@ -90,15 +111,45 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
                 {errors.problemId && errors.problemId.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.description} mt={4}>
+            <FormControl isInvalid={errors.description} mb={4}>
               <FormLabel>Description</FormLabel>
               <Textarea
                 name="description"
                 {...register("description")}
-                resize="vertical"
+                placeholder="Enter description"
               />
               <FormErrorMessage>
                 {errors.description && errors.description.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.files}>
+              <FormLabel>Files</FormLabel>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              {images.map((fileObject, index) => (
+                <Box key={index} mt={2}>
+                  <Image
+                    src={fileObject}
+                    alt={`File ${index + 1}`}
+                    maxH={200}
+                    objectFit="contain"
+                  />
+                  <Button
+                    colorScheme="red"
+                    size="sm"
+                    mt={2}
+                    onClick={() => removeImage(index)}
+                  >
+                    Remove
+                  </Button>
+                </Box>
+              ))}
+              <FormErrorMessage>
+                {errors.files && errors.files.message}
               </FormErrorMessage>
             </FormControl>
           </ModalBody>

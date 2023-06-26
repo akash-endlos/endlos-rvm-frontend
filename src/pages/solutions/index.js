@@ -47,6 +47,7 @@ const index = () => {
      refetch();
    }
   }, [solutions])
+  console.log(dataTable);
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
