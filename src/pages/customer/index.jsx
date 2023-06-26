@@ -167,29 +167,3 @@ const index = () => {
 
 export default index;
 
-
-{/* <Menu>
-        <MenuButton variant="outline">
-          <BiDotsVerticalRounded size={25} />
-        </MenuButton>
-        <MenuList className=" text-white rounded-md p-1">
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => router.push(`customer/branches/${row._id}`)}
-          >
-            View Branches
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleAddEdit(row)}
-          >
-            Edit Customer
-          </MenuItem>
-          <MenuItem
-            className="text-center px-5 py-2 border rounded-md bg-black text-white hover:bg-white hover:text-black"
-            onClick={() => handleDelete(row)}
-          >
-            Delete Customer
-          </MenuItem>
-        </MenuList>
-      </Menu> */}
