@@ -46,10 +46,11 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
       setFormData(rowData);
       setImages(rowData.files || []);
     } else {
-      setFormData({});
+      setFormData({ files: [] }); // Initialize the files array
       setImages([]);
     }
   }, [rowData]);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -63,18 +64,19 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
 
-  const handleFileChange =(evnt)=>{
-    const selectedFiles = Array.from(evnt.target.files);
+  const handleFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
     const fileObjects = selectedFiles.map((file) => URL.createObjectURL(file));
-    setImages(fileObjects);
-    setValue("files", selectedFiles);
+    setImages((prevImages) => [...prevImages, ...fileObjects]);
+    setValue("files", [...selectedFiles, ...formData.files]);
   };
+
 
   const removeImage = (index) => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
     setImages(updatedImages);
-    setValue("files", updatedImages);
+    setValue("files", updatedImages.map((file) => file));
   };
 
   const onSubmit = (data) => {
