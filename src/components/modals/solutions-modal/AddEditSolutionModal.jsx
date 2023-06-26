@@ -141,7 +141,7 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
                       <Image
                         src={fileObject}
                         alt={`File ${index + 1}`}
-                        maxH={50}
+                        maxH={30}
                         objectFit="contain"
                         mr={2}
                       />
