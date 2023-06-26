@@ -83,7 +83,7 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) => {
             </FormControl>
             {!isEditMode && (
               <FormControl isInvalid={errors.branchName} mt={4}>
-                <FormLabel>Branch Name</FormLabel>
+                <FormLabel>Branch Name <small>(Optional)</small></FormLabel>
                 <Input
                   type="text"
                   name="branchName"
