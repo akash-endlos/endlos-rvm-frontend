@@ -42,7 +42,10 @@ const config = {
             addProblem:"problem",
             deletProblem:"problem",
             updateProblem:"problem",
-            getSolutions:"solution"
+            getSolutions:"solution",
+            getallVendors:"/vendor",
+            addVendor:"/vendor",
+            updateVendor:"/vendor"
         }
     }
 }

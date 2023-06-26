@@ -23,7 +23,7 @@ const AddEditVendorModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =>
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    branchName: Yup.string(),
+    email: Yup.string().email("Invalid email address").required("Email is required"),
   });
 
   const {
@@ -50,6 +50,7 @@ const AddEditVendorModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =>
       reset();
       if (isEditMode) {
         setValue("name", rowData.name);
+        setValue("email", rowData.email);
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);
@@ -81,19 +82,13 @@ const AddEditVendorModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =>
                 {errors.name && errors.name.message}
               </FormErrorMessage>
             </FormControl>
-            {!isEditMode && (
-              <FormControl isInvalid={errors.branchName} mt={4}>
-                <FormLabel>Branch Name <small>(Optional)</small></FormLabel>
-                <Input
-                  type="text"
-                  name="branchName"
-                  {...register("branchName")}
-                />
-                <FormErrorMessage>
-                  {errors.branchName && errors.branchName.message}
-                </FormErrorMessage>
-              </FormControl>
-            )}
+            <FormControl isInvalid={errors.email} mt={4}>
+              <FormLabel>Email</FormLabel>
+              <Input type="email" name="email" {...register("email")} />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={onClose}>

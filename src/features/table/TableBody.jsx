@@ -23,9 +23,9 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
       {paginatedData.map((row, rowIndex) => (
         <Tr key={rowIndex}>
           {headerNames.map((header, colIndex) => {
-              // if (header === 'ID') {
-              //   return <Td key={colIndex}>{rowIndex+1}</Td>;
-              // }
+            // if (header === 'ID') {
+            //   return <Td key={colIndex}>{rowIndex+1}</Td>;
+            // }
             if (header === 'Action') {
               return <Td key={colIndex}>{renderAction(row)}</Td>;
             }
@@ -38,22 +38,26 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
             if (header === 'inventry') {
               return <Td key={colIndex}>{showInterConnectedData(row?.inventry, '_inventry')}</Td>;
             }
-            if(header === 'purchaseDate'){
+            if (header === 'purchaseDate') {
               return <Td key={colIndex}>{moment(row[header]).format('DD-MM-YYYY')}</Td>;
             }
-            if(header === 'isActive'){
-              return <Td key={colIndex}><Tag variant='solid' colorScheme='teal'>{row[header] ===true ? 'active':"disabled"}</Tag></Td>;
+            if (header === 'isActive') {
+              return <Td key={colIndex}><Tag variant='solid' colorScheme='teal'>{row[header] === true ? 'active' : "disabled"}</Tag></Td>;
             }
-            if(header === 'Role'){
+            if (header === 'Role') {
               return <Td key={colIndex}>{row[header].role}</Td>;
             }
-            if(header === 'problemType'){
+            if (header === 'problemType') {
               return <Td key={colIndex}>{row[header].name}</Td>;
             }
-            if(header === 'problem'){
+            if (header === 'problem') {
               return <Td key={colIndex}>{row[header].name}</Td>;
             }
-            return <Td key={colIndex}>{row[header] !==undefined ? row[header]:"-"}</Td>;
+            if (header === 'customers') {
+
+              return <Td key={colIndex}>{showInterConnectedData(row?.customers, 'name')}</Td>;
+            }
+            return <Td key={colIndex}>{row[header] !== undefined ? row[header] : "-"}</Td>;
           })}
         </Tr>
       ))}

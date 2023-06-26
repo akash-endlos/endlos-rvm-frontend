@@ -24,6 +24,7 @@ import {RiDeleteBin6Line} from 'react-icons/ri'
 import {FiEdit} from 'react-icons/fi'
 import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
+import { useGetVendorsQuery } from "@/redux/feature/vendorApiSlice";
 
 const index = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false); // Add state for the AddEditBranchModal
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const { data: vendors } = useGetVendorsQuery();
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["name", "branch", "Action"];
@@ -39,6 +41,7 @@ const index = () => {
   const [updateCustomer] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const [addBranch] = useAddBranchMutation()
+  console.log(vendors);
   useEffect(() => {
     if (customers) {
       refetch();
@@ -171,6 +174,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditModal
+        // Vendors ={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

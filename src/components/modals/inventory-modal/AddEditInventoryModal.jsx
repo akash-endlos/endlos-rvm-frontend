@@ -33,9 +33,7 @@ const AddEditInventoryModal = ({
   const validationSchema = Yup.object().shape({
     brandName: Yup.string().required("Brand Name is required"),
     inventryType: Yup.string().required("Inventory type is required"),
-    serialNumber: Yup.string()
-      .matches(/^\d{3}-[A-Z]{4}-\d{4}$/, "Invalid serial number format")
-      .required("Serial number is required"),
+    serialNumber: Yup.string().required("Serial number is required"),
   });
 
   const {
@@ -116,7 +114,6 @@ const AddEditInventoryModal = ({
             <FormControl isInvalid={errors.serialNumber}>
               <FormLabel>Serial Number</FormLabel>
               <Input
-                placeholder="1234-ABCD-1234"
                 type="text"
                 name="serialNumber"
                 {...register("serialNumber")}
