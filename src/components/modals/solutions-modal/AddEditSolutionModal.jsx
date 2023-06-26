@@ -1,26 +1,3 @@
-import { useState, useEffect } from "react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  Textarea,
-  Select,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Cropper } from "react-easy-crop";
-import { getCroppedImg } from "./cropUtils"; // Import your crop utility functions
-
 const AddEditSolutionModal = ({
   isOpen,
   onClose,
@@ -32,9 +9,6 @@ const AddEditSolutionModal = ({
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedImage, setCroppedImage] = useState(null);
 
   const validationSchema = Yup.object().shape({
     problemId: Yup.string().required("Problem is required"),
@@ -88,11 +62,6 @@ const AddEditSolutionModal = ({
     setSelectedFiles(files);
   };
 
-  const handleCropComplete = async (_, croppedAreaPixels) => {
-    const croppedImage = await getCroppedImg(selectedFiles[0], croppedAreaPixels);
-    setCroppedImage(croppedImage);
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -143,19 +112,14 @@ const AddEditSolutionModal = ({
               <FormControl>
                 <FormLabel>Image Preview & Crop</FormLabel>
                 <Cropper
-                  image={URL.createObjectURL(selectedFiles[0])}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={handleCropComplete}
+                  src={URL.createObjectURL(selectedFiles[0])}
+                  style={{ height: 400, width: "100%" }}
+                  guides={true}
+                  aspectRatio={1}
+                  zoomable={false}
+                  crop={onCrop}
                 />
               </FormControl>
-            )}
-
-            {croppedImage && (
-              <img src={croppedImage} alt="Cropped" style={{ width: "100%" }} />
             )}
           </ModalBody>
           <ModalFooter>

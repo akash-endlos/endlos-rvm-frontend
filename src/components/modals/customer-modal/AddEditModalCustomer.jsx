@@ -17,12 +17,13 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) => {
+const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
+    branchName: Yup.string(),
   });
 
   const {
@@ -54,18 +55,15 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) => {
   }, [isOpen, isEditMode, rowData, reset, setValue]);
 
   const onSubmit = (data) => {
-    if(isEditMode)
-    {
-      onEditSave(data)
+    if (isEditMode) {
+      onEditSave(data);
+      onClose();
+      reset();
+    } else {
+      onSave(data);
       onClose();
       reset();
     }
-    else{
-      onSave(data);
-      onClose();
-      reset(); 
-    }
-   // Reset the form values
   };
 
   return (
@@ -83,6 +81,19 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData,onEditSave }) => {
                 {errors.name && errors.name.message}
               </FormErrorMessage>
             </FormControl>
+            {!isEditMode && (
+              <FormControl isInvalid={errors.branchName} mt={4}>
+                <FormLabel>Branch Name</FormLabel>
+                <Input
+                  type="text"
+                  name="branchName"
+                  {...register("branchName")}
+                />
+                <FormErrorMessage>
+                  {errors.branchName && errors.branchName.message}
+                </FormErrorMessage>
+              </FormControl>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={onClose}>
