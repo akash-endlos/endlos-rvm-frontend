@@ -44,7 +44,7 @@ const index = () => {
    if(solutions?.data?.solutions)
    {
      setDataTable(solutions?.data?.solutions)
-     refetch();
+    //  refetch();
    }
   }, [solutions?.data?.solutions])
   console.log(dataTable);
