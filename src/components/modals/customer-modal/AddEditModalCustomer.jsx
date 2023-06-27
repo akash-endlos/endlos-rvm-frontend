@@ -102,7 +102,7 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, Vendors })
               <FormLabel>Vendor</FormLabel>
               <Select name="vendorId" {...register("vendorId")}>
                 <option value="">Select Vendor</option>
-                {Vendors.map((item, index) => (
+                {Vendors?.map((item, index) => (
                   <option key={index} value={item._id}>{item.name}</option>
                 ))}
                 {/* Add options for vendors here */}
