@@ -1,23 +1,23 @@
 import { useState, useEffect } from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
+  Box,
   FormControl,
   FormLabel,
   Input,
+  Button,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditVendorModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) => {
+const AddEditVendorSidebar = ({
+  isOpen,
+  onClose,
+  onSave,
+  rowData,
+  onEditSave,
+}) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
 
@@ -67,41 +67,46 @@ const AddEditVendorModal = ({ isOpen, onClose, onSave, rowData, onEditSave }) =>
     }
   };
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{isEditMode ? "Edit" : "Add"} Vendor</ModalHeader>
-        <ModalCloseButton />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalBody>
-            <FormControl isInvalid={errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" {...register("name")} />
-              <FormErrorMessage>
-                {errors.name && errors.name.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={errors.email} mt={4}>
-              <FormLabel>Email</FormLabel>
-              <Input type="email" name="email" {...register("email")} />
-              <FormErrorMessage>
-                {errors.email && errors.email.message}
-              </FormErrorMessage>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" colorScheme="blue" ml={3}>
-              {isEditMode ? "Update" : "Save"}
-            </Button>
-          </ModalFooter>
-        </form>
-      </ModalContent>
-    </Modal>
+    <Box
+      position="fixed"
+      top={0}
+      right={0}
+      bottom={0}
+      width="400px"
+      backgroundColor="white"
+      padding={4}
+      boxShadow="0px 0px 10px rgba(0, 0, 0, 0.2)"
+      zIndex={999}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl isInvalid={errors.name}>
+          <FormLabel>Name</FormLabel>
+          <Input type="text" name="name" {...register("name")} />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.email} mt={4}>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" name="email" {...register("email")} />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Button variant="ghost" onClick={onClose} mt={4}>
+          Cancel
+        </Button>
+        <Button type="submit" colorScheme="blue" ml={3} mt={4}>
+          {isEditMode ? "Update" : "Save"}
+        </Button>
+      </form>
+    </Box>
   );
 };
 
-export default AddEditVendorModal;
+export default AddEditVendorSidebar;

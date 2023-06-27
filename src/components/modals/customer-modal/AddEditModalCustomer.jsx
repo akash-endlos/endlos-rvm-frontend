@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
+  Box,
   FormControl,
   FormLabel,
   Input,
   Select,
+  Button,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, Vendors }) => {
-  console.log(Vendors);
+const AddEditSidebar = ({
+  isOpen,
+  onClose,
+  onSave,
+  rowData,
+  onEditSave,
+  Vendors,
+}) => {
   const isEditMode = !!rowData;
   const [formData, setFormData] = useState({});
 
@@ -70,60 +70,69 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, Vendors })
     }
   };
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{isEditMode ? "Edit" : "Add"} Customer</ModalHeader>
-        <ModalCloseButton />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalBody>
-            <FormControl isInvalid={errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" {...register("name")} />
-              <FormErrorMessage>
-                {errors.name && errors.name.message}
-              </FormErrorMessage>
-            </FormControl>
-            {!isEditMode && (
-              <FormControl isInvalid={errors.branchName} mt={4}>
-                <FormLabel>Branch Name <small>(Optional)</small></FormLabel>
-                <Input
-                  type="text"
-                  name="branchName"
-                  {...register("branchName")}
-                />
-                <FormErrorMessage>
-                  {errors.branchName && errors.branchName.message}
-                </FormErrorMessage>
-              </FormControl>
-            )}
-            <FormControl isInvalid={errors.vendorId} mt={4}>
-              <FormLabel>Vendor</FormLabel>
-              <Select name="vendorId" {...register("vendorId")}>
-                <option value="">Select Vendor</option>
-                {Vendors?.map((item, index) => (
-                  <option key={index} value={item._id}>{item.name}</option>
-                ))}
-                {/* Add options for vendors here */}
-              </Select>
-              <FormErrorMessage>
-                {errors.vendorId && errors.vendorId.message}
-              </FormErrorMessage>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" colorScheme="blue" ml={3}>
-              {isEditMode ? "Update" : "Save"}
-            </Button>
-          </ModalFooter>
-        </form>
-      </ModalContent>
-    </Modal>
+    <Box
+      position="fixed"
+      top={0}
+      right={0}
+      bottom={0}
+      width="400px"
+      backgroundColor="white"
+      padding={4}
+      boxShadow="0px 0px 10px rgba(0, 0, 0, 0.2)"
+      zIndex={999}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl isInvalid={errors.name}>
+          <FormLabel>Name</FormLabel>
+          <Input type="text" name="name" {...register("name")} />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        {!isEditMode && (
+          <FormControl isInvalid={errors.branchName} mt={4}>
+            <FormLabel>
+              Branch Name <small>(Optional)</small>
+            </FormLabel>
+            <Input
+              type="text"
+              name="branchName"
+              {...register("branchName")}
+            />
+            <FormErrorMessage>
+              {errors.branchName && errors.branchName.message}
+            </FormErrorMessage>
+          </FormControl>
+        )}
+        <FormControl isInvalid={errors.vendorId} mt={4}>
+          <FormLabel>Vendor</FormLabel>
+          <Select name="vendorId" {...register("vendorId")}>
+            <option value="">Select Vendor</option>
+            {Vendors?.map((item, index) => (
+              <option key={index} value={item._id}>
+                {item.name}
+              </option>
+            ))}
+            {/* Add options for vendors here */}
+          </Select>
+          <FormErrorMessage>
+            {errors.vendorId && errors.vendorId.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Button variant="ghost" onClick={onClose} mt={4}>
+          Cancel
+        </Button>
+        <Button type="submit" colorScheme="blue" ml={3} mt={4}>
+          {isEditMode ? "Update" : "Save"}
+        </Button>
+      </form>
+    </Box>
   );
 };
 
-export default AddEditModal;
+export default AddEditSidebar;

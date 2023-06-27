@@ -25,6 +25,7 @@ import {FiEdit} from 'react-icons/fi'
 import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
 import { useGetVendorsQuery } from "@/redux/feature/vendorApiSlice";
+import AddEditSidebar from "@/components/modals/customer-modal/AddEditModalCustomer";
 
 const index = () => {
   const router = useRouter();
@@ -173,7 +174,7 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditModal
+        <AddEditSidebar
         Vendors ={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}

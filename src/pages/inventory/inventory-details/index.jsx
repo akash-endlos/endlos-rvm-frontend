@@ -39,13 +39,13 @@ const index = () => {
   const [updateInventoryById] = useUpdateInventoryByIdMutation()
   const [deleteInventory] = useDeleteInventoryMutation()
   useEffect(() => {
-   if(inventory)
+   if(inventory.data.allInventry)
    {
     
      setDataTable(inventory.data.allInventry)
      refetch()
    }
-  }, [inventory])
+  }, [inventory.data.allInventry])
   useEffect(() => {
     if(inventoryType)
     {

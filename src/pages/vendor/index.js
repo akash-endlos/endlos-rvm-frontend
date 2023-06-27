@@ -27,6 +27,7 @@ import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
 import DeleteVendorModal from "@/components/modals/vendors-modal/DeleteVendorModal";
 import AddEditVendorModal from "@/components/modals/vendors-modal/AddEditVendorModal";
 import { useAddVendorMutation, useGetVendorsQuery, useUpdateVendorMutation } from "@/redux/feature/vendorApiSlice";
+import AddEditVendorSidebar from "@/components/modals/vendors-modal/AddEditVendorModal";
 
 const index = () => {
   const router = useRouter();
@@ -170,7 +171,7 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditVendorModal
+        <AddEditVendorSidebar
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
