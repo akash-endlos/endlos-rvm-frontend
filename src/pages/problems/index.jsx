@@ -41,7 +41,6 @@ const index = () => {
    if(problems?.data?.problems)
    {
      setDataTable(problems?.data?.problems)
-     refetch();
    }
   }, [problems?.data?.problems])
   const handleDelete = (row) => {
