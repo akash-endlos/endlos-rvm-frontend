@@ -41,12 +41,12 @@ const index = () => {
   const [addProblem] = useAddProblemMutation()
   const [deleteProblem] = useDeleteProblemMutation()
   useEffect(() => {
-   if(solutions)
+   if(solutions?.data?.solutions)
    {
-     setDataTable(solutions.data.solutions)
+     setDataTable(solutions?.data?.solutions)
      refetch();
    }
-  }, [solutions])
+  }, [solutions?.data?.solutions])
   console.log(dataTable);
   const handleDelete = (row) => {
     setSelectedRow(row);
