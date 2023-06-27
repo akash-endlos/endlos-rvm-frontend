@@ -59,7 +59,8 @@ const AddEditModal = ({ isOpen, onClose, onSave, rowData, onEditSave, problems, 
       if (isEditMode) {
         setValue("problemId", rowData.problemId);
         setValue("description", rowData.description);
-        setValue("files", rowData.files);
+        setValue("files", rowData.images);
+        setImages(rowData.images)
       }
     }
   }, [isOpen, isEditMode, rowData, reset, setValue]);

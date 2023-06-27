@@ -38,12 +38,12 @@ const index = () => {
   const [addProblem] = useAddProblemMutation()
   const [deleteProblem] = useDeleteProblemMutation()
   useEffect(() => {
-   if(problems)
+   if(problems?.data?.problems)
    {
      setDataTable(problems?.data?.problems)
      refetch();
    }
-  }, [problems])
+  }, [problems?.data?.problems])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
