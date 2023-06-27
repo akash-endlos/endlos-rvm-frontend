@@ -28,15 +28,16 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name",'invetries', "Action"];
+  const headers = ["name",'invetrybrands', "Action"];
   const [addInventoryType] = useAddInventoryTypeMutation();
   const { data: inventoryType, isLoading, isError, error,refetch } = useGetInventoryTypeQuery();
   const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [deleteInventoryType] = useDeleteInventoryTypeMutation()
+  console.log(inventoryType);
   useEffect(() => {
    if(inventoryType)
    {
-     setDataTable(inventoryType.data.InventryTypes)
+     setDataTable(inventoryType?.payload?.InventryTypes)
      refetch();
    }
   }, [inventoryType])

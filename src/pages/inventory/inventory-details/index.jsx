@@ -39,17 +39,17 @@ const index = () => {
   const [updateInventoryById] = useUpdateInventoryByIdMutation()
   const [deleteInventory] = useDeleteInventoryMutation()
   useEffect(() => {
-   if(inventory.data.allInventry)
+   if(inventory?.payload?.allInventry)
    {
     
-     setDataTable(inventory.data.allInventry)
+     setDataTable(inventory?.payload?.allInventry)
      refetch()
    }
-  }, [inventory.data.allInventry])
+  }, [inventory?.payload?.allInventry])
   useEffect(() => {
     if(inventoryType)
     {
-      setInventoryType(inventoryType.data.InventryTypes)
+      setInventoryType(inventoryType?.payload?.InventryTypes)
     }
    }, [inventoryType])
   const handleDelete = (row) => {
@@ -93,7 +93,7 @@ const index = () => {
       toast.success('Added SuccessFully')
     })
     .catch((error) => {
-      toast.error(error.data.error)
+      toast.error(error.data.message)
 
     });
   };
