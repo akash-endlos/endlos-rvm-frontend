@@ -28,8 +28,8 @@ const AddEditSidebar = ({
   const [secondDropdownOptions, setSecondDropdownOptions] = useState([]);
 
   const validationSchema = Yup.object().shape({
-    brandName: Yup.string().required("Brand Name is required"),
-    inventryType: Yup.string().required("Inventory type is required"),
+    // brandName: Yup.string().required("Brand Name is required"),
+    // inventryType: Yup.string().required("Inventory type is required"),
     serialNumber: Yup.string().required("Serial number is required"),
   });
 
@@ -93,7 +93,15 @@ const AddEditSidebar = ({
       onClose();
       reset();
     } else {
-      onSave({ ...data, inventoryType: selectedInventoryType, brandId: selectedBrandId });
+      console.log(selectedBrandId.length);
+      if(selectedBrandId.length===0)
+      {
+        onSave({ ...data });
+      }
+      else{
+
+        onSave({ ...data,  brandId: selectedBrandId });
+      }
       onClose();
       reset();
     }

@@ -79,12 +79,19 @@ const index = () => {
   };
 
   const handleSave = async (data) => {
-    console.log(data);
-    const newAddData = {
-      brandName: data.brandName,
+    let newAddData = {
       inventryType: data.inventryType,
       serialNumber: data.serialNumber
+    };
+    
+    if (data?.brandName) {
+      newAddData.brandName = data.brandName;
+      
+      if (data.brandId) {
+        newAddData.brandId = data.brandId;
+      }
     }
+    
     const manipulatedData = data.purchaseDate ? data : newAddData
     await addInventory(manipulatedData)
       .unwrap()
