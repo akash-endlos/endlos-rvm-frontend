@@ -143,7 +143,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditProblemsModal
-          inventoryType={inventoryType?.data?.InventryTypes}
+          inventoryType={inventoryType?.payload?.InventryTypes}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}

@@ -47,7 +47,7 @@ const index = () => {
     //  refetch();
    }
   }, [solutions?.data?.solutions])
-  console.log(dataTable);
+  console.log(problems);
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -148,7 +148,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditSolutionModal
-          inventoryType={problems?.data?.problems}
+          inventoryType={problems?.payload?.problems}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
