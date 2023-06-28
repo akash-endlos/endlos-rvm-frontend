@@ -36,7 +36,11 @@ const TableBody = ({ headerNames, paginatedData, renderAction }) => {
               return <Td key={colIndex}>{showInterConnectedData(row?.invetries, 'brandName')}</Td>;
             }
             if (header === 'invetrybrands') {
-              return <Td key={colIndex}>{showInterConnectedData(row?.invetrybrands, 'name')}</Td>;
+              return <Td key={colIndex}>{row[header] !== undefined ? row[header].name : "-"}</Td>;
+            }
+            if (header === 'invetrytypes') {
+              console.log(row);
+              return <Td key={colIndex}>{showInterConnectedData(row?.invetrytypes, 'name')}</Td>;
             }
             if (header === 'inventry') {
               return <Td key={colIndex}>{showInterConnectedData(row?.inventry, '_inventry')}</Td>;

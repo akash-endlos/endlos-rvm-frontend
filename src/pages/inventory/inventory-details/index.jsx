@@ -31,27 +31,25 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const [InventoryType, setInventoryType] = useState([])
-  const headers = ["brandName",'inventryType','serialNumber','purchaseDate', "Action"];
+  const headers = ['invetrybrands', 'invetrytypes', 'serialNumber', 'purchaseDate', "Action"];
   const [addInventory] = useAddInventoryMutation();
-  const { data: inventory,refetch,isLoading,currentData } = useGetInventoryQuery();
+  const { data: inventory, refetch, isLoading, currentData } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();
   // const [updateInventoryTypeById] = useUpdateInventoryTypeByIdMutation()
   const [updateInventoryById] = useUpdateInventoryByIdMutation()
   const [deleteInventory] = useDeleteInventoryMutation()
   useEffect(() => {
-   if(inventory?.payload?.allInventry)
-   {
-    
-     setDataTable(inventory?.payload?.allInventry)
-     refetch()
-   }
+    if (inventory?.payload?.allInventry) {
+
+      setDataTable(inventory?.payload?.allInventry)
+      refetch()
+    }
   }, [inventory?.payload?.allInventry])
   useEffect(() => {
-    if(inventoryType)
-    {
+    if (inventoryType) {
       setInventoryType(inventoryType?.payload?.InventryTypes)
     }
-   }, [inventoryType])
+  }, [inventoryType])
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -61,7 +59,7 @@ const index = () => {
     await deleteInventory(selectedRow._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null); 
+        setSelectedRow(null);
         setIsDeleteModalOpen(false);
         toast.success('Deleted SuccessFully')
       })
@@ -69,7 +67,7 @@ const index = () => {
         toast.error(error.data.error)
       });
   };
-  
+
   const handleCancelDelete = () => {
     setSelectedRow(null);
     setIsDeleteModalOpen(false);
@@ -80,38 +78,39 @@ const index = () => {
     setIsAddEditModalOpen(true);
   };
 
-  const handleSave = async(data) => {
-    const newAddData={
-      brandName:data.brandName,
-      inventryType:data.inventryType,
-      serialNumber:data.serialNumber
+  const handleSave = async (data) => {
+    console.log(data);
+    const newAddData = {
+      brandName: data.brandName,
+      inventryType: data.inventryType,
+      serialNumber: data.serialNumber
     }
-    const manipulatedData= data.purchaseDate? data :newAddData
+    const manipulatedData = data.purchaseDate ? data : newAddData
     await addInventory(manipulatedData)
-    .unwrap()
-    .then(() => {
-      toast.success('Added SuccessFully')
-    })
-    .catch((error) => {
-      toast.error(error.data.message)
+      .unwrap()
+      .then(() => {
+        toast.success('Added SuccessFully')
+      })
+      .catch((error) => {
+        toast.error(error.data.message)
 
-    });
+      });
   };
-  
-  const handleEditSave=async(data)=>{
-    const updatedData={
+
+  const handleEditSave = async (data) => {
+    const updatedData = {
       id: selectedRow._id,
-      editedData:data
+      editedData: data
     }
     await updateInventoryById(updatedData)
-    .unwrap()
-    .then(() => {
-      toast.success('Updated SuccessFully')
-    })
-    .catch((error) => {
-      toast.error(error.data.error)
+      .unwrap()
+      .then(() => {
+        toast.success('Updated SuccessFully')
+      })
+      .catch((error) => {
+        toast.error(error.data.error)
 
-    });
+      });
   }
   const handleCancelAddEdit = () => {
     setSelectedRow(null);
@@ -120,18 +119,17 @@ const index = () => {
   const renderAction = (row) => {
     return (
       <Flex gap={3} alignContent='center'>
-      <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20}/>
-      <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20}/>
-    </Flex>
+        <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20} />
+        <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20} />
+      </Flex>
     );
   };
-  if(isLoading)
-  {
-   return(
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-    <Spinner size="xl" color="teal" />
-  </Box>
-   ) 
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" color="teal" />
+      </Box>
+    )
   }
   return (
     <>
