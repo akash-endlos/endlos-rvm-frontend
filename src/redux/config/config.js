@@ -47,6 +47,7 @@ const config = {
             addVendor:"/vendor",
             updateVendor:"/vendor",
             deleteVendor:'/vendor',
+            getVendorById:"/vendor"
         }
     }
 }

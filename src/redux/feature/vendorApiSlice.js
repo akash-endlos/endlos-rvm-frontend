@@ -28,13 +28,13 @@ export const vendorsApiSlice = apiSlice.injectEndpoints({
     }),
     getVendorById: builder.mutation({
       query: (id) => ({
-        url: `${config.api.url.getCustomerById}/${id}`,
+        url: `${config.api.url.getVendorById}?id=${id}`,
         method: "GET",
       }),
     }),
     deleteVendor: builder.mutation({
       query: (id) => ({
-        url: `${config.api.url.deleteVendor}/id=${id}`,
+        url: `${config.api.url.deleteVendor}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ['Vendors'],

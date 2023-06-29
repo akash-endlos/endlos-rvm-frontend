@@ -19,40 +19,54 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import AddEditBranchModal from "@/components/modals/customer-modal/AddEditBranchModal"; // Import the AddEditBranchModal
 import { useRouter } from "next/router";
-import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai'
-import { RiDeleteBin6Line } from 'react-icons/ri'
-import { AiOutlineUserAdd } from 'react-icons/ai'
-import { FiEdit } from 'react-icons/fi'
+import {AiFillEdit,AiFillEye,AiFillDelete} from 'react-icons/ai'
+import {RiDeleteBin6Line} from 'react-icons/ri'
+import {FiEdit} from 'react-icons/fi'
 import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
-import DeleteVendorModal from "@/components/modals/vendors-modal/DeleteVendorModal";
-import AddEditVendorModal from "@/components/modals/vendors-modal/AddEditVendorModal";
-import { useAddVendorMutation, useDeleteVendorMutation, useGetVendorsQuery, useUpdateVendorMutation } from "@/redux/feature/vendorApiSlice";
-import AddEditVendorSidebar from "@/components/modals/vendors-modal/AddEditVendorModal";
-import AddEditVendorCustomerSidebar from "@/components/modals/vendors-modal/AddEditCustomerSidebar";
-
+import { useGetVendorByIdMutation, useGetVendorsQuery } from "@/redux/feature/vendorApiSlice";
+import AddEditSidebar from "@/components/modals/customer-modal/AddEditModalCustomer";
 
 const index = () => {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
+  const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false); // Add state for the AddEditBranchModal
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [isVendorCustomerModalOpen, setIsVendorCustomerModalOpen] = useState(false); // Add the state variable for AddEditVendorCustomerSidebar
+  const { data: vendors } = useGetVendorsQuery();
   const [selectedRow, setSelectedRow] = useState(null);
+  const [vendorDetails, setvendorDetails] = useState([])
   const [dataTable, setDataTable] = useState([]);
-  const headers = ["name", "email", "customers", "Action"];
-  const [addVendor] = useAddVendorMutation();
-  const { data: vendors, isLoading, isError, error, refetch } = useGetVendorsQuery();
-  const [updateVendor] = useUpdateVendorMutation();
-  const [deleteVendor] = useDeleteVendorMutation();
-  const [addBranch] = useAddBranchMutation()
+  const headers = ["name", "Action"];
   const [addCustomer] = useAddCustomerMutation();
+  const [getVendorById] = useGetVendorByIdMutation()
+  const { data: customers, isLoading, isError, error, refetch } = useGetCustomersQuery();
+  const [updateCustomer] = useUpdateCustomerMutation();
+  const [deleteCustomer] = useDeleteCustomerMutation();
+  const [addBranch] = useAddBranchMutation()
   useEffect(() => {
-    if (vendors?.payload?.vendors) {
-      setDataTable(vendors?.payload?.vendors);
+    if (customers) {
       refetch();
+      setDataTable(customers.data.Customer);
     }
-  }, [vendors?.payload?.vendors]);
+  }, [customers]);
+  useEffect(() => {
+    if (router?.query?.id) {
+      const fetchVendorDetails = async () => {
+        try {
+          const vendorDetails = await new Promise((resolve, reject) => {
+            resolve(getVendorById(router.query.id));
+          });
+          setvendorDetails(vendorDetails?.data?.payload?.vendors[0]?.customers);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      fetchVendorDetails();
+    }
+  }, [router?.query?.id]);
+   
   
   const handleDelete = (row) => {
     setSelectedRow(row);
@@ -60,12 +74,12 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteVendor(selectedRow._id)
+    await deleteCustomer(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null);
         setIsDeleteModalOpen(false);
-        toast.success('Delete Successfully');
+        toast.success('Delete SuccessFully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -83,10 +97,10 @@ const index = () => {
   };
 
   const handleSave = async (data) => {
-    await addVendor(data)
+    await addCustomer(data)
       .unwrap()
       .then(() => {
-        toast.success('Added Successfully');
+        toast.success('Added SuccessFully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -98,14 +112,13 @@ const index = () => {
       id: selectedRow._id,
       editedData: data
     };
-    await updateVendor(updatedData)
+    await updateCustomer(updatedData)
       .unwrap()
       .then(() => {
-        toast.success('Updated Successfully');
+        toast.success('Updated SuccessFully');
       })
       .catch((error) => {
-        console.log(error);
-        // toast.error(error.data.error);
+        toast.error(error.data.error);
       });
   };
 
@@ -123,40 +136,24 @@ const index = () => {
     setSelectedRow(null);
     setIsViewModalOpen(false);
   };
-  
-  const handleSaveCustomer = async (customerData) => {
-    console.log(customerData);
-    const updatedData={
-      vendorId:selectedRow._id,
-      name:customerData.customerName
-    }
-    await addCustomer(updatedData)
-      .unwrap()
-      .then(() => {
-        toast.success('Added Successfully');
-      })
-      .catch((error) => {
-        toast.error(error.data.message);
-      });
-  };
+  const handleSaveBranch = async (branchData) => {
+    console.log(branchData);
+    await addBranch(branchData)
+    .unwrap()
+    .then(() => {
+      toast.success('Added SuccessFully')
+    })
+    .catch((error) => {
+      toast.error(error.data.error)
 
-  const handleAddEditVendorCustomer = (row) => {
-    setSelectedRow(row);
-    setIsVendorCustomerModalOpen(true);
+    });
   };
-
-  const handleCancelAddEditVendorCustomer = () => {
-    setSelectedRow(null);
-    setIsVendorCustomerModalOpen(false);
-  };
-
   const renderAction = (row) => {
     return (
       <Flex gap={3} alignContent='center'>
-        <AiFillEye className="cursor-pointer" onClick={() => router.push(`vendor/vendor-details/${row._id}`)} color="#174050" size={25} />
+        {/* <AiFillEye className="cursor-pointer" onClick={() => router.push(`customer/branches/${row._id}`)} color="#174050" size={25} /> */}
         <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20} />
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20} />
-        <AiOutlineUserAdd className="cursor-pointer" onClick={() => handleAddEditVendorCustomer(row)} color="teal" size={20} />
       </Flex>
     );
   };
@@ -173,37 +170,42 @@ const index = () => {
     <>
       <Layout>
         <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
-          Vendor
+          Vendor Details
         </Text>
-        <Flex px={5} alignContent="center" justifyContent="space-between">
-          <Box>Search</Box>
-          <Box>
-            <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
-              Add Vendor
-            </Button>
-          </Box>
-        </Flex>
+        <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
+         Customers
+        </Text>
         <DynamicTable
           headerNames={headers}
-          data={dataTable}
+          data={vendorDetails}
           renderAction={renderAction}
         />
-        <DeleteVendorModal
+        <Text color="teal" fontSize="3xl" className="font-bold px-5 py-5">
+         Branches
+        </Text>
+        <DynamicTable
+          headerNames={headers}
+          data={vendorDetails}
+          renderAction={renderAction}
+        />
+        <DeleteModal
           isOpen={isDeleteModalOpen}
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditVendorModal
+        <AddEditSidebar
+        Vendors ={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
           rowData={selectedRow}
         />
-        <AddEditVendorCustomerSidebar
-          isOpen={isVendorCustomerModalOpen}
-          onClose={handleCancelAddEditVendorCustomer}
-          onSave={handleSaveCustomer}
+        <AddEditBranchModal
+        Customer={customers?.data?.Customer}
+          isOpen={isAddBranchModalOpen}
+          onClose={() => setIsAddBranchModalOpen(false)}
+          onSave={handleSaveBranch}
           rowData={selectedRow}
         />
       </Layout>
