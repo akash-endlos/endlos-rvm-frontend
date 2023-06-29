@@ -21,6 +21,7 @@ import AddEditBranchModal from "@/components/modals/customer-modal/AddEditBranch
 import { useRouter } from "next/router";
 import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import { IoAddSharp } from 'react-icons/io5'
 import { FiEdit } from 'react-icons/fi'
 import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
@@ -28,12 +29,15 @@ import DeleteVendorModal from "@/components/modals/vendors-modal/DeleteVendorMod
 import AddEditVendorModal from "@/components/modals/vendors-modal/AddEditVendorModal";
 import { useAddVendorMutation, useGetVendorsQuery, useUpdateVendorMutation } from "@/redux/feature/vendorApiSlice";
 import AddEditVendorSidebar from "@/components/modals/vendors-modal/AddEditVendorModal";
+import AddEditVendorCustomerSidebar from "@/components/modals/vendors-modal/AddEditCustomerSidebar";
+
 
 const index = () => {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isVendorCustomerModalOpen, setIsVendorCustomerModalOpen] = useState(false); // Add the state variable for AddEditVendorCustomerSidebar
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["name", "email", "customers", "Action"];
@@ -42,12 +46,14 @@ const index = () => {
   const [updateVendor] = useUpdateVendorMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const [addBranch] = useAddBranchMutation()
+  const [addCustomer] = useAddCustomerMutation();
   useEffect(() => {
     if (vendors) {
       refetch();
       setDataTable(vendors?.payload?.vendors);
     }
   }, [vendors]);
+  
   const handleDelete = (row) => {
     setSelectedRow(row);
     setIsDeleteModalOpen(true);
@@ -59,7 +65,7 @@ const index = () => {
       .then(() => {
         setSelectedRow(null);
         setIsDeleteModalOpen(false);
-        toast.success('Delete SuccessFully');
+        toast.success('Delete Successfully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -80,7 +86,7 @@ const index = () => {
     await addVendor(data)
       .unwrap()
       .then(() => {
-        toast.success('Added SuccessFully');
+        toast.success('Added Successfully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -95,7 +101,7 @@ const index = () => {
     await updateVendor(updatedData)
       .unwrap()
       .then(() => {
-        toast.success('Updated SuccessFully');
+        toast.success('Updated Successfully');
       })
       .catch((error) => {
         console.log(error);
@@ -117,24 +123,40 @@ const index = () => {
     setSelectedRow(null);
     setIsViewModalOpen(false);
   };
-  const handleSaveBranch = async (branchData) => {
-    console.log(branchData);
-    await addBranch(branchData)
+  
+  const handleSaveCustomer = async (customerData) => {
+    console.log(customerData);
+    const updatedData={
+      vendorId:selectedRow._id,
+      name:customerData.name
+    }
+    await addCustomer(updatedData)
       .unwrap()
       .then(() => {
-        toast.success('Added SuccessFully')
+        toast.success('Added Successfully');
       })
       .catch((error) => {
-        toast.error(error.data.error)
-
+        toast.error(error.data.message);
       });
   };
+
+  const handleAddEditVendorCustomer = (row) => {
+    setSelectedRow(row);
+    setIsVendorCustomerModalOpen(true);
+  };
+
+  const handleCancelAddEditVendorCustomer = () => {
+    setSelectedRow(null);
+    setIsVendorCustomerModalOpen(false);
+  };
+
   const renderAction = (row) => {
     return (
       <Flex gap={3} alignContent='center'>
         <AiFillEye className="cursor-pointer" onClick={() => router.push(`customer/branches/${row._id}`)} color="#174050" size={25} />
         <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20} />
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20} />
+        <IoAddSharp className="cursor-pointer" onClick={() => handleAddEditVendorCustomer(row)} color="red" size={20} />
       </Flex>
     );
   };
@@ -171,11 +193,17 @@ const index = () => {
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditVendorSidebar
+        <AddEditVendorModal
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
+          rowData={selectedRow}
+        />
+        <AddEditVendorCustomerSidebar
+          isOpen={isVendorCustomerModalOpen}
+          onClose={handleCancelAddEditVendorCustomer}
+          onSave={handleSaveCustomer}
           rowData={selectedRow}
         />
       </Layout>
