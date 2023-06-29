@@ -64,7 +64,8 @@ const index = () => {
         toast.success('Deleted SuccessFully')
       })
       .catch((error) => {
-        toast.error(error.data.error)
+        console.log(error);
+        toast.error(error.data.message)
       });
   };
 
@@ -79,11 +80,16 @@ const index = () => {
   };
 
   const handleSave = async (data) => {
+
     let newAddData = {
-      inventryType: data.inventryType,
+      inventryTypeId: data.inventryType,
       serialNumber: data.serialNumber
     };
-    
+    let withPurchaseDateAdd={
+      inventryTypeId: data.inventryType,
+      serialNumber: data.serialNumber,
+      purchaseDate:data.purchaseDate
+    }
     if (data?.brandName) {
       newAddData.brandName = data.brandName;
       
@@ -92,32 +98,51 @@ const index = () => {
       }
     }
     
-    const manipulatedData = data.purchaseDate ? data : newAddData
+    const manipulatedData = data.purchaseDate ? withPurchaseDateAdd : newAddData
     await addInventory(manipulatedData)
       .unwrap()
       .then(() => {
         toast.success('Added SuccessFully')
       })
       .catch((error) => {
+        console.log(error);
         toast.error(error.data.message)
 
       });
   };
 
   const handleEditSave = async (data) => {
-    const updatedData = {
-      id: selectedRow._id,
-      editedData: data
+    let newAddData = {
+      inventryTypeId: data.inventryType,
+      serialNumber: data.serialNumber
+    };
+    let withPurchaseDateAdd={
+      inventryTypeId: data.inventryType,
+      serialNumber: data.serialNumber,
+      purchaseDate:data.purchaseDate
     }
-    await updateInventoryById(updatedData)
-      .unwrap()
-      .then(() => {
-        toast.success('Updated SuccessFully')
-      })
-      .catch((error) => {
-        toast.error(error.data.error)
+    if (data?.brandName) {
+      newAddData.brandName = data.brandName;
+      
+      if (data.brandId) {
+        newAddData.brandId = data.brandId;
+      }
+    }
+    const manipulatedData = data.purchaseDate ? withPurchaseDateAdd : newAddData
+    console.log(manipulatedData);
+    // const updatedData = {
+    //   id: selectedRow._id,
+    //   editedData: data
+    // }
+    // await updateInventoryById(updatedData)
+    //   .unwrap()
+    //   .then(() => {
+    //     toast.success('Updated SuccessFully')
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error.data.message)
 
-      });
+    //   });
   }
   const handleCancelAddEdit = () => {
     setSelectedRow(null);

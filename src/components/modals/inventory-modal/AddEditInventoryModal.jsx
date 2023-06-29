@@ -3,10 +3,13 @@ import {
   Box,
   FormControl,
   FormLabel,
-  Input,
   Button,
   FormErrorMessage,
   Select,
+  Input,
+  Radio,
+  RadioGroup,
+  Stack,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -22,86 +25,63 @@ const AddEditSidebar = ({
   options,
 }) => {
   const isEditMode = !!rowData;
-  const [formData, setFormData] = useState({});
-  const [selectedInventoryType, setSelectedInventoryType] = useState("");
-  const [selectedBrandId, setSelectedBrandId] = useState("");
-  const [secondDropdownOptions, setSecondDropdownOptions] = useState([]);
 
   const validationSchema = Yup.object().shape({
-    // brandName: Yup.string().required("Brand Name is required"),
-    // inventryType: Yup.string().required("Inventory type is required"),
     serialNumber: Yup.string().required("Serial number is required"),
+    inventoryTypeId: Yup.string().required("Inventory type is required"),
+    brandId: Yup.string().required("Brand is required"),
+    brandName: Yup.string().when("brandId", {
+      is: (val) => !val || val === "",
+      then: Yup.string().required("Brand name is required"),
+      otherwise: Yup.string().notRequired(),
+    }),
   });
-
-  const selectedBrandName = options.find((item) => item._id === selectedInventoryType)?.invetrybrands || [];
 
   const {
     handleSubmit,
     formState: { errors },
-    register,
     reset,
+    register,
     setValue,
   } = useForm({
     resolver: yupResolver(validationSchema),
-    defaultValues: formData,
   });
+
+  const [inventoryTypeOptions, setInventoryTypeOptions] = useState([]);
+  const [brandOptions, setBrandOptions] = useState([]);
+  const [brandNameVisible, setBrandNameVisible] = useState(false);
+  const [radioButton, setRadioButton] = useState(false)
 
   useEffect(() => {
     if (isEditMode) {
-      setFormData(rowData);
+      reset(rowData);
     } else {
-      setFormData({});
+      reset();
     }
-  }, [rowData]);
+  }, [isEditMode, rowData, reset]);
 
   useEffect(() => {
-    if (isOpen) {
-      reset();
-      setSelectedInventoryType(rowData?.invetrybrands?.inventryTypeId);
-      setSelectedBrandId("");
-      setSecondDropdownOptions([]);
-      if (isEditMode) {
-        setValue("inventryType", rowData.invetrytypes._id);
-        setValue("brandName", rowData.invetrybrands.name);
-        setValue("serialNumber", rowData.serialNumber);
-        setValue(
-          "purchaseDate",
-          moment(rowData?.purchaseDate).format("YYYY-MM-DD")
-        );
-      }
-    }
-  }, [isOpen, isEditMode, rowData, reset, setValue]);
+    setInventoryTypeOptions(options);
+  }, [options]);
 
   const handleInventoryTypeChange = (event) => {
     const selectedType = event.target.value;
-    setSelectedInventoryType(selectedType)
-    setSelectedBrandId("");
     const selectedTypeOptions = options.find((item) => item._id === selectedType);
     if (selectedTypeOptions) {
-      setSecondDropdownOptions(selectedTypeOptions.invetrybrands || []);
+      setBrandOptions(selectedTypeOptions.invetrybrands || []);
     } else {
-      setSecondDropdownOptions([]);
+      setBrandOptions([]);
     }
-  };
-  const handleBrandChange = (event) => {
-    setSelectedBrandId(event.target.value);
+    setValue("brandId", ""); // Reset brandId value when inventoryTypeId changes
   };
 
   const onSubmit = (data) => {
     if (isEditMode) {
-      onEditSave({ ...data, inventoryType: selectedInventoryType, brandId: selectedBrandId });
+      onEditSave(data);
       onClose();
       reset();
     } else {
-      console.log(selectedBrandId.length);
-      if(selectedBrandId.length===0)
-      {
-        onSave({ ...data });
-      }
-      else{
-
-        onSave({ ...data,  brandId: selectedBrandId });
-      }
+      onSave(data);
       onClose();
       reset();
     }
@@ -110,6 +90,13 @@ const AddEditSidebar = ({
   if (!isOpen) {
     return null;
   }
+  const handleRadioChange = (value) => {
+    if (value === "byBrandName") {
+      setRadioButton(true);
+    } else {
+      setRadioButton(false);
+    }
+  };
   return (
     <Box
       position="fixed"
@@ -123,35 +110,41 @@ const AddEditSidebar = ({
       zIndex={999}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* secondDropdownOptions.length > 0 */}
-        <FormControl isInvalid={errors.inventryType} mt={4}>
+      <FormControl isInvalid={errors.inventoryTypeId} mt={4}>
+          <FormLabel>Filter By</FormLabel>
+          <RadioGroup defaultValue="byInventoryType" onChange={handleRadioChange}>
+            <Stack direction="row">
+              <Radio value="byInventoryType">Inventory Type</Radio>
+              <Radio value="byBrandName">Brand Name</Radio>
+            </Stack>
+          </RadioGroup>
+        </FormControl>
+        <FormControl isInvalid={errors.inventoryTypeId} mt={4}>
           <FormLabel>Inventory Type</FormLabel>
           <Select
-            {...register("inventryType")}  // Register the field with react-hook-form
-            value={selectedInventoryType}
+            {...register("inventoryTypeId")}
             onChange={handleInventoryTypeChange}
             placeholder="Select option"
           >
-            {options.map((item, index) => (
-              <option key={index} value={item._id}>
-                {item.name}
-              </option>
-            ))}
+            {inventoryTypeOptions.map((item, index) => (
+            <option key={index} value={item._id}>
+              {item.name}
+            </option>
+          ))}
           </Select>
           <FormErrorMessage>
-            {errors.inventryType && errors.inventryType.message}
+            {errors.inventoryTypeId && errors.inventoryTypeId.message}
           </FormErrorMessage>
         </FormControl>
-        {secondDropdownOptions.length > 0 && (
+
+        { !radioButton && brandOptions.length > 0 && (
           <FormControl isInvalid={errors.brandId} mt={4}>
-            <FormLabel>Inventry Brands</FormLabel>
+            <FormLabel>Brand</FormLabel>
             <Select
-              name="brandId"
-              value={selectedBrandId}
-              onChange={handleBrandChange}
+              {...register("brandId")}
               placeholder="Select option"
             >
-              {selectedBrandName.map((item, index) => (
+              {brandOptions.map((item, index) => (
                 <option key={index} value={item._id}>
                   {item.name}
                 </option>
@@ -162,13 +155,19 @@ const AddEditSidebar = ({
             </FormErrorMessage>
           </FormControl>
         )}
-        {(secondDropdownOptions.length === 0 || secondDropdownOptions.length === undefined) && (<FormControl isInvalid={errors.brandName}>
-          <FormLabel>Brand Name</FormLabel>
-          <Input type="text" name="brandName" {...register("brandName")} />
-          <FormErrorMessage>
-            {errors.brandName && errors.brandName.message}
-          </FormErrorMessage>
-        </FormControl>)}
+
+         {radioButton && (<FormControl isInvalid={errors.brandName} mt={4}>
+            <FormLabel>Brand Name</FormLabel>
+            <Input
+              type="text"
+              name="brandName"
+              {...register("brandName")}
+            />
+            <FormErrorMessage>
+              {errors.brandName && errors.brandName.message}
+            </FormErrorMessage>
+          </FormControl>)}
+
         <FormControl isInvalid={errors.serialNumber} mt={4}>
           <FormLabel>Serial Number</FormLabel>
           <Input
@@ -180,6 +179,7 @@ const AddEditSidebar = ({
             {errors.serialNumber && errors.serialNumber.message}
           </FormErrorMessage>
         </FormControl>
+
         <FormControl isInvalid={errors.purchaseDate} mt={4}>
           <FormLabel>Purchase Date</FormLabel>
           <Input
