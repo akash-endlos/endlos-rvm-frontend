@@ -43,8 +43,8 @@ const AddEditMachineModal = ({
     tags: [],
   });
   // const { data: inventoryType } = useGetInventoryTypeQuery();
-
-  const [categories, setCategories] = useState(inventoryType?.data?.InventryTypes);
+  console.log(inventory);
+  const [categories, setCategories] = useState(inventoryType?.payload?.InventryTypes);
   const [subcategories, setSubcategories] = useState([]);
   // const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
@@ -97,9 +97,9 @@ const AddEditMachineModal = ({
   useEffect(() => {
     if(selectedCategory)
     {
-      setSubcategories(inventory?.data?.InventryTypes[0]?.invetries || []);
+      setSubcategories(inventory?.payload?.InventryTypes[0]?.invetries || []);
     }
-  }, [selectedCategory,inventory?.data?.InventryTypes[0]?.invetries]);
+  }, [selectedCategory,inventory?.payload?.InventryTypes[0]?.invetries]);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);

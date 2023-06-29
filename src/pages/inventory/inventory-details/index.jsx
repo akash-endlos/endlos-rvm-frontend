@@ -112,6 +112,7 @@ const index = () => {
   };
 
   const handleEditSave = async (data) => {
+    console.log(data);
     let newAddData = {
       inventryTypeId: data.inventryType,
       serialNumber: data.serialNumber
