@@ -28,7 +28,7 @@ export const vendorsApiSlice = apiSlice.injectEndpoints({
     }),
     getVendorById: builder.mutation({
       query: (id) => ({
-        url: `${config.api.url.getVendorById}?id=${id}`,
+        url: `${config.api.url.getVendorById}?id=${id}&nestedData=true`,
         method: "GET",
       }),
     }),
