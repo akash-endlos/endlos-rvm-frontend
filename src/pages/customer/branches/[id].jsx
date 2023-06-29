@@ -29,6 +29,7 @@ import DeleteModalBranch from "@/components/modals/branches-modal/DeleteModalBra
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-hot-toast";
+import { useGetCustomerByIdMutation, useGetCustomerDetailsByIdMutation } from "@/redux/feature/customerApiSlice";
 
 const index = () => {
   const router = useRouter()
@@ -36,6 +37,7 @@ const index = () => {
   const btnRef = React.useRef();
   const headers = ["name", "Action"];
   const [branches, setBranches] = useState([]);
+   const [getCustomerDetailsById]=useGetCustomerDetailsByIdMutation()
   const { data: myallbranches,isLoading } = useGetBranchesByIdFormatQuery(id)
   const [addBranch] = useAddBranchMutation()
   const [updateBranchById] = useUpdateBranchByIdMutation()
@@ -48,6 +50,18 @@ const index = () => {
       setBranches(myallbranches.data.Branches);
     }
   }, [myallbranches])
+  useEffect(() => {
+    const fetchCustomerById = async () => {
+      try {
+        const customer = await getCustomerDetailsById(id);
+        console.log("Customer:", customer.data.payload.Customer);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchCustomerById();
+  }, [id]);
 
   const handleAddEdit = (row) => {
     setSelectedRow(row);

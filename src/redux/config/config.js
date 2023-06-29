@@ -9,6 +9,7 @@ const config = {
             addCustomer:'customer/add',
             updateCustomer:'customer/update',
             getCustomerById:'customer/get',
+            getCustomerDetailsById:'customer/get',
             getBranchesById:'branch/getbycustomer',
             addBranch:'branch/add',
             updateBranch:'branch/update',

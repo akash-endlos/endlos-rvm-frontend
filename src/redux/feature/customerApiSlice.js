@@ -32,6 +32,12 @@ export const customersApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getCustomerDetailsById: builder.mutation({
+      query: (id) => ({
+        url: `${config.api.url.getCustomerDetailsById}?id=${id}&nestedData=true`,
+        method: "GET",
+      }),
+    }),
     deleteCustomer: builder.mutation({
       query: (id) => ({
         url: `${config.api.url.deleteCustomer}?id=${id}`,
@@ -45,6 +51,7 @@ export const customersApiSlice = apiSlice.injectEndpoints({
 export const {
   useAddCustomerMutation,
   useGetCustomersQuery,
+  useGetCustomerDetailsByIdMutation,
   useGetCustomerByIdMutation,
   useUpdateCustomerMutation,
   useDeleteCustomerMutation,
