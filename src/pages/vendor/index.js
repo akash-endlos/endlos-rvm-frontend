@@ -27,7 +27,7 @@ import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
 import DeleteVendorModal from "@/components/modals/vendors-modal/DeleteVendorModal";
 import AddEditVendorModal from "@/components/modals/vendors-modal/AddEditVendorModal";
-import { useAddVendorMutation, useGetVendorsQuery, useUpdateVendorMutation } from "@/redux/feature/vendorApiSlice";
+import { useAddVendorMutation, useDeleteVendorMutation, useGetVendorsQuery, useUpdateVendorMutation } from "@/redux/feature/vendorApiSlice";
 import AddEditVendorSidebar from "@/components/modals/vendors-modal/AddEditVendorModal";
 import AddEditVendorCustomerSidebar from "@/components/modals/vendors-modal/AddEditCustomerSidebar";
 
@@ -44,15 +44,15 @@ const index = () => {
   const [addVendor] = useAddVendorMutation();
   const { data: vendors, isLoading, isError, error, refetch } = useGetVendorsQuery();
   const [updateVendor] = useUpdateVendorMutation();
-  const [deleteCustomer] = useDeleteCustomerMutation();
+  const [deleteVendor] = useDeleteVendorMutation();
   const [addBranch] = useAddBranchMutation()
   const [addCustomer] = useAddCustomerMutation();
   useEffect(() => {
-    if (vendors) {
-      refetch();
+    if (vendors?.payload?.vendors) {
       setDataTable(vendors?.payload?.vendors);
+      refetch();
     }
-  }, [vendors]);
+  }, [vendors?.payload?.vendors]);
   
   const handleDelete = (row) => {
     setSelectedRow(row);
@@ -60,7 +60,8 @@ const index = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteCustomer(selectedRow._id)
+    console.log(selectedRow._id);
+    await deleteVendor(selectedRow._id)
       .unwrap()
       .then(() => {
         setSelectedRow(null);
@@ -128,7 +129,7 @@ const index = () => {
     console.log(customerData);
     const updatedData={
       vendorId:selectedRow._id,
-      name:customerData.name
+      name:customerData.customerName
     }
     await addCustomer(updatedData)
       .unwrap()

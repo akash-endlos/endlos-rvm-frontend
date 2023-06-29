@@ -45,7 +45,8 @@ const config = {
             getSolutions:"solution",
             getallVendors:"/vendor",
             addVendor:"/vendor",
-            updateVendor:"/vendor"
+            updateVendor:"/vendor",
+            deleteVendor:'/vendor',
         }
     }
 }
