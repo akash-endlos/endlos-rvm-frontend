@@ -36,6 +36,7 @@ const index = () => {
   const id = router?.query?.id
   const btnRef = React.useRef();
   const headers = ["name", "Action"];
+  const headersMachine=["machineId","warrantyStartDate"]
   const [branches, setBranches] = useState([]);
    const [getCustomerDetailsById]=useGetCustomerDetailsByIdMutation()
   const { data: myallbranches,isLoading } = useGetBranchesByIdFormatQuery(id)
@@ -44,25 +45,30 @@ const index = () => {
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [machines, setMachines] = useState([])
   const [deleteBranch] = useDeleteBranchMutation()
   useEffect(() => {
     if (myallbranches) {
       setBranches(myallbranches.data.Branches);
     }
   }, [myallbranches])
+  console.log(id);
   useEffect(() => {
+  if(id)
+  {
     const fetchCustomerById = async () => {
       try {
         const customer = await getCustomerDetailsById(id);
-        console.log("Customer:", customer.data.payload.Customer);
+        setMachines(customer?.data?.payload?.Customer[0].machines)
       } catch (error) {
         console.error("Error:", error);
       }
     };
-
     fetchCustomerById();
-  }, [id]);
+  }
 
+  }, [id]);
+console.log(machines);
   const handleAddEdit = (row) => {
     setSelectedRow(row);
     setIsAddEditModalOpen(true);
@@ -169,6 +175,11 @@ const index = () => {
               <DynamicTable
                 headerNames={headers}
                 data={branches}
+                renderAction={renderAction}
+              />
+               <DynamicTable
+                headerNames={headersMachine}
+                data={machines}
                 renderAction={renderAction}
               />
               <DeleteModalBranch
