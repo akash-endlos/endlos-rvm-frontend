@@ -7,7 +7,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   Button,
   FormErrorMessage,
   Text,
@@ -16,12 +15,10 @@ import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
 
 const schema = yup.object().shape({
   name: yup.string().required("Branch Name is required"),
-  customerId: yup.string().required("Customer is required"),
   // Add more validation rules for other form fields
 });
 
-const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
-
+const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData }) => {
   const {
     handleSubmit,
     register,
@@ -31,19 +28,21 @@ const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
     onSave(data);
     reset();
     onClose();
   };
 
-  // React.useEffect(() => {
-  //   if (rowData) {
-  //     Object.entries(rowData).forEach(([name, value]) => {
-  //       setValue(name, value);
-  //     });
-  //   }
-  // }, [rowData, setValue]);
+  React.useEffect(() => {
+    // if (rowData) {
+    //   Object.entries(rowData).forEach(([name, value]) => {
+    //     setValue(name, value);
+    //   });
+    // }
+    setValue('customer',rowData?.name)
+  }, [rowData, setValue]);
 
   if (!isOpen) {
     return null;
@@ -63,23 +62,12 @@ const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box mb={4}>
-          <Text className="font-bold" color="teal">
+          {/* <Text className="font-bold" color="teal">
             Add Branch
-          </Text>
-          <FormControl mt={4} isInvalid={errors.customerId}>
+          </Text> */}
+            <FormControl>
             <FormLabel>Customer</FormLabel>
-            <Select name="customerId" {...register("customerId")}>
-              <option value="">Select customer</option>
-              {Customer.map((item, index) => (
-                <option key={index} value={item._id}>
-                  {item.name}
-                </option>
-              ))}
-              {/* Add more options as needed */}
-            </Select>
-            <FormErrorMessage>
-              {errors.customerId && errors.customerId.message}
-            </FormErrorMessage>
+            <Input type="text" name="customer" {...register("customer")} isReadOnly />
           </FormControl>
           <FormControl isInvalid={errors.name}>
             <FormLabel>Branch Name</FormLabel>
@@ -88,7 +76,6 @@ const AddEditBranchModal = ({ isOpen, onClose, onSave, rowData, Customer }) => {
               {errors.name && errors.name.message}
             </FormErrorMessage>
           </FormControl>
-          {/* Add more form fields for branch data */}
         </Box>
         <Button colorScheme="blue" type="submit">
           Save

@@ -19,7 +19,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
 import AddEditBranchModal from "@/components/modals/customer-modal/AddEditBranchModal"; // Import the AddEditBranchModal
 import { useRouter } from "next/router";
-import {AiFillEdit,AiFillEye,AiFillDelete} from 'react-icons/ai'
+import {AiFillEdit,AiFillEye,AiFillDelete,AiOutlineBranches} from 'react-icons/ai'
 import {RiDeleteBin6Line} from 'react-icons/ri'
 import {FiEdit} from 'react-icons/fi'
 import { toast } from "react-hot-toast";
@@ -118,8 +118,11 @@ const index = () => {
     setIsViewModalOpen(false);
   };
   const handleSaveBranch = async (branchData) => {
-    console.log(branchData);
-    await addBranch(branchData)
+    const updatedData={
+      customerId:selectedRow?._id,
+      name:branchData.name,
+    }
+    await addBranch(updatedData)
     .unwrap()
     .then(() => {
       toast.success('Added SuccessFully')
@@ -135,6 +138,7 @@ const index = () => {
         <AiFillEye className="cursor-pointer" onClick={() => router.push(`customer/branches/${row._id}`)} color="#174050" size={25} />
         <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20} />
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20} />
+        <AiOutlineBranches className="cursor-pointer" onClick={() => {setIsAddBranchModalOpen(true);setSelectedRow(row)}} color="gray" size={20} />
       </Flex>
     );
   };
@@ -159,9 +163,9 @@ const index = () => {
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
               Add Customer
             </Button>
-            <Button ml={4} colorScheme="teal" onClick={() => setIsAddBranchModalOpen(true)}> {/* Use setIsAddBranchModalOpen to open AddEditBranchModal */}
+            {/* <Button ml={4} colorScheme="teal" onClick={() => setIsAddBranchModalOpen(true)}>
               Add Branch
-            </Button>
+            </Button> */}
           </Box>
         </Flex>
         <DynamicTable
@@ -175,7 +179,7 @@ const index = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddEditSidebar
-        Vendors ={vendors?.payload?.vendors}
+          Vendors={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
@@ -183,7 +187,7 @@ const index = () => {
           rowData={selectedRow}
         />
         <AddEditBranchModal
-        Customer={customers?.data?.Customer}
+          Customer={customers?.data?.Customer}
           isOpen={isAddBranchModalOpen}
           onClose={() => setIsAddBranchModalOpen(false)}
           onSave={handleSaveBranch}
