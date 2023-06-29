@@ -52,7 +52,6 @@ const index = () => {
       setBranches(myallbranches.data.Branches);
     }
   }, [myallbranches])
-  console.log(id);
   useEffect(() => {
   if(id)
   {
