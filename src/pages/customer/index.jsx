@@ -42,11 +42,11 @@ const index = () => {
   const [updateCustomer] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const [addBranch] = useAddBranchMutation()
-  console.log(vendors?.payload?.vendors);
+  console.log(customers?.payload?.Customer);
   useEffect(() => {
     if (customers) {
-      refetch();
       setDataTable(customers.payload.Customer);
+      refetch();
     }
   }, [customers]);
   const handleDelete = (row) => {
@@ -125,6 +125,7 @@ const index = () => {
     await addBranch(updatedData)
     .unwrap()
     .then(() => {
+      refetch();
       toast.success('Added SuccessFully')
     })
     .catch((error) => {
