@@ -52,7 +52,7 @@ const index = () => {
   useEffect(() => {
     if (customers) {
       refetch();
-      setDataTable(customers.data.Customer);
+      setDataTable(customers?.payload?.Customer);
     }
   }, [customers]);
   useEffect(() => {
