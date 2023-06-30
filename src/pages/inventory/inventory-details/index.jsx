@@ -31,7 +31,7 @@ const index = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const [InventoryType, setInventoryType] = useState([])
-  const headers = ['invetrybrands', 'invetrytypes', 'serialNumber', 'purchaseDate', "Action"];
+  const headers = ['invoiceNo','invetrytypes','invetrybrands', , 'serialNumber', 'purchaseDate', "Action"];
   const [addInventory] = useAddInventoryMutation();
   const { data: inventory, refetch, isLoading, currentData } = useGetInventoryQuery();
   const { data: inventoryType } = useGetInventoryTypeQuery();

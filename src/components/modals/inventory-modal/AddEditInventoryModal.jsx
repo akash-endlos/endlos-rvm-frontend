@@ -30,12 +30,12 @@ const AddEditSidebar = ({
     serialNumber: Yup.string().required("Serial number is required"),
     inventoryTypeId: Yup.string().required("Inventory type is required"),
     brandId: Yup.string().required("Brand is required"),
-    brandName: Yup.string().when("brandId", {
-      is: (val) => !val || val === "",
-      then: Yup.string().required("Brand name is required"),
-      otherwise: Yup.string().notRequired(),
+    brandName: Yup.string().when("brandId", (brandId, schema) => {
+      return brandId && brandId !== "" ? schema.notRequired() : schema.required("Brand name is required");
     }),
   });
+  
+  
 
   const {
     handleSubmit,
@@ -50,15 +50,18 @@ const AddEditSidebar = ({
   const [inventoryTypeOptions, setInventoryTypeOptions] = useState([]);
   const [brandOptions, setBrandOptions] = useState([]);
   const [brandNameVisible, setBrandNameVisible] = useState(false);
-  const [radioButton, setRadioButton] = useState(false)
+  const [radioButton, setRadioButton] = useState('existing');
 
   useEffect(() => {
-    if (isEditMode) {
-      reset(rowData);
-    } else {
-      reset();
+    reset(); // Reset the form when rowData changes
+    if (rowData) {
+      console.log(rowData);
+      setValue("serialNumber", rowData.serialNumber || ""); // Update serialNumber input value
+      setValue("inventoryTypeId", rowData?.invetrytypes[0]?.id);
+      setValue("brandId", rowData.brandId);
+      setValue("brandName", rowData.brandName);
     }
-  }, [isEditMode, rowData, reset]);
+  }, [rowData, reset, setValue]);
 
   useEffect(() => {
     setInventoryTypeOptions(options);
@@ -78,12 +81,12 @@ const AddEditSidebar = ({
   const onSubmit = (data) => {
     if (isEditMode) {
       onEditSave(data);
+      reset()
       onClose();
-      reset();
     } else {
       onSave(data);
+      reset()
       onClose();
-      reset();
     }
   };
 
@@ -92,9 +95,9 @@ const AddEditSidebar = ({
   }
   const handleRadioChange = (value) => {
     if (value === "byBrandName") {
-      setRadioButton(true);
+      setRadioButton('brandName');
     } else {
-      setRadioButton(false);
+      setRadioButton('existing');
     }
   };
   return (
@@ -118,10 +121,10 @@ const AddEditSidebar = ({
             placeholder="Select option"
           >
             {inventoryTypeOptions.map((item, index) => (
-            <option key={index} value={item._id}>
-              {item.name}
-            </option>
-          ))}
+              <option key={index} value={item._id}>
+                {item.name}
+              </option>
+            ))}
           </Select>
           <FormErrorMessage>
             {errors.inventoryTypeId && errors.inventoryTypeId.message}
@@ -135,13 +138,10 @@ const AddEditSidebar = ({
             </Stack>
           </RadioGroup>
         </FormControl>
-        { !radioButton && brandOptions.length > 0 && (
+        {radioButton==='existing' && (
           <FormControl isInvalid={errors.brandId} mt={4}>
             <FormLabel>Brand</FormLabel>
-            <Select
-              {...register("brandId")}
-              placeholder="Select option"
-            >
+            <Select {...register("brandId")} placeholder="Select option">
               {brandOptions.map((item, index) => (
                 <option key={index} value={item._id}>
                   {item.name}
@@ -154,17 +154,15 @@ const AddEditSidebar = ({
           </FormControl>
         )}
 
-         {radioButton && (<FormControl isInvalid={errors.brandName} mt={4}>
+        {radioButton==='brandName' && (
+          <FormControl isInvalid={errors.brandName} mt={4}>
             <FormLabel>Brand Name</FormLabel>
-            <Input
-              type="text"
-              name="brandName"
-              {...register("brandName")}
-            />
+            <Input type="text" name="brandName" {...register("brandName")} />
             <FormErrorMessage>
               {errors.brandName && errors.brandName.message}
             </FormErrorMessage>
-          </FormControl>)}
+          </FormControl>
+        )}
 
         <FormControl isInvalid={errors.serialNumber} mt={4}>
           <FormLabel>Serial Number</FormLabel>
