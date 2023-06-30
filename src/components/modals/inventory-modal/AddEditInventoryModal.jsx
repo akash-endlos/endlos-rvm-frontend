@@ -110,15 +110,6 @@ const AddEditSidebar = ({
       zIndex={999}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={errors.inventoryTypeId} mt={4}>
-          <FormLabel>Filter By</FormLabel>
-          <RadioGroup defaultValue="byInventoryType" onChange={handleRadioChange}>
-            <Stack direction="row">
-              <Radio value="byInventoryType">Inventory Type</Radio>
-              <Radio value="byBrandName">Brand Name</Radio>
-            </Stack>
-          </RadioGroup>
-        </FormControl>
         <FormControl isInvalid={errors.inventoryTypeId} mt={4}>
           <FormLabel>Inventory Type</FormLabel>
           <Select
@@ -136,7 +127,14 @@ const AddEditSidebar = ({
             {errors.inventoryTypeId && errors.inventoryTypeId.message}
           </FormErrorMessage>
         </FormControl>
-
+        <FormControl isInvalid={errors.inventoryTypeId} mt={4}>
+          <RadioGroup defaultValue="byInventoryType" onChange={handleRadioChange}>
+            <Stack direction="row">
+              <Radio value="byInventoryType">Existing Brand</Radio>
+              <Radio value="byBrandName">Add New Brand</Radio>
+            </Stack>
+          </RadioGroup>
+        </FormControl>
         { !radioButton && brandOptions.length > 0 && (
           <FormControl isInvalid={errors.brandId} mt={4}>
             <FormLabel>Brand</FormLabel>
