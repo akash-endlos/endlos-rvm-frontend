@@ -17,48 +17,51 @@ import DeleteModal from "@/components/modals/customer-modal/DeleteModalCustomer"
 import { useAddCustomerMutation, useDeleteCustomerMutation, useGetCustomerByIdMutation, useGetCustomersMutation, useGetCustomersQuery, useUpdateCustomerMutation } from "@/redux/feature/customerApiSlice";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import AddEditModal from "@/components/modals/customer-modal/AddEditModalCustomer";
-import AddEditBranchModal from "@/components/modals/customer-modal/AddEditBranchModal"; // Import the AddEditBranchModal
+import AddEditBranchModal from "@/components/modals/customer-modal/AddEditBranchModal";
 import { useRouter } from "next/router";
-import {AiFillEdit,AiFillEye,AiFillDelete,AiOutlineBranches} from 'react-icons/ai'
-import {RiDeleteBin6Line} from 'react-icons/ri'
-import {FiEdit} from 'react-icons/fi'
+import { AiFillEdit,AiFillEye,AiFillDelete,AiOutlineBranches} from 'react-icons/ai'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import { FiEdit } from 'react-icons/fi'
 import { toast } from "react-hot-toast";
 import { useAddBranchMutation } from "@/redux/feature/branchApiSlice";
 import { useGetVendorsQuery } from "@/redux/feature/vendorApiSlice";
 import AddEditSidebar from "@/components/modals/customer-modal/AddEditModalCustomer";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedRowForDelete, setSelectedRowForDelete] = useState(null);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
-  const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false); // Add state for the AddEditBranchModal
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedRowForAddEdit, setSelectedRowForAddEdit] = useState(null);
+  const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false);
+  const [selectedRowForAddBranch, setSelectedRowForAddBranch] = useState(null);
+  
   const { data: vendors } = useGetVendorsQuery();
-  const [selectedRow, setSelectedRow] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const headers = ["name", "branch", "Action"];
   const [addCustomer] = useAddCustomerMutation();
   const { data: customers, isLoading, isError, error, refetch } = useGetCustomersQuery();
   const [updateCustomer] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
-  const [addBranch] = useAddBranchMutation()
-  console.log(customers?.payload?.Customer);
+  const [addBranch] = useAddBranchMutation();
+
   useEffect(() => {
     if (customers) {
       setDataTable(customers.payload.Customer);
       refetch();
     }
   }, [customers]);
+
   const handleDelete = (row) => {
-    setSelectedRow(row);
+    setSelectedRowForDelete(row);
     setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
-    await deleteCustomer(selectedRow._id)
+    await deleteCustomer(selectedRowForDelete._id)
       .unwrap()
       .then(() => {
-        setSelectedRow(null);
+        setSelectedRowForDelete(null);
         setIsDeleteModalOpen(false);
         toast.success('Delete SuccessFully');
       })
@@ -67,13 +70,9 @@ const index = () => {
       });
   };
 
-  const handleCancelDelete = () => {
-    setSelectedRow(null);
-    setIsDeleteModalOpen(false);
-  };
-
   const handleAddEdit = (row) => {
-    setSelectedRow(row);
+    setIsAddBranchModalOpen(false)
+    setSelectedRowForAddEdit(row);
     setIsAddEditModalOpen(true);
   };
 
@@ -81,7 +80,7 @@ const index = () => {
     await addCustomer(data)
       .unwrap()
       .then(() => {
-        toast.success('Added SuccessFully');
+        toast.success('Added Successfully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -90,13 +89,13 @@ const index = () => {
 
   const handleEditSave = async (data) => {
     const updatedData = {
-      id: selectedRow._id,
+      id: selectedRowForAddEdit._id,
       editedData: data
     };
     await updateCustomer(updatedData)
       .unwrap()
       .then(() => {
-        toast.success('Updated SuccessFully');
+        toast.success('Updated Successfully');
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -104,42 +103,34 @@ const index = () => {
   };
 
   const handleCancelAddEdit = () => {
-    setSelectedRow(null);
+    setSelectedRowForAddEdit(null);
     setIsAddEditModalOpen(false);
+   
   };
 
-  const handleView = (row) => {
-    setSelectedRow(row);
-    setIsViewModalOpen(true);
-  };
-
-  const handleViewDrawerClose = () => {
-    setSelectedRow(null);
-    setIsViewModalOpen(false);
-  };
   const handleSaveBranch = async (branchData) => {
-    const updatedData={
-      customerId:selectedRow?._id,
-      name:branchData.name,
-    }
+    const updatedData = {
+      customerId: selectedRowForAddBranch?._id,
+      name: branchData.name,
+    };
     await addBranch(updatedData)
-    .unwrap()
-    .then(() => {
-      refetch();
-      toast.success('Added SuccessFully')
-    })
-    .catch((error) => {
-      toast.error(error.data.error)
-
-    });
+      .unwrap()
+      .then(() => {
+        refetch();
+        toast.success('Added Successfully');
+      })
+      .catch((error) => {
+        toast.error(error.data.error);
+      });
   };
+
   const renderAction = (row) => {
     return (
       <Flex gap={3} alignContent='center'>
         <AiFillEye className="cursor-pointer" onClick={() => router.push(`customer/branches/${row._id}`)} color="#174050" size={25} />
         <FiEdit className="cursor-pointer" onClick={() => handleAddEdit(row)} color="teal" size={20} />
         <RiDeleteBin6Line className="cursor-pointer" onClick={() => handleDelete(row)} color="red" size={20} />
-        <AiOutlineBranches className="cursor-pointer" onClick={() => {setIsAddBranchModalOpen(true);setSelectedRow(row)}} color="gray" size={20} />
+        <AiOutlineBranches className="cursor-pointer" onClick={() => { setIsAddBranchModalOpen(true);setIsAddEditModalOpen(false); setSelectedRowForAddBranch(row) }} color="gray" size={20} />
       </Flex>
     );
   };
@@ -164,9 +155,6 @@ const index = () => {
             <Button colorScheme="teal" onClick={() => setIsAddEditModalOpen(true)}>
               Add Customer
             </Button>
-            {/* <Button ml={4} colorScheme="teal" onClick={() => setIsAddBranchModalOpen(true)}>
-              Add Branch
-            </Button> */}
           </Box>
         </Flex>
         <DynamicTable
@@ -176,27 +164,27 @@ const index = () => {
         />
         <DeleteModal
           isOpen={isDeleteModalOpen}
-          onClose={handleCancelDelete}
+          onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={handleConfirmDelete}
         />
-        <AddEditSidebar
+        <AddEditModal
           Vendors={vendors?.payload?.vendors}
           isOpen={isAddEditModalOpen}
           onClose={handleCancelAddEdit}
           onSave={handleSave}
           onEditSave={handleEditSave}
-          rowData={selectedRow}
+          rowData={selectedRowForAddEdit}
         />
         <AddEditBranchModal
           Customer={customers?.data?.Customer}
           isOpen={isAddBranchModalOpen}
           onClose={() => setIsAddBranchModalOpen(false)}
           onSave={handleSaveBranch}
-          rowData={selectedRow}
+          rowData={selectedRowForAddBranch}
         />
       </Layout>
     </>
   );
 };
 
-export default index;
+export default Index;
