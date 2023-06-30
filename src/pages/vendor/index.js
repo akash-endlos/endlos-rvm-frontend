@@ -101,6 +101,7 @@ const index = () => {
     await updateVendor(updatedData)
       .unwrap()
       .then(() => {
+       
         toast.success('Updated Successfully');
       })
       .catch((error) => {
@@ -133,6 +134,7 @@ const index = () => {
     await addCustomer(updatedData)
       .unwrap()
       .then(() => {
+        refetch()
         toast.success('Added Successfully');
       })
       .catch((error) => {
