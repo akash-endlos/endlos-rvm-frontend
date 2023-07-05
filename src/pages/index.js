@@ -28,12 +28,14 @@ export default function Home() {
     try {
       const { email, password } = loginForm
       const userData = await login({ email, password }).unwrap()
+
       dispatch(setCredentials(userData))
       router.push('dashboard')
       setloginForm({ email: '', password: '' })
       toast.success('LoggeIn SuccessFully')
     } catch (error) {
-      toast.error(error.data.error)
+
+      toast.error(error.data.message)
     }
   }
   const handleChange = (e) => {
